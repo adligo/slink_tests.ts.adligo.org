@@ -1,0 +1,46 @@
+{
+  "author": "Scott Morgan",
+  "bugs": {
+    "url": "https://github.com/adligo/slink_tests.tests4j.ts.adligo.org/issues"
+  },
+  "description": "This is the implementation of slink_tests.tests4j.ts.adligo.org.",
+  "dependencies": {
+    "@types/node": "^22.15.21",
+    "fs": "^0.0.1-security",
+    "gulp": "^4.0.2",
+    "path": "^0.12.7",
+    "typescript": "^5.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.12",
+    "@types/jest": "^29.4.0",
+    "@types/uuid": "^9.0.0",
+    "jest": "^29.4.1",
+    "ts-node": "^10.9.1",
+    "ts-jest": "^29.0.5"
+  },
+  "homepage": "https://github.com/adligo/slink_tests.tests4j.ts.adligo.org#readme",
+  "keywords": [
+    "junit",
+    "xml",
+    "fab",
+    "javascript",
+    "tests4j",
+    "tests4ts",
+    "typescript"
+  ],
+  "license": "Apache-2.0",
+  "name": "@slink_tests.tests4j.ts.adligo.org",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adligo/slink_tests.tests4j.ts.adligo.org.git"
+  },
+  "scripts": {
+	"test": "jest",
+    "tsc": "tsc"
+  },
+  "sharedNodeModuleProjectSLinkEnvVar": ["SLINK_NODE_MODULE_SLINK"],
+  "sharedNodeModuleProjectSLinks": ["slink_group_deps.ts.adligo.org", "fab_group_deps.ts.adligo.org"],
+  "type": "module",
+  "version": "0.0.1"
+}

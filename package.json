@@ -36,8 +36,8 @@
     "url": "git+https://github.com/adligo/slink_tests.tests4j.ts.adligo.org.git"
   },
   "scripts": {
-	"test": "jest",
-    "tsc": "tsc"
+    "test": "bun run src/slinkApiTrials.ts ",
+    "build": "tsc"
   },
   "sharedNodeModuleProjectSLinkEnvVar": ["SLINK_NODE_MODULE_SLINK"],
   "sharedNodeModuleProjectSLinks": ["slink_group_deps.ts.adligo.org", "fab_group_deps.ts.adligo.org"],

@@ -19,12 +19,12 @@
 
 
 import { ApiTrial, AssertionContext, Test, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
-import { Path, Paths } from '../../slink.ts.adligo.org/src/slink.mjs';
+import { Path, Paths } from '../../slink.ts.adligo.org';
 
 
-class PathsTrial extends ApiTrial {
+export class PathsApiTrial extends ApiTrial {
     constructor() {
-        super('PathsTrial', [
+        super('PathsApiTrial', [
             new Test('testPathConstruction', (ac: AssertionContext) => {
                 // Test absolute path
                 const absPath = new Path(['home', 'user', 'project'], false);
@@ -122,6 +122,6 @@ class PathsTrial extends ApiTrial {
 
 
 // Run the trial
-const trial = new PathsTrial();
+const trial = new PathsApiTrial();
 const suite = new TrialSuite('Paths Tests', [trial]);
 suite.run().printTextReport();

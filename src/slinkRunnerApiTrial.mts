@@ -1,6 +1,3 @@
-// slink_tests.ts.adligo.org/src/slinkRunnerTest.ts
-
-
 /**
  * Copyright 2025 Adligo Inc / Scott Morgan
  *
@@ -102,9 +99,9 @@ class MockFsContext {
 }
 
 
-class SLinkRunnerTrial extends ApiTrial {
+export class SLinkRunnerApiTrial extends ApiTrial {
     constructor() {
-        super('SLinkRunnerTrial', [
+        super('SLinkRunnerApiTrial', [
             new Test('testHandleSharedNodeModulesViaEnvVar', (ac: AssertionContext) => {
                 // Setup
                 const mockCtx = new MockCliCtx(true);
@@ -309,6 +306,6 @@ class SLinkRunnerTrial extends ApiTrial {
 
 
 // Run the trial
-const trial = new SLinkRunnerTrial();
+const trial = new SLinkRunnerApiTrial();
 const suite = new TrialSuite('SLinkRunner Tests', [trial]);
 suite.run().printTextReport();

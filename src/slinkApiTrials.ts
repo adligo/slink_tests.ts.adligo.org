@@ -16,11 +16,13 @@
 
 import { PathsApiTrial } from './pathsApiTrial.mjs';
 import { SLinkRunnerApiTrial } from './slinkRunnerApiTrial.mjs';
+import { CliCtxTrial } from './cliCtxTrial.mjs';
 import { ApiTrial, AssertionContext, Test, TestResult, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import { JUnitXmlGenerator } from '../../junitXml.tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
 
+const cliCtxTrial = new CliCtxTrial();
 const pathsApiTrial = new PathsApiTrial();
 const slinkApiTrial = new SLinkRunnerApiTrial();
 
-const suite = new TrialSuite('SLink Trial Suite ', [pathsApiTrial, slinkApiTrial]);
+const suite = new TrialSuite('SLink Trial Suite ', [pathsApiTrial, cliCtxTrial, slinkApiTrial]);
 suite.run().printTextReport().printTestReportFiles(new JUnitXmlGenerator());

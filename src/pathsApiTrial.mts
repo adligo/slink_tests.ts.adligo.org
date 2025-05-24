@@ -19,7 +19,7 @@
 
 
 import { ApiTrial, AssertionContext, Test, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
-import { Path, Paths } from '../../slink.ts.adligo.org';
+import { Path, Paths } from '../../slink.ts.adligo.org/src/slink.mjs';
 
 
 export class PathsApiTrial extends ApiTrial {

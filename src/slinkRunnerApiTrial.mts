@@ -16,8 +16,7 @@
 
 
 import { ApiTrial, AssertionContext, Test, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
-import { CliCtx, FsContext, Path, Paths, SLinkRunner } from '../../slink.ts.adligo.org';
-
+import { CliCtx, FsContext, Path, Paths, SLinkRunner } from '../../slink.ts.adligo.org/src/slink.mjs';
 
 class MockCliCtx {
     debug: boolean;

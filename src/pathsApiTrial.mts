@@ -23,105 +23,94 @@ import { Path, Paths } from '../../slink.ts.adligo.org/src/slink.mjs';
 
 
 export class PathsApiTrial extends ApiTrial {
-    constructor() {
-        super('PathsApiTrial', [
-            new Test('testPathConstruction', (ac: AssertionContext) => {
-                // Test absolute path
-                const absPath = new Path(['home', 'user', 'project'], false);
-                ac.isFalse(absPath.isRelative(), 'Path should be absolute');
-                ac.isFalse(absPath.isWindows(), 'Path should not be Windows by default');
+  public static testPathConstruction: Test = new Test('testPathConstruction', (ac: AssertionContext) => {
+    // Test absolute path
+    const absPath = new Path(['home', 'user', 'project'], false);
+    ac.isFalse(absPath.isRelative(), 'Path should be absolute');
+    ac.isFalse(absPath.isWindows(), 'Path should not be Windows by default');
 
-                // Test relative path
-                const relPath = new Path(['src', 'main'], true);
-                ac.isTrue(relPath.isRelative(), 'Path should be relative');
+    // Test relative path
+    const relPath = new Path(['src', 'main'], true);
+    ac.isTrue(relPath.isRelative(), 'Path should be relative');
 
-                // Test Windows path
-                const winPath = new Path(['C', 'Users', 'user'], false, true);
-                ac.isTrue(winPath.isWindows(), 'Path should be Windows');
+    // Test Windows path
+    const winPath = new Path(['C', 'Users', 'user'], false, true);
+    ac.isTrue(winPath.isWindows(), 'Path should be Windows');
 
-                // Test getParts
-                const parts = absPath.getParts();
-                ac.isTrue(parts.length === 3, 'Path should have 3 parts');
-                ac.same('home', parts[0], 'First part should be "home"');
-                ac.same('user', parts[1], 'Second part should be "user"');
-                ac.same('project', parts[2], 'Third part should be "project"');
-            }),
+    // Test getParts
+    const parts = absPath.getParts();
+    ac.isTrue(parts.length === 3, 'Path should have 3 parts');
+    ac.same('home', parts[0], 'First part should be "home"');
+    ac.same('user', parts[1], 'Second part should be "user"');
+    ac.same('project', parts[2], 'Third part should be "project"');
+  });
+  public static testPathToString: Test = new Test('testPathToString', (ac: AssertionContext) => {
+    // Test Unix absolute path
+    const unixAbsPath = new Path(['home', 'user', 'project'], false);
+    ac.same('/home/user/project', unixAbsPath.toPathString(), 'Unix absolute path string incorrect');
 
-            new Test('testPathToString', (ac: AssertionContext) => {
-                // Test Unix absolute path
-                const unixAbsPath = new Path(['home', 'user', 'project'], false);
-                ac.same('/home/user/project', unixAbsPath.toPathString(), 'Unix absolute path string incorrect');
+    // Test Unix relative path
+    const unixRelPath = new Path(['src', 'main'], true);
+    ac.same('src/main', unixRelPath.toPathString(), 'Unix relative path string incorrect');
 
-                // Test Unix relative path
-                const unixRelPath = new Path(['src', 'main'], true);
-                ac.same('src/main', unixRelPath.toPathString(), 'Unix relative path string incorrect');
+    // Test Windows absolute path
+    const winAbsPath = new Path(['C', 'Users', 'user'], false, true);
+    ac.same('C:\\Users\\user', winAbsPath.toPathString(), 'Windows absolute path string incorrect');
 
-                // Test Windows absolute path
-                const winAbsPath = new Path(['C', 'Users', 'user'], false, true);
-                ac.same('C:\\Users\\user', winAbsPath.toPathString(), 'Windows absolute path string incorrect');
+    // Test Windows relative path
+    const winRelPath = new Path(['src', 'main'], true, true);
+    ac.same('src\\main', winRelPath.toPathString(), 'Windows relative path string incorrect');
+  });
+  public static testPathsToParts: Test = new Test('testPathsToParts', (ac: AssertionContext) => {
+    // Test Unix path
+    const unixPath = Paths.toPath('/home/user/project', false);
+    ac.same('home', unixPath.getParts()[0], 'Unix path first part incorrect');
+    ac.same('user', unixPath.getParts()[1], 'Unix path second part incorrect');
+    ac.same('project', unixPath.getParts()[2], 'Unix path third part incorrect');
 
-                // Test Windows relative path
-                const winRelPath = new Path(['src', 'main'], true, true);
-                ac.same('src\\main', winRelPath.toPathString(), 'Windows relative path string incorrect');
-            }),
+    // Test Windows path
+    const winPath = Paths.toPath('C:\\Users\\user', false);
+    ac.same('C', winPath.getParts()[0], 'Windows path first part incorrect');
+    ac.same('Users', winPath.getParts()[1], 'Windows path second part incorrect');
+    ac.same('user', winPath.getParts()[2], 'Windows path third part incorrect');
 
-            new Test('testPathsToParts', (ac: AssertionContext) => {
-                // Test Unix path
-                const unixPath = Paths.toParts('/home/user/project', false);
-                ac.same('home', unixPath.getParts()[0], 'Unix path first part incorrect');
-                ac.same('user', unixPath.getParts()[1], 'Unix path second part incorrect');
-                ac.same('project', unixPath.getParts()[2], 'Unix path third part incorrect');
+    // Test GitBash style Windows path
+    const gitBashPath = Paths.toPath('C:/Users/user', false);
+    ac.same('C', gitBashPath.getParts()[0], 'GitBash path first part incorrect');
+    ac.same('Users', gitBashPath.getParts()[1], 'GitBash path second part incorrect');
+    ac.same('user', gitBashPath.getParts()[2], 'GitBash path third part incorrect');
+  });
+  public static testPathsToUnix: Test = new Test('testPathsToUnix', (ac: AssertionContext) => {
+    // Test absolute path
+    const absPath = new Path(['home', 'user', 'project'], false);
+    ac.same('/home/user/project', Paths.toUnix(absPath), 'Unix absolute path conversion incorrect');
 
-                // Test Windows path
-                const winPath = Paths.toParts('C:\\Users\\user', false);
-                ac.same('C', winPath.getParts()[0], 'Windows path first part incorrect');
-                ac.same('Users', winPath.getParts()[1], 'Windows path second part incorrect');
-                ac.same('user', winPath.getParts()[2], 'Windows path third part incorrect');
+    // Test relative path
+    const relPath = new Path(['src', 'main'], true);
+    ac.same('src/main', Paths.toUnix(relPath), 'Unix relative path conversion incorrect');
+  });
+  public static testPathsToWindows: Test = new Test('testPathsToWindows', (ac: AssertionContext) => {
+    // Test drive letter path
+    const drivePath = new Path(['C', 'Users', 'user'], false);
+    ac.same('C:\\Users\\user', Paths.toWindows(drivePath), 'Windows drive path conversion incorrect');
 
-                // Test GitBash style Windows path
-                const gitBashPath = Paths.toParts('C:/Users/user', false);
-                ac.same('C', gitBashPath.getParts()[0], 'GitBash path first part incorrect');
-                ac.same('Users', gitBashPath.getParts()[1], 'GitBash path second part incorrect');
-                ac.same('user', gitBashPath.getParts()[2], 'GitBash path third part incorrect');
-            }),
+    // Test relative path
+    const relPath = new Path(['src', 'main'], true);
+    ac.same('src\\main', Paths.toWindows(relPath), 'Windows relative path conversion incorrect');
+  });
+  public static testPathsFind: Test = new Test('testPathsFind', (ac: AssertionContext) => {
+    // Test finding an absolute path from a base path and a relative path
+    const basePath = new Path(['home', 'user', 'project'], false);
+    const relPath = new Path(['..', 'otherproject', 'src'], true);
 
-            new Test('testPathsToUnix', (ac: AssertionContext) => {
-                // Test absolute path
-                const absPath = new Path(['home', 'user', 'project'], false);
-                ac.same('/home/user/project', Paths.toUnix(absPath), 'Unix absolute path conversion incorrect');
-
-                // Test relative path
-                const relPath = new Path(['src', 'main'], true);
-                ac.same('src/main', Paths.toUnix(relPath), 'Unix relative path conversion incorrect');
-            }),
-
-            new Test('testPathsToWindows', (ac: AssertionContext) => {
-                // Test drive letter path
-                const drivePath = new Path(['C', 'Users', 'user'], false);
-                ac.same('C:\\Users\\user', Paths.toWindows(drivePath), 'Windows drive path conversion incorrect');
-
-                // Test relative path
-                const relPath = new Path(['src', 'main'], true);
-                ac.same('src\\main', Paths.toWindows(relPath), 'Windows relative path conversion incorrect');
-            }),
-
-            new Test('testPathsFind', (ac: AssertionContext) => {
-                // Test finding an absolute path from a base path and a relative path
-                const basePath = new Path(['home', 'user', 'project'], false);
-                const relPath = new Path(['..', 'otherproject', 'src'], true);
-
-                const foundPath = Paths.find(basePath, relPath);
-                ac.same('home', foundPath.getParts()[0], 'Found path first part incorrect');
-                ac.same('user', foundPath.getParts()[1], 'Found path second part incorrect');
-                ac.same('otherproject', foundPath.getParts()[2], 'Found path third part incorrect');
-                ac.same('src', foundPath.getParts()[3], 'Found path fourth part incorrect');
-            })
-        ]);
-    }
+    const foundPath = Paths.find(basePath, relPath);
+    ac.same('home', foundPath.getParts()[0], 'Found path first part incorrect');
+    ac.same('user', foundPath.getParts()[1], 'Found path second part incorrect');
+    ac.same('otherproject', foundPath.getParts()[2], 'Found path third part incorrect');
+    ac.same('src', foundPath.getParts()[3], 'Found path fourth part incorrect');
+  })
+  constructor() {
+    super('PathsApiTrial', [PathsApiTrial.testPathConstruction, PathsApiTrial.testPathToString, PathsApiTrial.testPathsToUnix,
+    PathsApiTrial.testPathsToWindows, PathsApiTrial.testPathsFind]);
+  }
 }
-
-
-// Run the trial
-const trial = new PathsApiTrial();
-const suite = new TrialSuite('Paths Tests', [trial]);
-suite.run().printTextReport();

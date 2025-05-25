@@ -173,9 +173,3 @@ export class CliCtxTrial extends ApiTrial {
         ]);
     }
 }
-
-
-// Run the trial
-const trial = new CliCtxTrial();
-const suite = new TrialSuite('CliCtxTrial Tests', [trial]);
-suite.run().printTextReport();

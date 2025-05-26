@@ -62,6 +62,13 @@ export class ProcMock implements I_Proc {
         }
     }
 
+    getPathSeperator(): string {
+       if (this._windows) {
+           return '\\';
+       }
+       return '/';
+    }
+
     argv(): string[] {
         return this._argv
     }

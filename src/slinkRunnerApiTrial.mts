@@ -15,7 +15,7 @@
  */
 
 
-import { ApiTrial, AssertionContext, Test, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { ApiTrial, AssertionContext, Test, TestParams, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import {
   CliCtx, CliCtxArg,
   FsContext,
@@ -27,7 +27,7 @@ import {
   Paths,
   SLinkRunner
 } from '../../slink.ts.adligo.org/src/slink.mjs';
-import { FsMock } from "./mocks.mjs";
+import { FsMock, ProcMock } from "./mocks.mjs";
 
 process.env['RUNNING_TESTS4TS'] = true
 
@@ -36,6 +36,7 @@ class CliCtxMockParams {
   debug: boolean = true;
   dir: Path;
   done: boolean = false;
+  proc: ProcMock = new ProcMock();
   windows: boolean = true;
 
 }
@@ -50,6 +51,7 @@ class CliCtxMock implements I_CliCtx {
   printCalls: string[] = [];
   logCmdCalls: any[] = [];
   runCalls: any[] = [];
+  proc: ProcMock;
   setDirCalls: number = 0;
   windows: boolean;
 
@@ -59,6 +61,7 @@ class CliCtxMock implements I_CliCtx {
     this.windows = params.windows;
     this.bash = params.bash;
     this.dir = params.dir;
+    this.proc = params.proc;
   }
 
   getFs(): I_Fs {
@@ -77,7 +80,7 @@ class CliCtxMock implements I_CliCtx {
     throw new Error('Method not implemented.');
   }
   getProc(): I_Proc {
-    throw new Error('Method not implemented.');
+    return this.proc;
   }
 
   isDebug(): boolean { return this.debug; }
@@ -220,8 +223,9 @@ class FsContextMock implements I_FsContext {
  * better outlines (Structure) in Eclipse and WebStorm respectively.
  */
 export class SLinkRunnerApiTrial extends ApiTrial {
-  public static testHandleSharedNodeModulesViaEnvVar: Test = new Test('testHandleSharedNodeModulesViaEnvVar', (ac: AssertionContext) => {
+  public static testHandleSharedNodeModulesViaEnvVar: Test = new Test(TestParams.of('testHandleSharedNodeModulesViaEnvVar').ignore(), (ac: AssertionContext) => {
     // Setup
+    /*
     const mockCtx = new CliCtxMock(true);
     const mockFsCtx = new FsContextMock();
 
@@ -256,55 +260,11 @@ export class SLinkRunnerApiTrial extends ApiTrial {
       // Restore original process.env
       process.env = originalEnv;
     }
-  });
-  public static testHandleSharedNodeModulesViaProjectLinks: Test = new Test('testHandleSharedNodeModulesViaProjectLinks', (ac: AssertionContext) => {
-    // Setup
-    const mockCtx = new CliCtxMock(true, true, true);
-    const mockFsCtx = new FsContextMock();
-
-    // Setup mock package.json
-    mockFsCtx.mockPackageJson = {
-      sharedNodeModuleProjectSLinks: ['slink_group_deps.ts.adligo.org']
-    };
-
-    // Mock directory structure
-    mockCtx.dir = Paths.toPath('/mock/project/current', false);
-
-    // Create SLinkRunner with mocks
-    const runner = new SLinkRunner(mockCtx as any);
-    //TODO fix this code and tests
-    /*
-    runner.run();
-
-    // Verify
-    ac.equals(1, mockCtx.doneCalls, "IsDone should be called once.");
-    ac.equals(1, mockCtx.setDirCalls, "SetDir should be called once.");
-
-    ac.equals('ls', mockCtx.runCalls[0].cmd) ;
-
-    ac.equals(3, mockFsCtx.existsAbsCalls.length, 'The number of dirs/files checked for existance.')
-
-    // Check that the first existsAbs call is for the project path
-    const projectPathCall = mockFsCtx.existsAbsCalls[0];
-    ac.isTrue(Paths.toUnix(projectPathCall).includes('slink_group_deps.ts.adligo.org'),
-        'Should check for project directory');
-
-    // If project exists, should check for node_modules
-    if (mockFsCtx.existsAbsCalls.length >= 2) {
-        const nodeModulesPathCall = mockFsCtx.existsAbsCalls[1];
-        ac.isTrue(Paths.toUnix(nodeModulesPathCall).includes('node_modules'),
-            'Should check for node_modules directory');
-    }
-
-    // If project exists, should create symlink
-    if (mockFsCtx.slinkCalls.length > 0) {
-        const slinkCall = mockFsCtx.slinkCalls[0];
-        ac.same('node_modules', slinkCall.slinkName, 'Should create symlink named node_modules');
-    }
     */
   });
-  public static testHandleDependencySrcSLinks: Test = new Test('testHandleDependencySrcSLinks', (ac: AssertionContext) => {
+  public static testHandleDependencySrcSLinks: Test = new Test(TestParams.of('testHandleDependencySrcSLinks').ignore(), (ac: AssertionContext) => {
     // Setup
+    /*
     const mockCtx = new CliCtxMock(true);
     const mockFsCtx = new FsContextMock();
 
@@ -330,9 +290,12 @@ export class SLinkRunnerApiTrial extends ApiTrial {
 
     const slinkCall = mockFsCtx.slinkCalls[0];
     ac.same('test-project@slink', slinkCall.slinkName, 'Should create symlink with correct name');
+
+     */
   });
-  public static testHandleDependencySLinkGroups: Test = new Test('testHandleDependencySLinkGroups', (ac: AssertionContext) => {
-    // Setup
+  public static testHandleDependencySLinkGroups: Test = new Test(TestParams.of('testHandleDependencySLinkGroups').ignore(), (ac: AssertionContext) => {
+    // TODO not sure if this ever got used anyway!
+    /*
     const mockCtx = new CliCtxMock(true);
     const mockFsCtx = new FsContextMock();
 
@@ -367,61 +330,96 @@ export class SLinkRunnerApiTrial extends ApiTrial {
 
     const slinkCall = mockFsCtx.slinkCalls[0];
     ac.same('test', slinkCall.slinkName, 'Should create symlink with correct name');
-  });
-  public static testFullRunWithSharedNodeModulesViaEnvVar: Test = new Test('testFullRunWithSharedNodeModulesViaEnvVar', (ac: AssertionContext) => {
-    // Setup
-    const mockCtx = new CliCtxMock(true);
-    const mockFsCtx = new FsContextMock();
 
-    // Save original process.env
-    const originalEnv = process.env;
+     */
 
-    try {
-      // Mock process.env
-      process.env = { ...originalEnv, TEST_NODE_MODULE_SLINK: '/mock/node_modules/path' };
-
-      // Setup mock package.json
-      mockFsCtx.mockPackageJson = {
-        sharedNodeModuleProjectSLinkEnvVar: ['TEST_NODE_MODULE_SLINK'],
-        dependencySrcSLinks: [{
-          project: 'test-project'
-        }],
-        dependencySLinkGroups: [{
-          group: '@test',
-          projects: [{
-            project: 'test-project',
-            modulePath: 'test'
-          }]
-        }]
-      };
-
-      // Create SLinkRunner with mocks
-      const runner = new SLinkRunner(mockCtx as any);
-      (runner as any).fsCtx = mockFsCtx;
-
-      // Run the full runner
-      runner.run();
-
-      // Verify
-      ac.isTrue(mockFsCtx.readJsonCalls.length > 0, 'Should read package.json');
-
-      // Should have created symlinks for all three types
-      const nodeModulesSymlink = mockFsCtx.slinkCalls.find(call => call.slinkName === 'node_modules');
-      ac.isTrue(nodeModulesSymlink !== undefined, 'Should create node_modules symlink');
-
-      const srcSymlink = mockFsCtx.slinkCalls.find(call => call.slinkName === 'test-project@slink');
-      ac.isTrue(srcSymlink !== undefined, 'Should create source symlink');
-
-      const groupSymlink = mockFsCtx.slinkCalls.find(call => call.slinkName === 'test');
-      ac.isTrue(groupSymlink !== undefined, 'Should create group symlink');
-    } finally {
-      // Restore original process.env
-      process.env = originalEnv;
+    const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
+    const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
+    const cliCtxParams = new CliCtxMockParams();
+    cliCtxParams.dir = projectRoot;
+    // Setup - single project, directory exists
+    const mockCtx: CliCtxMock = new CliCtxMock(cliCtxParams);
+    const fscParams = new FsContextMockParams();
+    fscParams.ac = ac;
+    const omockSharedDeps = Paths.newPath('Z:/omock/shared_deps_foo', false, true);
+    const omockSharedDepsNodeModules = Paths.newPath('Z:/omock/shared_deps_foo/node_modules', false, true);
+    const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
+    fscParams.existsAbsResponses = [{ path: projectRoot, response: true },
+      { path: omockSharedDeps, response: true },
+      { path: omockSharedDepsNodeModules, response: true },
+    ];
+    fscParams.existsResponses = [{ relativePathParts: projectNodeModules, inDir: projectRoot, response: false }];
+    const packageJson = `
+ { "dependencySLinkGroups": [{ 
+    "group": "@test", "projects": [{
+      "project": "test-project",
+      "modulePath": "test" }]
     }
+]}`;
+    fscParams.readJsonResponses = [{ path: projectRootPackageJson, json: packageJson }];
+    const mockFsc: FsContextMock = new FsContextMock(fscParams);
+
+
+    // Create SLinkRunner with mocks
+    const runner = new SLinkRunner(mockCtx, mockFsc);
+    runner.run();
+
+    // Verify 6 assertions, another 10+ assertions are done in the FsContextMock
+    ac.equals(1, mockCtx.doneCalls, "CliCtx.isDone() should be called once");
+    ac.equals(1, mockCtx.setDirCalls, "CliCtx.setDir() should be called once");
+    ac.equals(1, mockFsc.slinkCalls.length, "There should be one call to create symbolic link");
+    //slink(slinkName: string, toDir: Path, inDir: Path): void;
+    ac.equals("test", mockFsc.slinkCalls[0].slinkName, "The symbolic link name should match");
+    ac.equals(omockSharedDepsNodeModules.toString(), mockFsc.slinkCalls[0].toDir.toString(),
+        "The symbolic link should point to the shared deps projects node_modules directory.");
+    ac.equals(projectRoot.toString(), mockFsc.slinkCalls[0].inDir.toString(),
+        "The symbolic link should be created in the projectRoot dir. ");
+  });
+  public static testFullRunWithSharedNodeModulesViaEnvVar: Test = new Test(TestParams.of('testFullRunWithSharedNodeModulesViaEnvVar'), (ac: AssertionContext) => {
+
+    const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
+    const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
+    const cliCtxParams = new CliCtxMockParams();
+    cliCtxParams.dir = projectRoot;
+    const procMock = new ProcMock();
+    procMock._env = new Map<string,string>();
+    procMock._env["TEST_NODE_MODULE_SLINK"] = "Z:/omock/shared_deps_foo";
+    cliCtxParams.proc = procMock;
+    // Setup - single project, directory exists
+    const mockCtx: CliCtxMock = new CliCtxMock(cliCtxParams);
+    const fscParams = new FsContextMockParams();
+    fscParams.ac = ac;
+    const omockSharedDeps = Paths.newPath('Z:/omock/shared_deps_foo', false, true);
+    const omockSharedDepsNodeModules = Paths.newPath('Z:/omock/shared_deps_foo/node_modules', false, true);
+    const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
+    fscParams.existsAbsResponses = [{ path: projectRoot, response: true },
+      { path: omockSharedDeps, response: true },
+      { path: omockSharedDepsNodeModules, response: true },
+    ];
+    fscParams.existsResponses = [{ relativePathParts: projectNodeModules, inDir: projectRoot, response: false }];
+    const packageJson = '{ "sharedNodeModuleProjectSLinkEnvVar": ["TEST_NODE_MODULE_SLINK"]}';
+    fscParams.readJsonResponses = [{ path: projectRootPackageJson, json: packageJson }];
+    const mockFsc: FsContextMock = new FsContextMock(fscParams);
+
+
+    // Create SLinkRunner with mocks
+    const runner = new SLinkRunner(mockCtx, mockFsc);
+    runner.run();
+
+    // Verify 6 assertions, another 10+ assertions are done in the FsContextMock
+    ac.equals(1, mockCtx.doneCalls, "CliCtx.isDone() should be called once");
+    ac.equals(1, mockCtx.setDirCalls, "CliCtx.setDir() should be called once");
+    ac.equals(1, mockFsc.slinkCalls.length, "There should be one call to create symbolic link");
+    //slink(slinkName: string, toDir: Path, inDir: Path): void;
+    ac.equals("node_modules", mockFsc.slinkCalls[0].slinkName, "The symbolic link name should match");
+    ac.equals(omockSharedDepsNodeModules.toString(), mockFsc.slinkCalls[0].toDir.toString(),
+        "The symbolic link should point to the shared deps projects node_modules directory.");
+    ac.equals(projectRoot.toString(), mockFsc.slinkCalls[0].inDir.toString(),
+        "The symbolic link should be created in the projectRoot dir. ");
   });
 
   public static testHandleSharedNodeModulesViaProjectLinkDirExists: Test =
-    new Test('testHandleSharedNodeModulesViaProjectLinkDir', (ac: AssertionContext) => {
+    new Test(TestParams.of('testHandleSharedNodeModulesViaProjectLinkDir'), (ac: AssertionContext) => {
 
       const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
       const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -463,7 +461,8 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     });
 
 
-  public static testHandleSharedNodeModulesViaProjectLinkDirMissing: Test = new Test('testHandleSharedNodeModulesViaProjectLinkDirMissing', (ac: AssertionContext) => {
+  public static testHandleSharedNodeModulesViaProjectLinkDirMissing: Test = new Test(
+    TestParams.of('testHandleSharedNodeModulesViaProjectLinkDirMissing'), (ac: AssertionContext) => {
 
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -499,131 +498,142 @@ export class SLinkRunnerApiTrial extends ApiTrial {
   });
 
 
-  public static testHandleSharedNodeModulesViaProjectLinkMultiDirFirstExists: Test = new Test('testHandleSharedNodeModulesViaProjectLinkMultiDirFirstExists', (ac: AssertionContext) => {
-    // Setup - multiple projects, first directory exists
-    const mockCtx = new CliCtxMock(true);
-    const mockFsCtx = new FsContextMock();
+  public static testHandleSharedNodeModulesViaProjectLinkMultiDirFirstExists: Test = new Test(
+    TestParams.of('testHandleSharedNodeModulesViaProjectLinkMultiDirFirstExists'), (ac: AssertionContext) => {
 
-    // Setup mock package.json with multiple project links
-    mockFsCtx.mockPackageJson = {
-      sharedNodeModuleProjectSLinks: ['first-project', 'second-project']
-    };
+    const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
+    const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
+    const cliCtxParams = new CliCtxMockParams();
+    cliCtxParams.dir = projectRoot;
+    // Setup - single project, directory exists
+    const mockCtx: CliCtxMock = new CliCtxMock(cliCtxParams);
 
-    // Mock directory structure where first project exists in parent
-    mockCtx.dir = Paths.toPath('/mock/current/project', false);
-    mockFsCtx.mockExists = true; // First project directory exists
+
+    const fscParams = new FsContextMockParams();
+    fscParams.ac = ac;
+    const shareDeps = Paths.newPath('Z:/mock/current/shared_deps_foo3', false, true);
+    const shareDepsNodeModules = Paths.newPath('Z:/mock/current/shared_deps_foo3/node_modules', false, true);
+    const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
+    fscParams.existsAbsResponses = [{ path: projectRoot, response: true },
+      { path: shareDeps, response: true },
+      { path: shareDepsNodeModules, response: true },
+    ];
+    fscParams.existsResponses = [{ relativePathParts: projectNodeModules, inDir: projectRoot, response: false }];
+    const packageJson = '{ "sharedNodeModuleProjectSLinks": ["shared_deps_foo3","other_shared_deps"]}';
+    fscParams.readJsonResponses = [{ path: projectRootPackageJson, json: packageJson }];
+    const mockFsc: FsContextMock = new FsContextMock(fscParams);
+
 
     // Create SLinkRunner with mocks
-    const runner = new SLinkRunner(mockCtx as any);
-    (runner as any).fsCtx = mockFsCtx;
+    const runner = new SLinkRunner(mockCtx, mockFsc);
+    runner.run();
 
-    // Run the method
-    (runner as any).handleSharedNodeModulesViaProjectLinks(['first-project', 'second-project']);
-
-    // Verify
-    ac.isTrue(mockFsCtx.existsAbsCalls.length > 0, 'Should check project directories');
-    ac.isTrue(mockFsCtx.rmCalls.length > 0, 'Should call rm to remove existing node_modules');
-    ac.isTrue(mockFsCtx.slinkCalls.length > 0, 'Should call slink to create symlink for first project');
-
-    const slinkCall = mockFsCtx.slinkCalls[0];
-    ac.same('node_modules', slinkCall.slinkName, 'Should create symlink named node_modules');
-    ac.isTrue(Paths.toUnix(slinkCall.toDir).includes('/mock/current/first-project/node_modules'),
-      'Should link to the first project\'s node_modules path');
+    // Verify 3 assertions, another 10+ assertions are done in the FsContextMock
+    ac.equals(1, mockCtx.doneCalls, "CliCtx.isDone() should be called once");
+    ac.equals(1, mockCtx.setDirCalls, "CliCtx.setDir() should be called once");
+    ac.equals(1, mockFsc.slinkCalls.length, "There should be one call to create symbolic link");
+    ac.equals("node_modules", mockFsc.slinkCalls[0].slinkName, "The symbolic link name should match");
+    ac.equals(shareDepsNodeModules.toString(), mockFsc.slinkCalls[0].toDir.toString(),
+        "The symbolic link should point to the shared deps projects node_modules directory.");
+    ac.equals(projectRoot.toString(), mockFsc.slinkCalls[0].inDir.toString(),
+        "The symbolic link should be created in the projectRoot dir. ");
   });
 
 
-  public static testHandleSharedNodeModulesViaProjectLinkMultiDir2ndExists: Test = new Test('testHandleSharedNodeModulesViaProjectLinkMultiDir2ndExists', (ac: AssertionContext) => {
-    // Setup - multiple projects, second directory exists (simulate first missing)
-    const mockCtx = new CliCtxMock(true);
-    const mockFsCtx = new FsContextMock();
+  public static testHandleSharedNodeModulesViaProjectLinkMultiDir2ndExists: Test = new Test(
+    TestParams.of('testHandleSharedNodeModulesViaProjectLinkMultiDir2ndExists'), (ac: AssertionContext) => {
 
-    // Setup mock package.json with multiple project links
-    mockFsCtx.mockPackageJson = {
-      sharedNodeModuleProjectSLinks: ['first-project', 'second-project']
-    };
+    const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
+    const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
+    const cliCtxParams = new CliCtxMockParams();
+    cliCtxParams.dir = projectRoot;
+    // Setup - single project, directory exists
+    const mockCtx: CliCtxMock = new CliCtxMock(cliCtxParams);
 
-    // Mock directory structure
-    mockCtx.dir = Paths.toPath('/mock/current/project', false);
 
-    // Customize existsAbs to return false for first project, true for second
-    mockFsCtx.existsAbs = (path: Path) => {
-      const pathStr = Paths.toUnix(path);
-      mockFsCtx.existsAbsCalls.push(path);
+    const fscParams = new FsContextMockParams();
+    fscParams.ac = ac;
+    const otherShareDeps = Paths.newPath('Z:/mock/current/other_shared_deps', false, true);
+    const otherShareDepsNodeModules = Paths.newPath('Z:/mock/current/other_shared_deps/node_modules', false, true);
+    const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
+    fscParams.existsAbsResponses = [{ path: projectRoot, response: true },
+      { path: Paths.newPath('Z:/mock/current/shared_deps_foo', false, true), response: false },
+      { path: otherShareDeps, response: true },
+      { path: otherShareDepsNodeModules, response: true },
+    ];
+    fscParams.existsResponses = [{ relativePathParts: projectNodeModules, inDir: projectRoot, response: false }];
+    const packageJson = '{ "sharedNodeModuleProjectSLinks": ["shared_deps_foo","other_shared_deps"]}';
+    fscParams.readJsonResponses = [{ path: projectRootPackageJson, json: packageJson }];
+    const mockFsc: FsContextMock = new FsContextMock(fscParams);
 
-      // Return false for first project, true for second
-      if (pathStr.includes('first-project')) {
-        return false;
-      } else if (pathStr.includes('second-project')) {
-        return true;
-      }
-      return mockFsCtx.mockExists;
-    };
 
     // Create SLinkRunner with mocks
-    const runner = new SLinkRunner(mockCtx as any);
-    (runner as any).fsCtx = mockFsCtx;
+    const runner = new SLinkRunner(mockCtx, mockFsc);
+    runner.run();
 
-    // Run the method
-    (runner as any).handleSharedNodeModulesViaProjectLinks(['first-project', 'second-project']);
-
-    // Verify
-    ac.isTrue(mockFsCtx.existsAbsCalls.length >= 2, 'Should check multiple project directories');
-    ac.isTrue(mockFsCtx.rmCalls.length > 0, 'Should call rm to remove existing node_modules');
-    ac.isTrue(mockFsCtx.slinkCalls.length > 0, 'Should call slink to create symlink for second project');
-
-    const slinkCall = mockFsCtx.slinkCalls[0];
-    ac.same('node_modules', slinkCall.slinkName, 'Should create symlink named node_modules');
-    ac.isTrue(Paths.toUnix(slinkCall.toDir).includes('/mock/current/second-project/node_modules'),
-      'Should link to the second project\'s node_modules path');
+    // Verify 3 assertions, another 10+ assertions are done in the FsContextMock
+    ac.equals(1, mockCtx.doneCalls, "CliCtx.isDone() should be called once");
+    ac.equals(1, mockCtx.setDirCalls, "CliCtx.setDir() should be called once");
+    ac.equals(1, mockFsc.slinkCalls.length, "There should be one call to create symbolic link");
+    ac.equals("node_modules", mockFsc.slinkCalls[0].slinkName, "The symbolic link name should match");
+    ac.equals(otherShareDepsNodeModules.toString(), mockFsc.slinkCalls[0].toDir.toString(),
+        "The symbolic link should point to the shared deps projects node_modules directory.");
+    ac.equals(projectRoot.toString(), mockFsc.slinkCalls[0].inDir.toString(),
+        "The symbolic link should be created in the projectRoot dir. ");
   });
 
 
-  public static testHandleSharedNodeModulesViaProjectLinkMultiDirMissing: Test = new Test('testHandleSharedNodeModulesViaProjectLinkMultiDirMissing', (ac: AssertionContext) => {
-    // Setup - multiple projects, none exist
-    const mockCtx = new CliCtxMock(true);
-    const mockFsCtx = new FsContextMock();
+  public static testHandleSharedNodeModulesViaProjectLinkMultiDirMissing: Test = new Test(
+    TestParams.of('testHandleSharedNodeModulesViaProjectLinkMultiDirMissing'), (ac: AssertionContext) => {
 
-    // Setup mock package.json with multiple project links
-    mockFsCtx.mockPackageJson = {
-      sharedNodeModuleProjectSLinks: ['first-project', 'second-project']
-    };
+    const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
+    const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
+    const cliCtxParams = new CliCtxMockParams();
+    cliCtxParams.dir = projectRoot;
+    // Setup - single project, directory exists
+    const mockCtx: CliCtxMock = new CliCtxMock(cliCtxParams);
 
-    // Mock directory structure where no projects exist
-    mockCtx.dir = Paths.toPath('/mock/current/project', false);
-    mockFsCtx.mockExists = false;
+
+    const fscParams = new FsContextMockParams();
+    fscParams.ac = ac;
+    const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
+    fscParams.existsAbsResponses = [{ path: projectRoot, response: true },
+      { path: Paths.newPath('Z:/mock/current/shared_deps_foo', false, true), response: false },
+      { path: Paths.newPath('Z:/mock/current/other_shared_deps', false, true), response: false },
+      { path: Paths.newPath('Z:/mock/shared_deps_foo', false, true), response: false },
+      { path: Paths.newPath('Z:/mock/other_shared_deps', false, true), response: false },
+      { path: Paths.newPath('Z:/shared_deps_foo', false, true), response: false },
+      { path: Paths.newPath('Z:/other_shared_deps', false, true), response: false },
+    ];
+    fscParams.existsResponses = [{ relativePathParts: projectNodeModules, inDir: projectRoot, response: false }];
+    const packageJson = '{ "sharedNodeModuleProjectSLinks": ["shared_deps_foo","other_shared_deps"]}';
+    fscParams.readJsonResponses = [{ path: projectRootPackageJson, json: packageJson }];
+    const mockFsc: FsContextMock = new FsContextMock(fscParams);
+
 
     // Create SLinkRunner with mocks
-    const runner = new SLinkRunner(mockCtx as any);
-    (runner as any).fsCtx = mockFsCtx;
+    const runner = new SLinkRunner(mockCtx, mockFsc);
+    runner.run();
 
-    // Run the method
-    (runner as any).handleSharedNodeModulesViaProjectLinks(['first-project', 'second-project']);
-
-    // Verify
-    ac.isTrue(mockFsCtx.existsAbsCalls.length >= 2, 'Should check multiple project directories');
-    ac.same(0, mockFsCtx.rmCalls.length, 'Should not call rm since no projects exist');
-    ac.same(0, mockFsCtx.slinkCalls.length, 'Should not call slink since no projects exist');
-    ac.isTrue(mockCtx.outCalls.some(msg => msg.includes('not found')),
-      'Should log that projects were not found');
+    // Verify 3 assertions, another 10+ assertions are done in the FsContextMock
+    ac.equals(1, mockCtx.doneCalls, "CliCtx.isDone() should be called once");
+    ac.equals(1, mockCtx.setDirCalls, "CliCtx.setDir() should be called once");
+    ac.equals(0, mockFsc.slinkCalls.length, "There should be one call to create symbolic link");
   });
 
   constructor() {
     super('SLinkRunnerApiTrial', [
         /* SLinkRunnerApiTrial.testHandleSharedNodeModulesViaEnvVar,
     SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinks,
-    SLinkRunnerApiTrial.testHandleDependencySrcSLinks,
-      SLinkRunnerApiTrial.testHandleDependencySLinkGroups,
-SLinkRunnerApiTrial.testFullRunWithSharedNodeModulesViaEnvVar,
-
     */
+      SLinkRunnerApiTrial.testHandleDependencySrcSLinks,
+      //SLinkRunnerApiTrial.testHandleDependencySLinkGroups,
+      SLinkRunnerApiTrial.testFullRunWithSharedNodeModulesViaEnvVar,
       SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinkDirExists,
       SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinkDirMissing,
-      /*
-
       SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinkMultiDirFirstExists,
       SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinkMultiDir2ndExists,
       SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinkMultiDirMissing
-      */
     ]);
   }
 }

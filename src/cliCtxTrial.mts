@@ -18,7 +18,7 @@
  */
 
 
-import { ApiTrial, AssertionContext, Test, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { ApiTrial, AssertionContext, Test, TestParams, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import {
     CliCtx,
     FLAGS,
@@ -29,13 +29,13 @@ import {
     FsContext,
     VERSION_NBR, CliCtxArg
 } from '../../slink.ts.adligo.org/src/slink.mjs';
-import {SlinkConsoleMock, ProcMock, PROC_DV, CliCtxLogMock, FsMock} from './mocks.mjs';
+import {SlinkConsoleMock, ProcMock, CliCtxLogMock, FsMock} from './mocks.mjs';
 
 
 export class CliCtxTrial extends ApiTrial {
     constructor() {
         super('CliCtxTrial', [
-            new Test('testConstructionWithDDebugFlag', (ac: AssertionContext) => {
+            new Test(TestParams.of('testConstructionWithDDebugFlag'), (ac: AssertionContext) => {
                 console.log("ac is " + typeof (ac.equals));
                 let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
                 let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
@@ -52,7 +52,7 @@ export class CliCtxTrial extends ApiTrial {
                     "the first debug message printed on the console.");
                 ac.isTrue(cliCtx.isDone() == false, "The CliCtx should not be done yet.");
             }),
-            new Test('testConstructionWithDDFlag', (ac: AssertionContext) => {
+            new Test(TestParams.of('testConstructionWithDDFlag'), (ac: AssertionContext) => {
                 console.log("ac is " + typeof (ac.equals));
                 let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
                 let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
@@ -69,7 +69,7 @@ export class CliCtxTrial extends ApiTrial {
                     "the first debug message printed on the console.");
                 ac.isTrue(cliCtx.isDone() == false, "The CliCtx should not be done yet.");
             }),
-            new Test('testConstructionWithDDHelpFlag', (ac: AssertionContext) => {
+            new Test(TestParams.of('testConstructionWithDDHelpFlag'), (ac: AssertionContext) => {
                 console.log("ac is " + typeof (ac.equals));
                 let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
                 let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
@@ -87,7 +87,7 @@ export class CliCtxTrial extends ApiTrial {
                 ac.equals(11, consoleMock.messages.length, "Help prints a lot");
                 ac.isTrue(cliCtx.isDone() == true, "The CliCtx should be done, at this point.");
             }),
-            new Test('testConstructionWithDHFlag', (ac: AssertionContext) => {
+            new Test(TestParams.of('testConstructionWithDHFlag'), (ac: AssertionContext) => {
                 console.log("ac is " + typeof (ac.equals));
                 let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
                 let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
@@ -105,7 +105,7 @@ export class CliCtxTrial extends ApiTrial {
                 ac.equals(11, consoleMock.messages.length, "Help prints a lot");
                 ac.isTrue(cliCtx.isDone() == true, "The CliCtx should be done, at this point.");
             }),
-            new Test('testConstructionWithDDLogFlag', (ac: AssertionContext) => {
+            new Test(TestParams.of('testConstructionWithDDLogFlag'), (ac: AssertionContext) => {
                 console.log("ac is " + typeof (ac.equals));
                 let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
                 let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
@@ -121,7 +121,7 @@ export class CliCtxTrial extends ApiTrial {
                 ac.equals('foo/file.txt', val.getArg(), "The output log file name should be set, to foo/file.txt");
                 ac.isTrue(cliCtx.isDone() == false, "The CliCtx should not be done at this point.");
             }),
-            new Test('testConstructionWithDDLogFlag', (ac: AssertionContext) => {
+            new Test(TestParams.of('testConstructionWithDDLogFlag'), (ac: AssertionContext) => {
                 console.log("ac is " + typeof (ac.equals));
                 let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
                 let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
@@ -137,7 +137,7 @@ export class CliCtxTrial extends ApiTrial {
                 ac.equals('foo/file.txt', val.getArg(), "The output log file name should be set, to foo/file.txt");
                 ac.isTrue(cliCtx.isDone() == false, "The CliCtx should not be done at this point.");
             }),
-            new Test('testConstructionWithDDVersionFlag', (ac: AssertionContext) => {
+            new Test(TestParams.of('testConstructionWithDDVersionFlag'), (ac: AssertionContext) => {
                 console.log("ac is " + typeof (ac.equals));
                 let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
                 let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
@@ -153,7 +153,7 @@ export class CliCtxTrial extends ApiTrial {
                 ac.equals(VERSION_NBR,consoleMock.messages[0], "Only the Version Number should be printed!");
                 ac.isTrue(cliCtx.isDone() == true, "The CliCtx should be done at this point.");
             }),
-            new Test('testConstructionWithDVFlag', (ac: AssertionContext) => {
+            new Test(TestParams.of('testConstructionWithDVFlag'), (ac: AssertionContext) => {
                 console.log("ac is " + typeof (ac.equals));
                 let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
                 let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();

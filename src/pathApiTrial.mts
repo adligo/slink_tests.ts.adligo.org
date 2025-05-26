@@ -18,12 +18,12 @@
  */
 
 
-import { ApiTrial, AssertionContext, Test, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { ApiTrial, AssertionContext, Test, TestParams, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import { Path, Paths } from '../../slink.ts.adligo.org/src/slink.mjs';
 
 
 export class PathApiTrial extends ApiTrial {
-  public static testConstructorErrors: Test = new Test('testIsRoot', (ac: AssertionContext) => {
+  public static testConstructorErrors: Test = new Test(TestParams.of('testIsRoot'), (ac: AssertionContext) => {
     let sa1 : string[] = [undefined];
 
     ac.error(Path.PARTS_MUST_HAVE_VALID_STRINGS  + sa1, () => {
@@ -34,7 +34,7 @@ export class PathApiTrial extends ApiTrial {
       new Path(sa2, true, true);
     });
   });
-  public static testIsRoot: Test = new Test('testIsRoot', (ac: AssertionContext) => {
+  public static testIsRoot: Test = new Test(TestParams.of('testIsRoot'), (ac: AssertionContext) => {
     // Test absolute path Windows
     const absPath = new Path(['c', 'users'], false, true);
     ac.isFalse(absPath.isRoot(), 'c:\\users is NOT a root path');
@@ -56,7 +56,7 @@ export class PathApiTrial extends ApiTrial {
     const absPath4 = new Path(['c'], true, false);
     ac.isFalse(absPath4.isRoot(), 'c is a NOT Unix root path');
   });
-  public static testHasParent: Test = new Test('testHasParent', (ac: AssertionContext) => {
+  public static testHasParent: Test = new Test(TestParams.of('testHasParent'), (ac: AssertionContext) => {
     // Test Unix absolute paths
     const absPath = new Path(['home', 'user', 'project'], false);
     ac.same('/home/user/project', Paths.toUnix(absPath), 'Unix absolute path conversion incorrect');
@@ -71,7 +71,7 @@ export class PathApiTrial extends ApiTrial {
     ac.isTrue(absPath.hasParent(), "The path src/main has a parent src");
   });
 
-  public static testGetParent: Test = new Test('testGetParent', (ac: AssertionContext) => {
+  public static testGetParent: Test = new Test(TestParams.of('testGetParent'), (ac: AssertionContext) => {
     // Test drive letter path
     const drivePath = new Path(['C', 'Users', 'user'], false);
     ac.same('C:\\Users\\user', Paths.toWindows(drivePath), 'Windows drive path conversion incorrect');
@@ -83,7 +83,7 @@ export class PathApiTrial extends ApiTrial {
   /**
    * Covers the following toString, toPathString and constructor
    */
-  public static testToUnix: Test = new Test('testToUnix', (ac: AssertionContext) => {
+  public static testToUnix: Test = new Test(TestParams.of('testToUnix'), (ac: AssertionContext) => {
     // Test absolute path
     const absPath = new Path(['home', 'user', 'project'], false, false);
     ac.same('/home/user/project', Paths.toUnix(absPath), 'Unix absolute path conversion incorrect');
@@ -96,7 +96,7 @@ export class PathApiTrial extends ApiTrial {
     ac.equals('Path [parts=[src,main], relative=true, windows=false]', relPath.toString());
     ac.equals('src/main', relPath.toPathString());
   });
-  public static testToWindows: Test = new Test('testToWindows', (ac: AssertionContext) => {
+  public static testToWindows: Test = new Test(TestParams.of('testToWindows'), (ac: AssertionContext) => {
     // Test absolute path
     const absPath = new Path(['c', 'home', 'user', 'project'], false, true);
     ac.same('C:\\home\\user\\project', Paths.toWindows(absPath), 'Windows absolute path conversion incorrect');

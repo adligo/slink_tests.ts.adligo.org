@@ -17,7 +17,7 @@
  */
 
 
-import { ApiTrial, AssertionContext, Test, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { ApiTrial, AssertionContext, Test, TestParams, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import { CliCtx, FsContext, Path, Paths, ShellRunner, FLAGS } from '../../slink.ts.adligo.org/src/slink.mjs';
 import { JUnitXmlGenerator } from '../../junitXml.tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
 
@@ -31,7 +31,7 @@ console.log("runDir is; \n\t" + cwd);
 let pCwd : Path = Paths.toPath(cwd, false);
 
 export class FxContextManualApiTrial extends ApiTrial {
-    public static testExistsAbs: Test = new Test('testExistsAbs', (ac: AssertionContext) => {
+    public static testExistsAbs: Test = new Test(TestParams.of('testExistsAbs'), (ac: AssertionContext) => {
         ac.isTrue(fsc.existsAbs(new Path(pCwd.getParts().concat('test_data'), false)),
             "The test_data should show as existAbs");
         ac.isTrue(fsc.existsAbs(new Path(pCwd.getParts().concat('test_data','foo'), false)),
@@ -46,7 +46,7 @@ export class FxContextManualApiTrial extends ApiTrial {
         ac.isFalse(fsc.existsAbs(new Path(pCwd.getParts().concat('test_data','package2.json'), false)),
             "The test_data/package2.json should show as existAbs = false");
     });
-    public static testExists: Test = new Test('testExists', (ac: AssertionContext) => {
+    public static testExists: Test = new Test(TestParams.of('testExists'), (ac: AssertionContext) => {
         ac.isTrue(fsc.exists(new Path(['test_data'], true), pCwd),
             "The test_data should show as exist");
         ac.isTrue(fsc.exists(new Path(['test_data','foo'], true), pCwd),

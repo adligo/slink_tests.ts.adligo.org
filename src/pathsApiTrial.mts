@@ -18,12 +18,12 @@
  */
 
 
-import { ApiTrial, AssertionContext, Test, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { ApiTrial, AssertionContext, Test, TestParams, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import { Path, Paths } from '../../slink.ts.adligo.org/src/slink.mjs';
 
 
 export class PathsApiTrial extends ApiTrial {
-  public static testPathConstruction: Test = new Test('testPathConstruction', (ac: AssertionContext) => {
+  public static testPathConstruction: Test = new Test(TestParams.of('testPathConstruction'), (ac: AssertionContext) => {
     // Test absolute path
     const absPath = new Path(['home', 'user', 'project'], false);
     ac.isFalse(absPath.isRelative(), 'Path should be absolute');
@@ -44,7 +44,7 @@ export class PathsApiTrial extends ApiTrial {
     ac.same('user', parts[1], 'Second part should be "user"');
     ac.same('project', parts[2], 'Third part should be "project"');
   });
-  public static testPathToString: Test = new Test('testPathToString', (ac: AssertionContext) => {
+  public static testPathToString: Test = new Test(TestParams.of('testPathToString'), (ac: AssertionContext) => {
     // Test Unix absolute path
     const unixAbsPath = new Path(['home', 'user', 'project'], false);
     ac.same('/home/user/project', unixAbsPath.toPathString(), 'Unix absolute path string incorrect');
@@ -61,7 +61,7 @@ export class PathsApiTrial extends ApiTrial {
     const winRelPath = new Path(['src', 'main'], true, true);
     ac.same('src\\main', winRelPath.toPathString(), 'Windows relative path string incorrect');
   });
-  public static testPathsToParts: Test = new Test('testPathsToParts', (ac: AssertionContext) => {
+  public static testPathsToParts: Test = new Test(TestParams.of('testPathsToParts'), (ac: AssertionContext) => {
     // Test Unix path
     const unixPath = Paths.toPath('/home/user/project', false);
     ac.same('home', unixPath.getParts()[0], 'Unix path first part incorrect');
@@ -80,7 +80,7 @@ export class PathsApiTrial extends ApiTrial {
     ac.same('Users', gitBashPath.getParts()[1], 'GitBash path second part incorrect');
     ac.same('user', gitBashPath.getParts()[2], 'GitBash path third part incorrect');
   });
-  public static testPathsToUnix: Test = new Test('testPathsToUnix', (ac: AssertionContext) => {
+  public static testPathsToUnix: Test = new Test(TestParams.of('testPathsToUnix'), (ac: AssertionContext) => {
     // Test absolute path
     const absPath = new Path(['home', 'user', 'project'], false);
     ac.same('/home/user/project', Paths.toUnix(absPath), 'Unix absolute path conversion incorrect');
@@ -89,7 +89,7 @@ export class PathsApiTrial extends ApiTrial {
     const relPath = new Path(['src', 'main'], true);
     ac.same('src/main', Paths.toUnix(relPath), 'Unix relative path conversion incorrect');
   });
-  public static testPathsToWindows: Test = new Test('testPathsToWindows', (ac: AssertionContext) => {
+  public static testPathsToWindows: Test = new Test(TestParams.of('testPathsToWindows'), (ac: AssertionContext) => {
     // Test drive letter path
     const drivePath = new Path(['C', 'Users', 'user'], false);
     ac.same('C:\\Users\\user', Paths.toWindows(drivePath), 'Windows drive path conversion incorrect');
@@ -98,7 +98,7 @@ export class PathsApiTrial extends ApiTrial {
     const relPath = new Path(['src', 'main'], true);
     ac.same('src\\main', Paths.toWindows(relPath), 'Windows relative path conversion incorrect');
   });
-  public static testPathsFind: Test = new Test('testPathsFind', (ac: AssertionContext) => {
+  public static testPathsFind: Test = new Test(TestParams.of('testPathsFind'), (ac: AssertionContext) => {
     // Test finding an absolute path from a base path and a relative path
     const basePath = new Path(['home', 'user', 'project'], false);
     const relPath = new Path(['..', 'otherproject', 'src'], true);

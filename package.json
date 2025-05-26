@@ -40,6 +40,7 @@
     "testManual": "set RUNNING_TESTS4TS=TRUE && bun run src/fsContextManualApiTrial.ts ",
     "testUnix": "export RUNNING_TESTS4TS=TRUE && bun run src/slinkSingleTestRunner.ts ",
     "testWindows": "set RUNNING_TESTS4TS=TRUE && bun run src/slinkSingleTestRunner.ts ",
+    "testsWindows": "set RUNNING_TESTS4TS=TRUE && bun run src/slinkApiTrials.ts ",
     "tests": "bun run src/slinkApiTrials.ts ",
     "trialUnix": "export RUNNING_TESTS4TS=TRUE && bun run src/slinkSingleTrialRunner.ts ",
     "trialWindows": "set RUNNING_TESTS4TS=TRUE && bun run src/slinkSingleTrialRunner.ts ",

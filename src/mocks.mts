@@ -31,37 +31,43 @@ export class ProcMock implements I_Proc {
     public static DEFAULT_ARGV: string[] = [ProcMock.DEFAULT_ARGV_1,ProcMock.DEFAULT_ARGV_2];
     public static DEFAULT_CWD = '/home/jd/foo';
 
-    argvM: string[];
-    cwdM: string;
-    envM: Map<string, string>;
-    shellM: string;
+    _argv: string[];
+    _cwd: string;
+    _env: Map<string, string>;
+    _shell: string;
+    _windows: boolean;
 
-    constructor(argv?: string[], cwd?: string, env?: Map<string, string>, shell?: string) {
+    constructor(argv?: string[], cwd?: string, env?: Map<string, string>, shell?: string, windows?: boolean) {
         if (argv == undefined) {
-            this.argvM = ProcMock.DEFAULT_ARGV;
+            this._argv = ProcMock.DEFAULT_ARGV;
         } else {
-            this.argvM = argv;
+            this._argv = argv;
         }
         if (cwd == undefined) {
-            this.cwdM = ProcMock.DEFAULT_CWD;
+            this._cwd = ProcMock.DEFAULT_CWD;
         } else {
-            this.cwdM = cwd;
+            this._cwd = cwd;
         }
         if (env == undefined) {
-            this.envM = new Map();
+            this._env = new Map();
         } else {
-            this.envM = env;
+            this._env = env;
         }
         //note the shell is undefined a lot, so if this is undefined that's ok
-        this.shellM = shell;
+        this._shell = shell;
+        if (windows  != undefined) {
+            this._windows = windows;
+        } else {
+            this._windows = false;
+        }
     }
 
     argv(): string[] {
-        return this.argvM
+        return this._argv
     }
 
     cwd(): string {
-        return this.cwdM;
+        return this._cwd;
     }
 
     /**
@@ -72,11 +78,15 @@ export class ProcMock implements I_Proc {
     }
 
     envVar(key: string): string {
-        return this.envM[key];
+        return this._env[key];
+    }
+
+    isWindows() {
+        return this._windows;
     }
 
     shell(): string {
-        return this.shellM;
+        return this._shell;
     }
 
 }

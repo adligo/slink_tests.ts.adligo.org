@@ -26,7 +26,9 @@ const suite = new TrialSuite('SLink Trial Suite ', [
         //CliCtxTrial.
         //PathsApiTrial
         //SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinkDirExists
-        PathApiTrial.testHasParent
+        //PathApiTrial.testHasParent
+        //SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinkDir
+        SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinkDirExists
     ])
 ]);
 suite.run().printTextReport().printTestReportFiles(new JUnitXmlGenerator());

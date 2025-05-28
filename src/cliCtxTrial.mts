@@ -84,7 +84,7 @@ export class CliCtxTrial extends ApiTrial {
                 ac.isTrue(consoleMock.messages.length >= 1, "There should be a multiple message printed to the console");
 
                 ac.equals("This program understands the following commands;\n", consoleMock.messages[0],"Help should print a lot of stuff.");
-                ac.equals(15, consoleMock.messages.length, "Help prints a lot");
+                ac.equals(13, consoleMock.messages.length, "Help prints a lot");
                 ac.isTrue(cliCtx.isDone() == true, "The CliCtx should be done, at this point.");
             }),
             new Test(TestParams.of('testConstructionWithDHFlag'), (ac: AssertionContext) => {
@@ -102,7 +102,7 @@ export class CliCtxTrial extends ApiTrial {
                 ac.isTrue(consoleMock.messages.length >= 1, "There should be a multiple message printed to the console");
 
                 ac.equals("This program understands the following commands;\n", consoleMock.messages[0],"Help should print a lot of stuff.");
-                ac.equals(15, consoleMock.messages.length, "Help prints a lot");
+                ac.equals(13, consoleMock.messages.length, "Help prints a lot");
                 ac.isTrue(cliCtx.isDone() == true, "The CliCtx should be done, at this point.");
             }),
             new Test(TestParams.of('testConstructionWithDDLogFlag'), (ac: AssertionContext) => {

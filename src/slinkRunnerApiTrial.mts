@@ -448,7 +448,7 @@ export class SLinkRunnerApiTrial extends ApiTrial {
       const runner = new SLinkRunner(mockCtx, mockFsc);
       runner.run();
 
-      // Verify 6 assertions, another 11 assertions are done in the FsContextMock
+      // Verify 6 assertions, another 13 assertions are done in the FsContextMock
       ac.equals(1, mockCtx.doneCalls, "CliCtx.isDone() should be called once");
       ac.equals(1, mockCtx.setDirCalls, "CliCtx.setDir() should be called once");
       ac.equals(1, mockFsc.slinkCalls.length, "There should be one call to create symbolic link");

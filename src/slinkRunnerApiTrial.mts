@@ -20,6 +20,7 @@ import {
   CliCtx, CliCtxArg,
   FsContext,
   I_CliCtx,
+  I_CliCtxFlag,
   I_Fs,
   I_FsContext,
   I_Proc,
@@ -36,6 +37,7 @@ class CliCtxMockParams {
   debug: boolean = true;
   dir: Path;
   done: boolean = false;
+  map: Map<string,I_CliCtxFlag> = new Map();
   proc: ProcMock = new ProcMock();
   windows: boolean = true;
 
@@ -51,6 +53,7 @@ class CliCtxMock implements I_CliCtx {
   printCalls: string[] = [];
   logCmdCalls: any[] = [];
   runCalls: any[] = [];
+  map: Map<string,I_CliCtxFlag> = new Map();
   proc: ProcMock;
   setDirCalls: number = 0;
   windows: boolean;
@@ -61,6 +64,7 @@ class CliCtxMock implements I_CliCtx {
     this.windows = params.windows;
     this.bash = params.bash;
     this.dir = params.dir;
+    this.map = params.map;
     this.proc = params.proc;
   }
 
@@ -77,7 +81,7 @@ class CliCtxMock implements I_CliCtx {
     throw new Error('Method not implemented.');
   }
   isInMap(key: string): boolean {
-    throw new Error('Method not implemented.');
+    return this.map.get(key) != undefined;
   }
   getProc(): I_Proc {
     return this.proc;

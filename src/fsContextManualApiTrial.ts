@@ -1,5 +1,8 @@
 /**
  * This is a manual trial that should be run only be developers on their machines, not on the build server.
+ * When running / debugging this from WebStorm you will want to setup the following environment variables;
+ * RUNNING_TESTS4TS=true
+ * SHELL=C:\some\path\Git\bin\bash.exe
  *
  * Copyright 2025 Adligo Inc / Scott Morgan
  *
@@ -18,21 +21,32 @@
 
 
 import { ApiTrial, AssertionContext, Test, TestParams, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
-import { CliCtx, FsContext, Path, Paths, ShellRunner, FLAGS } from '../../slink.ts.adligo.org/src/slink.mjs';
+import {CliCtx, FsContext, Path, Paths, ShellRunner, FLAGS, FsStub} from '../../slink.ts.adligo.org/src/slink.mjs';
 import { JUnitXmlGenerator } from '../../junitXml.tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
 
-console.log("wtf");
-
 console.log("process.argv is; \n\t" + process.argv);
+console.log("process.env.SHELL is; \n\t" + process.env.SHELL);
+if (process.env.SHELL == undefined) {
+    throw new Error("A Shell is required, please setup your environment variables.");
+}
 const ctx: CliCtx = new CliCtx(FLAGS, process.argv.concat('--debug'));
 const fsc: FsContext = new FsContext(ctx);
-const cwd = process.cwd();
+
+function getCwd(): string {
+    if (process.env.CWD == undefined) {
+        return process.cwd();
+    }
+    return process.env.CWD;
+}
+const cwd = getCwd();
 console.log("runDir is; \n\t" + cwd);
 let pCwd : Path = Paths.toPath(cwd, false);
 
 export class FxContextManualApiTrial extends ApiTrial {
     public static testExistsAbs: Test = new Test(TestParams.of('testExistsAbs'), (ac: AssertionContext) => {
-        ac.isTrue(fsc.existsAbs(new Path(pCwd.getParts().concat('test_data'), false)),
+        console.log('pCwd is ' + pCwd.toPathString());
+        let td: Path = pCwd.child('test_data');
+        ac.isTrue(fsc.existsAbs(td),
             "The test_data should show as existAbs");
         ac.isTrue(fsc.existsAbs(new Path(pCwd.getParts().concat('test_data','foo'), false)),
             "The test_data/foo should show as existAbs");
@@ -61,10 +75,59 @@ export class FxContextManualApiTrial extends ApiTrial {
         ac.isFalse(fsc.exists(new Path(['test_data','package4.json'], true), pCwd),
             "The test_data/package4.json should show as exist");
     });
+    /**
+     * Note: This test is basically impossible to debug on Windows due to the need to
+     * be a user like Administrator on Windows to create Symlinks
+     */
+    public static testMkSymlink: Test = new Test(TestParams.of('testMkSymlink'), (ac: AssertionContext) => {
+        ac.isTrue(fsc.exists(new Path(['test_data'], true), pCwd),
+            "The test_data should show as exist");
+        let td = pCwd.child('test_data');
+        let foo = td.child('foo');
+        let g = foo.child('bar').child('g');
+        let fbg = foo.child('fbg');
+        if (fsc.existsAbs(fbg)) {
+            if (ctx.isWindows()) {
+                fsc.rd(Paths.toWindows(fbg), td);
+            } else {
+                fsc.rm(fbg, td);
+            }
+        }
+        if (fsc.existsAbs(fbg)) {
+            ac.isTrue(false, 'The test_data/fbg should not exist');
+        }
+        fsc.slink('fbg', g, foo);
+
+        ac.isTrue(fsc.isSymlink(fbg), "A symlink should show as exist at ./test_data/fbg");
+        let rFbg = new Path(['test_data', 'foo','fbg'], true);
+        console.log('rFbg is ' + rFbg.toPathString());
+        console.log('pCwd is ' + pCwd.toPathString());
+        let rel: Path = fsc.getSymlinkTargetRelative(rFbg, pCwd)
+        ac.equals(4, rel.getParts().length, "The symlink at ./test_data/fbg should target ./test_data/foo/bar/g")
+        ac.equals('test_data',  rel.getParts()[0], "The symlink at ./test_data/fbg should target ./test_data/foo/bar/g")
+        ac.equals('foo', rel.getParts()[1], "The symlink at ./test_data/fbg should target ./test_data/foo/bar/g")
+        ac.equals('bar', rel.getParts()[2], "The symlink at ./test_data/fbg should target ./test_data/foo/bar/g")
+        ac.equals('g', rel.getParts()[3], "The symlink at ./test_data/fbg should target ./test_data/foo/bar/g")
+
+        // manual cleanup consists of something like;
+        // $ echo 'rd .\test_data\foo\fbg' | cmd
+
+        let cleanup: boolean = false;
+        if (cleanup) {
+            if (fsc.existsAbs(fbg)) {
+                if (ctx.isWindows()) {
+                    fsc.rd(Paths.toWindows(fbg), td);
+                } else {
+                    fsc.rm(fbg, td);
+                }
+            }
+        }
+    });
     constructor() {
         super('FxContextManualApiTrial', [
-            FxContextManualApiTrial.testExistsAbs,
-            FxContextManualApiTrial.testExists
+            FxContextManualApiTrial.testExistsAbs.ignore(),
+            FxContextManualApiTrial.testExists.ignore(),
+            FxContextManualApiTrial.testMkSymlink
         ]);
     }
 }

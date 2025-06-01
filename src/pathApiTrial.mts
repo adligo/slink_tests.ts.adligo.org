@@ -1,6 +1,3 @@
-// slink_tests.ts.adligo.org/src/pathsTest.ts
-
-
 /**
  * Copyright 2025 Adligo Inc / Scott Morgan
  *

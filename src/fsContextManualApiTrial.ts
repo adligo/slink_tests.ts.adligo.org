@@ -125,8 +125,8 @@ export class FxContextManualApiTrial extends ApiTrial {
     });
     constructor() {
         super('FxContextManualApiTrial', [
-            FxContextManualApiTrial.testExistsAbs.ignore(),
-            FxContextManualApiTrial.testExists.ignore(),
+            FxContextManualApiTrial.testExistsAbs,
+            FxContextManualApiTrial.testExists,
             FxContextManualApiTrial.testMkSymlink
         ]);
     }

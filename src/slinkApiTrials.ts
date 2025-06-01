@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 process.env['RUNNING_TESTS4TS'] = "TRUE";
+import { PackageJsonComparatorApiTrial } from './packageJsonComparatorApiTrial.mjs';
 import { PathApiTrial } from './pathApiTrial.mjs';
 import { PathsApiTrial } from './pathsApiTrial.mjs';
 import { SLinkRunnerApiTrial } from './slinkRunnerApiTrial.mjs';
@@ -21,12 +22,13 @@ import { CliCtxTrial } from './cliCtxTrial.mjs';
 import { ApiTrial, AssertionContext, Test, TestResult, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import { JUnitXmlGenerator } from '../../junitXml.tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
 
-
-
+// alphabetical
 const cliCtxTrial = new CliCtxTrial();
+const packageJsonComparatorApiTrial = new PackageJsonComparatorApiTrial();
 const pathApiTrial = new PathApiTrial();
 const pathsApiTrial = new PathsApiTrial();
 const slinkApiTrial = new SLinkRunnerApiTrial();
 
-const suite = new TrialSuite('SLink Trial Suite ', [pathApiTrial, pathsApiTrial, cliCtxTrial, slinkApiTrial]);
+// trials are orderd by dependency / usage
+const suite = new TrialSuite('SLink Trial Suite ', [pathApiTrial, pathsApiTrial, cliCtxTrial, packageJsonComparatorApiTrial, slinkApiTrial]);
 suite.run().printTextReport().printTestReportFiles(new JUnitXmlGenerator());

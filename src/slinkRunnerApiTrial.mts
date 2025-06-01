@@ -28,198 +28,9 @@ import {
   Paths,
   SLinkRunner
 } from '../../slink.ts.adligo.org/src/slink.mjs';
-import { FsMock, ProcMock } from "./mocks.mjs";
-
-process.env['RUNNING_TESTS4TS'] = true
-
-class CliCtxMockParams {
-  bash: boolean = true;
-  debug: boolean = true;
-  dir: Path;
-  done: boolean = false;
-  map: Map<string,I_CliCtxFlag> = new Map();
-  proc: ProcMock = new ProcMock();
-  windows: boolean = true;
-
-}
-
-class CliCtxMock implements I_CliCtx {
-  bash: boolean;
-  debug: boolean;
-  dir: Path;
-  done: boolean = false;
-  doneCalls: number = 0;
-  outCalls: string[] = [];
-  printCalls: string[] = [];
-  logCmdCalls: any[] = [];
-  runCalls: any[] = [];
-  map: Map<string,I_CliCtxFlag> = new Map();
-  proc: ProcMock;
-  setDirCalls: number = 0;
-  windows: boolean;
+import { CliCtxMockParams, CliCtxMock, FsMock, I_ExistsAbsResponse, I_ExistsResponse, I_ReadJsonResponse, FsContextMockParams, FsContextMock, ProcMock } from "./mocks.mjs";
 
 
-  constructor(params: CliCtxMockParams) {
-    this.debug = params.debug;
-    this.windows = params.windows;
-    this.bash = params.bash;
-    this.dir = params.dir;
-    this.map = params.map;
-    this.proc = params.proc;
-  }
-
-  getFs(): I_Fs {
-    throw new Error('Method not implemented.');
-  }
-  getKeys(): string[] {
-    throw new Error('Method not implemented.');
-  }
-  getValue(key: string): CliCtxArg {
-    throw new Error('Method not implemented.');
-  }
-  getHome(): Path {
-    throw new Error('Method not implemented.');
-  }
-  isInMap(key: string): boolean {
-    return this.map.get(key) != undefined;
-  }
-  getProc(): I_Proc {
-    return this.proc;
-  }
-
-  isDebug(): boolean { return this.debug; }
-  isDone(): boolean { this.doneCalls++; return this.done; }
-  isWindows(): boolean { return this.windows; }
-  isBash(): boolean { return this.bash; }
-  getDir(): Path { return this.dir; }
-  setDir(): void { this.setDirCalls++; }
-
-  run(cmd: string, args: string[], options?: any, logLevel?: number): any {
-    this.runCalls.push({ cmd, args, options, logLevel });
-    return { stdout: 'mock output' };
-  }
-
-  out(message: string): void {
-    console.log('out: ' + message);
-    this.outCalls.push(message);
-  }
-
-  print(message: string): void {
-    console.log('print: ' + message);
-    this.printCalls.push(message);
-  }
-
-  logCmd(cmdWithArgs: string, spawnSyncReturns: any, options?: any): void {
-    this.logCmdCalls.push({ cmdWithArgs, spawnSyncReturns, options })
-  }
-}
-
-interface I_ExistsAbsResponse {
-  path: Path;
-  response: boolean;
-}
-
-interface I_ExistsResponse {
-  relativePathParts: Path;
-  inDir: Path;
-  response: boolean;
-}
-
-interface I_ReadJsonResponse {
-  path: Path;
-  json: string;
-}
-
-class FsContextMockParams {
-  ac: AssertionContext;
-  existsAbsResponses: I_ExistsAbsResponse[] = [];
-  existsResponses: I_ExistsResponse[] = [];
-  readJsonResponses: I_ReadJsonResponse[] = [];
-}
-
-class FsContextMock implements I_FsContext {
-  ac: AssertionContext;
-  ordnalCounter: number = 0;
-  existsAbsCalls: any[] = [];
-  existsAbsCounter: number = 0;
-  existsAbsResponses: any[];
-  existsCalls: any[] = [];
-  existsCounter: number = 0;
-  existsResponses: any[];
-  fsMock: FsMock = new FsMock()
-  mkDirCalls: any[] = [];
-  readCalls: any[] = [];
-  readJsonCalls: any[] = [];
-  readJsonCounter: number = 0;
-  readJsonResponses: I_ReadJsonResponse[];
-  rmCalls: any[] = [];
-  slinkCalls: any[] = [];
-  mkdirTreeCalls: any[] = [];
-
-  mockPackageJson: any = {};
-
-  constructor(params: FsContextMockParams) {
-    if (params.ac != undefined) {
-      this.ac = params.ac;
-    } else {
-      throw new Error('Invalid ac');
-    }
-    this.existsAbsResponses = params.existsAbsResponses;
-    this.existsResponses = params.existsResponses;
-    this.readJsonResponses = params.readJsonResponses;
-  }
-
-  existsAbs(path: Path): boolean {
-    this.existsAbsCalls.push({ order: this.ordnalCounter++, path: path });
-    this.ac.isTrue(this.existsAbsCounter < this.existsAbsResponses.length,
-      "No more existsAbs responses!");
-    let r = this.existsAbsResponses[this.existsAbsCounter++];
-    this.ac.equals(r.path.toString(), path.toString(), "Paths should match expected");
-    return r.response;
-  }
-
-  exists(relativePathParts: Path, inDir: Path): boolean {
-    this.existsCalls.push({ order: this.ordnalCounter++, relativePathParts: relativePathParts, inDir: inDir });
-    this.ac.isTrue(this.existsCounter < this.existsResponses.length,
-      "No more exists responses!");
-    let r = this.existsResponses[this.existsCounter++];
-    this.ac.equals(r.relativePathParts.toString(), relativePathParts.toString(), "Relative path parts should match");
-    this.ac.equals(r.inDir.toString(), inDir.toString(), "Relative path parts inDir should match");
-    return r.response;
-  }
-
-  getFs(): I_Fs {
-    return this.fsMock;
-  }
-  mkdir(dir: string, inDir: Path): void {
-    this.mkDirCalls.push({ order: this.ordnalCounter++, dir: dir, inDir: inDir });
-  }
-  read(path: Path, charset?: string) {
-    this.readCalls.push({ order: this.ordnalCounter++, dir: path, charset: charset });
-  }
-
-  readJson(path: Path): any {
-    this.readJsonCalls.push({ order: this.ordnalCounter++, path: path });
-    this.ac.isTrue(this.readJsonCounter < this.readJsonResponses.length,
-      "No more read json responses!");
-    let r = this.readJsonResponses[this.readJsonCounter++];
-    this.ac.equals(r.path.toString(), path.toString(), "Read Json paths should match");
-    return JSON.parse(r.json);
-  }
-
-  rm(pathParts: Path, inDir: Path): void {
-    this.rmCalls.push({ order: this.ordnalCounter++, pathParts: pathParts, inDir: inDir });
-  }
-
-  slink(slinkName: string, toDir: Path, inDir: Path): void {
-    this.slinkCalls.push({ order: this.ordnalCounter++, slinkName, toDir, inDir });
-  }
-
-  mkdirTree(dirs: Path, inDir: Path): Path {
-    this.mkdirTreeCalls.push({ order: this.ordnalCounter++, dirs: dirs, inDir: inDir });
-    return new Path(inDir.getParts().concat(dirs.getParts()), false);
-  }
-}
 
 /**
  * The tests for SLinkRunnerApiTrial.
@@ -357,15 +168,18 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     const fscParams = new FsContextMockParams();
     fscParams.ac = ac;
     const omockSharedDeps = Paths.newPath('Z:/omock/shared_deps_foo', false, true);
+    const omockSharedDepsPackageJson = Paths.newPath('Z:/omock/shared_deps_foo/package.json', false, true);
     const omockSharedDepsNodeModules = Paths.newPath('Z:/omock/shared_deps_foo/node_modules', false, true);
     const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
     fscParams.existsAbsResponses = [{ path: projectRoot, response: true },
       { path: omockSharedDeps, response: true },
+      { path: omockSharedDepsPackageJson, response: true },
       { path: omockSharedDepsNodeModules, response: true },
     ];
     fscParams.existsResponses = [{ relativePathParts: projectNodeModules, inDir: projectRoot, response: false }];
     const packageJson = '{ "sharedNodeModuleProjectSLinkEnvVar": ["TEST_NODE_MODULE_SLINK"]}';
-    fscParams.readJsonResponses = [{ path: projectRootPackageJson, json: packageJson }];
+    const sharedPackageJson = '{}';
+    fscParams.readJsonResponses = [{ path: projectRootPackageJson, json: packageJson }, { path: omockSharedDepsPackageJson, json: sharedPackageJson }];
     const mockFsc: FsContextMock = new FsContextMock(fscParams);
 
 
@@ -399,15 +213,18 @@ export class SLinkRunnerApiTrial extends ApiTrial {
       const fscParams = new FsContextMockParams();
       fscParams.ac = ac;
       const sharedDepsProject: Path = Paths.newPath('Z:/mock/current/shared_deps_foo', false, true);
+      const sharedDepsPackageJson: Path = Paths.newPath('Z:/mock/current/shared_deps_foo/package.json', false, true);
       const sharedDepsNodeModules: Path = Paths.newPath('Z:/mock/current/shared_deps_foo/node_modules', false, true);
       const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
       fscParams.existsAbsResponses = [{ path: projectRoot, response: true },
         { path: sharedDepsProject, response: true },
         { path: sharedDepsNodeModules, response: true },
+        { path: sharedDepsPackageJson, response: true },
       ];
       fscParams.existsResponses = [{ relativePathParts: projectNodeModules, inDir: projectRoot, response: false }];
       const packageJson = '{ "sharedNodeModuleProjectSLinks": ["shared_deps_foo"]}';
-      fscParams.readJsonResponses = [{ path: projectRootPackageJson, json: packageJson }];
+      const sharedPackageJson = '{}';
+      fscParams.readJsonResponses = [{ path: projectRootPackageJson, json: packageJson }, { path: sharedDepsPackageJson, json: sharedPackageJson}];
       const mockFsc: FsContextMock = new FsContextMock(fscParams);
 
 
@@ -480,14 +297,17 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     fscParams.ac = ac;
     const shareDeps = Paths.newPath('Z:/mock/current/shared_deps_foo3', false, true);
     const shareDepsNodeModules = Paths.newPath('Z:/mock/current/shared_deps_foo3/node_modules', false, true);
+    const shareDepsPackageJson = Paths.newPath('Z:/mock/current/shared_deps_foo3/package.json', false, true);
     const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
     fscParams.existsAbsResponses = [{ path: projectRoot, response: true },
       { path: shareDeps, response: true },
       { path: shareDepsNodeModules, response: true },
+      { path: shareDepsPackageJson, response: true }
     ];
     fscParams.existsResponses = [{ relativePathParts: projectNodeModules, inDir: projectRoot, response: false }];
     const packageJson = '{ "sharedNodeModuleProjectSLinks": ["shared_deps_foo3","other_shared_deps"]}';
-    fscParams.readJsonResponses = [{ path: projectRootPackageJson, json: packageJson }];
+    const sharedPackageJson = '{}';
+    fscParams.readJsonResponses = [{ path: projectRootPackageJson, json: packageJson }, { path: shareDepsPackageJson, json: sharedPackageJson}];
     const mockFsc: FsContextMock = new FsContextMock(fscParams);
 
 
@@ -522,15 +342,18 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     fscParams.ac = ac;
     const otherShareDeps = Paths.newPath('Z:/mock/current/other_shared_deps', false, true);
     const otherShareDepsNodeModules = Paths.newPath('Z:/mock/current/other_shared_deps/node_modules', false, true);
+    const otherShareDepsPackageJson = Paths.newPath('Z:/mock/current/other_shared_deps/package.json', false, true);
     const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
     fscParams.existsAbsResponses = [{ path: projectRoot, response: true },
       { path: Paths.newPath('Z:/mock/current/shared_deps_foo', false, true), response: false },
       { path: otherShareDeps, response: true },
       { path: otherShareDepsNodeModules, response: true },
+      { path: otherShareDepsPackageJson, response: true },
     ];
     fscParams.existsResponses = [{ relativePathParts: projectNodeModules, inDir: projectRoot, response: false }];
     const packageJson = '{ "sharedNodeModuleProjectSLinks": ["shared_deps_foo","other_shared_deps"]}';
-    fscParams.readJsonResponses = [{ path: projectRootPackageJson, json: packageJson }];
+    const sharedPackageJson = '{}';
+    fscParams.readJsonResponses = [{ path: projectRootPackageJson, json: packageJson }, { path: otherShareDepsPackageJson, json: sharedPackageJson }];
     const mockFsc: FsContextMock = new FsContextMock(fscParams);
 
 

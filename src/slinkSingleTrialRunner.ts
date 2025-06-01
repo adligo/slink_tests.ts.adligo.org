@@ -21,8 +21,9 @@ import { CliCtxTrial } from './cliCtxTrial.mjs';
 import { runTrial } from '../../tests4ts.ts.adligo.org/src/singleTrialRunner.mjs';
 import { ApiTrial, AssertionContext, Test, TestResult, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import { JUnitXmlGenerator } from '../../junitXml.tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
+import {PackageJsonComparatorApiTrial} from "./packageJsonComparatorApiTrial.mjs";
 
 runTrial(
   //new PathApiTrial()
-  new SLinkRunnerApiTrial()
+  new PackageJsonComparatorApiTrial()
 );

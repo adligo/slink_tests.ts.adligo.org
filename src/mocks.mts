@@ -322,6 +322,7 @@ export class ProcMock implements I_Proc {
     _argv: string[];
     _cwd: string;
     _env: Map<string, string>;
+    _exit: number;
     _shell: string;
     _windows: boolean;
 
@@ -370,6 +371,10 @@ export class ProcMock implements I_Proc {
      */
     env(): any {
         return { envIsHugeToHuge: "values" };
+    }
+
+    exit(code: number){
+        this._exit = code;
     }
 
     envVar(key: string): string {

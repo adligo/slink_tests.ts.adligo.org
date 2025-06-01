@@ -121,9 +121,8 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     const omockSharedDepsNodeModules = Paths.newPath('Z:/omock/shared_deps_foo/node_modules', false, true);
     */
     const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
-    fscParams.existsAbsResponses = [{ path: projectRoot, response: true } /*,
-      { path: omockSharedDeps, response: true },
-      { path: omockSharedDepsNodeModules, response: true }, */
+    fscParams.existsAbsResponses = [{ path: projectRoot, response: true },
+      { path: projectRoot.child('package.json'), response: true }
     ];
     fscParams.existsResponses = [{ relativePathParts: projectNodeModules, inDir: projectRoot, response: false }];
     const packageJson = `
@@ -172,6 +171,7 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     const omockSharedDepsNodeModules = Paths.newPath('Z:/omock/shared_deps_foo/node_modules', false, true);
     const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
     fscParams.existsAbsResponses = [{ path: projectRoot, response: true },
+      { path: projectRoot.child('package.json'), response: true },
       { path: omockSharedDeps, response: true },
       { path: omockSharedDepsPackageJson, response: true },
       { path: omockSharedDepsNodeModules, response: true },
@@ -217,6 +217,7 @@ export class SLinkRunnerApiTrial extends ApiTrial {
       const sharedDepsNodeModules: Path = Paths.newPath('Z:/mock/current/shared_deps_foo/node_modules', false, true);
       const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
       fscParams.existsAbsResponses = [{ path: projectRoot, response: true },
+        { path: projectRoot.child('package.json'), response: true },
         { path: sharedDepsProject, response: true },
         { path: sharedDepsNodeModules, response: true },
         { path: sharedDepsPackageJson, response: true },
@@ -261,6 +262,7 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     const sharedDepsProjectPath: Path = Paths.newPath('Z:/mock/current/shared_deps_foo', false, true);
     const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
     fscParams.existsAbsResponses = [{ path: projectRoot, response: true },
+      { path: projectRoot.child('package.json'), response: true },
       { path: sharedDepsProjectPath, response: false },
       { path: Paths.newPath('Z:/mock/shared_deps_foo', false, true), response: false},
       { path: Paths.newPath('Z:/shared_deps_foo', false, true), response: false},
@@ -300,6 +302,7 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     const shareDepsPackageJson = Paths.newPath('Z:/mock/current/shared_deps_foo3/package.json', false, true);
     const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
     fscParams.existsAbsResponses = [{ path: projectRoot, response: true },
+      { path: projectRoot.child('package.json'), response: true },
       { path: shareDeps, response: true },
       { path: shareDepsNodeModules, response: true },
       { path: shareDepsPackageJson, response: true }
@@ -345,6 +348,7 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     const otherShareDepsPackageJson = Paths.newPath('Z:/mock/current/other_shared_deps/package.json', false, true);
     const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
     fscParams.existsAbsResponses = [{ path: projectRoot, response: true },
+      { path: projectRoot.child('package.json'), response: true },
       { path: Paths.newPath('Z:/mock/current/shared_deps_foo', false, true), response: false },
       { path: otherShareDeps, response: true },
       { path: otherShareDepsNodeModules, response: true },
@@ -388,6 +392,7 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     fscParams.ac = ac;
     const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
     fscParams.existsAbsResponses = [{ path: projectRoot, response: true },
+      { path: projectRoot.child('package.json'), response: true },
       { path: Paths.newPath('Z:/mock/current/shared_deps_foo', false, true), response: false },
       { path: Paths.newPath('Z:/mock/current/other_shared_deps', false, true), response: false },
       { path: Paths.newPath('Z:/mock/shared_deps_foo', false, true), response: false },

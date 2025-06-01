@@ -160,7 +160,7 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     cliCtxParams.dir = projectRoot;
     const procMock = new ProcMock();
     procMock._env = new Map<string,string>();
-    procMock._env["TEST_NODE_MODULE_SLINK"] = "Z:/omock/shared_deps_foo";
+    procMock._env["TEST_NODE_MODULE_SLINK"] = "Z:/omock/shared_deps_foo/node_modules";
     cliCtxParams.proc = procMock;
     // Setup - single project, directory exists
     const mockCtx: CliCtxMock = new CliCtxMock(cliCtxParams);
@@ -172,9 +172,8 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
     fscParams.existsAbsResponses = [{ path: projectRoot, response: true },
       { path: projectRoot.child('package.json'), response: true },
-      { path: omockSharedDeps, response: true },
-      { path: omockSharedDepsPackageJson, response: true },
       { path: omockSharedDepsNodeModules, response: true },
+      { path: omockSharedDepsPackageJson, response: true },
     ];
     fscParams.existsResponses = [{ relativePathParts: projectNodeModules, inDir: projectRoot, response: false }];
     const packageJson = '{ "sharedNodeModuleProjectSLinkEnvVar": ["TEST_NODE_MODULE_SLINK"]}';

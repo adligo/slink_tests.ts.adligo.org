@@ -28,5 +28,5 @@ runTest(
   //SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinkDirExists
   //PathApiTrial.testHasParent
   //SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinkDir
-  SLinkRunnerApiTrial.testFullRunWithSharedNodeModulesViaEnvVar
+  SLinkRunnerApiTrial.testHandleDependencySLinkGroups
 );

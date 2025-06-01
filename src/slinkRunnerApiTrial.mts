@@ -229,7 +229,6 @@ class FsContextMock implements I_FsContext {
 export class SLinkRunnerApiTrial extends ApiTrial {
   public static testHandleSharedNodeModulesViaEnvVar: Test = new Test(TestParams.of('testHandleSharedNodeModulesViaEnvVar').ignore(), (ac: AssertionContext) => {
     // Setup
-    /*
     const mockCtx = new CliCtxMock(true);
     const mockFsCtx = new FsContextMock();
 
@@ -264,11 +263,9 @@ export class SLinkRunnerApiTrial extends ApiTrial {
       // Restore original process.env
       process.env = originalEnv;
     }
-    */
   });
   public static testHandleDependencySrcSLinks: Test = new Test(TestParams.of('testHandleDependencySrcSLinks').ignore(), (ac: AssertionContext) => {
     // Setup
-    /*
     const mockCtx = new CliCtxMock(true);
     const mockFsCtx = new FsContextMock();
 
@@ -295,62 +292,27 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     const slinkCall = mockFsCtx.slinkCalls[0];
     ac.same('test-project@slink', slinkCall.slinkName, 'Should create symlink with correct name');
 
-     */
   });
-  public static testHandleDependencySLinkGroups: Test = new Test(TestParams.of('testHandleDependencySLinkGroups').ignore(), (ac: AssertionContext) => {
-    // TODO not sure if this ever got used anyway!
-    /*
-    const mockCtx = new CliCtxMock(true);
-    const mockFsCtx = new FsContextMock();
+  public static testHandleDependencySLinkGroups: Test = new Test(TestParams.of('testHandleDependencySLinkGroups'), (ac: AssertionContext) => {
 
-    // Setup mock package.json
-    mockFsCtx.mockPackageJson = {
-      dependencySLinkGroups: [{
-        group: '@test',
-        projects: [{
-          project: 'test-project',
-          modulePath: 'test'
-        }]
-      }]
-    };
-
-    // Create SLinkRunner with mocks
-    const runner = new SLinkRunner(mockCtx as any);
-    (runner as any).fsCtx = mockFsCtx;
-
-    // Run the method directly
-    (runner as any).handleDependencySLinkGroups([{
-      group: '@test',
-      projects: [{
-        project: 'test-project',
-        modulePath: 'test'
-      }]
-    }]);
-
-    // Verify
-    ac.isTrue(mockFsCtx.rmCalls.length > 0, 'Should call rm to remove existing directory');
-    ac.isTrue(mockFsCtx.mkdirTreeCalls.length > 0, 'Should call mkdirTree to create directory structure');
-    ac.isTrue(mockFsCtx.slinkCalls.length > 0, 'Should call slink to create symlink');
-
-    const slinkCall = mockFsCtx.slinkCalls[0];
-    ac.same('test', slinkCall.slinkName, 'Should create symlink with correct name');
-
-     */
-
-    const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
-    const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
+    const projectRoot: Path = Paths.newPath('Z:/omock/current/project', false, true);
+    const projectRootNotWindows: Path = Paths.newPath('Z:/omock/current/project', false, false);
+    const projectRootPackageJson: Path = Paths.newPath('Z:/omock/current/project/package.json', false, true);
     const cliCtxParams = new CliCtxMockParams();
     cliCtxParams.dir = projectRoot;
+    cliCtxParams.windows = true;
     // Setup - single project, directory exists
     const mockCtx: CliCtxMock = new CliCtxMock(cliCtxParams);
     const fscParams = new FsContextMockParams();
     fscParams.ac = ac;
+    /*
     const omockSharedDeps = Paths.newPath('Z:/omock/shared_deps_foo', false, true);
     const omockSharedDepsNodeModules = Paths.newPath('Z:/omock/shared_deps_foo/node_modules', false, true);
+    */
     const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
-    fscParams.existsAbsResponses = [{ path: projectRoot, response: true },
+    fscParams.existsAbsResponses = [{ path: projectRoot, response: true } /*,
       { path: omockSharedDeps, response: true },
-      { path: omockSharedDepsNodeModules, response: true },
+      { path: omockSharedDepsNodeModules, response: true }, */
     ];
     fscParams.existsResponses = [{ relativePathParts: projectNodeModules, inDir: projectRoot, response: false }];
     const packageJson = `
@@ -374,10 +336,11 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     ac.equals(1, mockFsc.slinkCalls.length, "There should be one call to create symbolic link");
     //slink(slinkName: string, toDir: Path, inDir: Path): void;
     ac.equals("test", mockFsc.slinkCalls[0].slinkName, "The symbolic link name should match");
-    ac.equals(omockSharedDepsNodeModules.toString(), mockFsc.slinkCalls[0].toDir.toString(),
-        "The symbolic link should point to the shared deps projects node_modules directory.");
-    ac.equals(projectRoot.toString(), mockFsc.slinkCalls[0].inDir.toString(),
-        "The symbolic link should be created in the projectRoot dir. ");
+    const expectedRelativePath = Paths.newPath('../../../test-project/src', true, false);
+    ac.equals(expectedRelativePath.toString(), mockFsc.slinkCalls[0].toDir.toString(),
+        "The symbolic link should point to the test project src directory.");
+    ac.equals(projectRootNotWindows.child('node_modules').child('@test').toString(), mockFsc.slinkCalls[0].inDir.toString(),
+        "The symbolic link be created in the project's node_modules/@test directory.");
   });
   public static testFullRunWithSharedNodeModulesViaEnvVar: Test = new Test(TestParams.of('testFullRunWithSharedNodeModulesViaEnvVar'), (ac: AssertionContext) => {
 
@@ -627,11 +590,10 @@ export class SLinkRunnerApiTrial extends ApiTrial {
 
   constructor() {
     super('SLinkRunnerApiTrial', [
-        /* SLinkRunnerApiTrial.testHandleSharedNodeModulesViaEnvVar,
-    SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinks,
-    */
+        SLinkRunnerApiTrial.testHandleSharedNodeModulesViaEnvVar,
+    //SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinks,
       SLinkRunnerApiTrial.testHandleDependencySrcSLinks,
-      //SLinkRunnerApiTrial.testHandleDependencySLinkGroups,
+      SLinkRunnerApiTrial.testHandleDependencySLinkGroups,
       SLinkRunnerApiTrial.testFullRunWithSharedNodeModulesViaEnvVar,
       SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinkDirExists,
       SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinkDirMissing,

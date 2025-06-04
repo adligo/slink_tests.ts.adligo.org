@@ -252,12 +252,12 @@ export class FsContextMock implements I_FsContext {
         return r.response;
     }
 
-    exists(relativePathParts: Path, inDir: Path): boolean {
-        this.existsCalls.push({ order: this.ordnalCounter++, relativePathParts: relativePathParts, inDir: inDir });
+    exists(fileOrDir: string, inDir: Path): boolean {
+        this.existsCalls.push({ order: this.ordnalCounter++, fileOrDir: fileOrDir, inDir: inDir });
         this.ac.isTrue(this.existsCounter < this.existsResponses.length,
             "No more exists responses!");
         let r = this.existsResponses[this.existsCounter++];
-        this.ac.equals(r.relativePathParts.toString(), relativePathParts.toString(), "Relative path parts should match");
+        this.ac.equals(r.fileOrDir, fileOrDir, "fileOrDir path parts should match");
         this.ac.equals(r.inDir.toString(), inDir.toString(), "Relative path parts inDir should match");
         return r.response;
     }
@@ -281,8 +281,8 @@ export class FsContextMock implements I_FsContext {
         return JSON.parse(r.json);
     }
 
-    rm(pathParts: Path, inDir: Path): void {
-        this.rmCalls.push({ order: this.ordnalCounter++, pathParts: pathParts, inDir: inDir });
+    rm(dir: string, inDir: Path): void {
+        this.rmCalls.push({ order: this.ordnalCounter++, dir: dir, inDir: inDir });
     }
 
     slink(slinkName: string, toDir: Path, inDir: Path): void {
@@ -302,7 +302,7 @@ export interface I_ExistsAbsResponse {
 }
 
 export interface I_ExistsResponse {
-    relativePathParts: Path;
+    fileOrDir: string;
     inDir: Path;
     response: boolean;
 }
@@ -351,6 +351,10 @@ export class ProcMock implements I_Proc {
         }
     }
 
+    copyFileSync(src: fs.PathOrFileDescriptor, dest: fs.PathOrFileDescriptor): void {
+      
+    }
+    
     getPathSeperator(): string {
        if (this._windows) {
            return '\\';

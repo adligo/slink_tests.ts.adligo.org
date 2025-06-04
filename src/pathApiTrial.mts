@@ -56,7 +56,7 @@ export class PathApiTrial extends ApiTrial {
   public static testHasParent: Test = new Test(TestParams.of('testHasParent'), (ac: AssertionContext) => {
     // Test Unix absolute paths
     const absPath = new Path(['home', 'user', 'project'], false);
-    ac.same('/home/user/project', Paths.toUnix(absPath), 'Unix absolute path conversion incorrect');
+    ac.same('/home/user/project', absPath.toUnix(), 'Unix absolute path conversion incorrect');
     ac.isTrue(absPath.hasParent(), "The path /home/user/project has a parent /home/user");
 
     const absPath2 = new Path(['home'], false);
@@ -64,7 +64,7 @@ export class PathApiTrial extends ApiTrial {
 
     // Test relative path
     const relPath = new Path(['src', 'main'], true);
-    ac.same('src/main', Paths.toUnix(relPath), 'Unix relative path conversion incorrect');
+    ac.same('src/main', relPath.toUnix(), 'Unix relative path conversion incorrect');
     ac.isTrue(absPath.hasParent(), "The path src/main has a parent src");
   });
 
@@ -83,13 +83,13 @@ export class PathApiTrial extends ApiTrial {
   public static testToUnix: Test = new Test(TestParams.of('testToUnix'), (ac: AssertionContext) => {
     // Test absolute path
     const absPath = new Path(['home', 'user', 'project'], false, false);
-    ac.same('/home/user/project', Paths.toUnix(absPath), 'Unix absolute path conversion incorrect');
+    ac.same('/home/user/project', absPath.toUnix(), 'Unix absolute path conversion incorrect');
     ac.equals('Path [parts=[home,user,project], relative=false, windows=false]', absPath.toString());
     ac.equals('/home/user/project', absPath.toPathString());
     
     // Test relative path
     const relPath = new Path(['src', 'main'], true);
-    ac.same('src/main', Paths.toUnix(relPath), 'Unix relative path conversion incorrect');
+    ac.same('src/main', relPath.toUnix(), 'Unix relative path conversion incorrect');
     ac.equals('Path [parts=[src,main], relative=true, windows=false]', relPath.toString());
     ac.equals('src/main', relPath.toPathString());
   });
@@ -105,6 +105,15 @@ export class PathApiTrial extends ApiTrial {
     ac.same('src\\main', Paths.toWindows(relPath), 'Windows relative path conversion incorrect');
     ac.equals('Path [parts=[src,main], relative=true, windows=true]', relPath.toString());
     ac.equals('src\\main', relPath.toPathString());
+  });
+  public static testPathToUnix: Test = new Test(TestParams.of('testPathsToUnix'), (ac: AssertionContext) => {
+    // Test absolute path
+    const absPath = new Path(['home', 'user', 'project'], false);
+    ac.same('/home/user/project', absPath.toUnix(), 'Unix absolute path conversion incorrect');
+
+    // Test relative path
+    const relPath = new Path(['src', 'main'], true);
+    ac.same('src/main', relPath.toUnix(), 'Unix relative path conversion incorrect');
   });
   constructor() {
     super('PathApiTrial', [PathApiTrial.testHasParent, PathApiTrial.testGetParent, PathApiTrial.testToUnix,

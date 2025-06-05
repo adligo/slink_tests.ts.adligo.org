@@ -13,12 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-process.env['RUNNING_TESTS4TS'] = "TRUE";
-import { ALL_TRIALS } from './allTrials.mjs';
+
+import { PathApiTrial } from './pathApiTrial.mjs';
+import { PathsApiTrial } from './pathsApiTrial.mjs';
+import { SLinkRunnerApiTrial } from './slinkRunnerApiTrial.mjs';
+import { CliCtxTrial } from './cliCtxTrial.mjs';
+import { runTrial } from '../../tests4ts.ts.adligo.org/src/singleTrialRunner.mjs';
 import { ApiTrial, AssertionContext, Test, TestResult, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import { JUnitXmlGenerator } from '../../junitXml.tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
+import {PackageJsonComparatorApiTrial} from "./packageJsonComparatorApiTrial.mjs";
 
-
-// trials are orderd by dependency / usage
-const suite = new TrialSuite('SLink Trial Suite ', ALL_TRIALS);
-suite.run().printTextReport().printTestReportFiles(new JUnitXmlGenerator());
+runTrial(
+  //new PathApiTrial()
+  new PackageJsonComparatorApiTrial()
+);

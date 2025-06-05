@@ -1,4 +1,8 @@
 /**
+ * 
+ * Note you will run this with a cli command like;
+ * npm run testWindows -- -test TrialName.testName
+ * 
  * Copyright 2025 Adligo Inc / Scott Morgan
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,21 +17,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { PathApiTrial } from './pathApiTrial.mjs';
-import { PathsApiTrial } from './pathsApiTrial.mjs';
-import { SLinkRunnerApiTrial } from './slinkRunnerApiTrial.mjs';
-import { CliCtxTrial } from './cliCtxTrial.mjs';
-import { runTest } from '../../tests4ts.ts.adligo.org/src/singleTestRunner.mjs';
-import { ApiTrial, AssertionContext, Test, TestResult, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
-import { JUnitXmlGenerator } from '../../junitXml.tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
-import {PackageJsonComparatorApiTrial} from "./packageJsonComparatorApiTrial.mjs";
+process.env['RUNNING_TESTS4TS'] = "TRUE";
+import { ALL_TRIAL_MAP } from './allTrials.mjs';
+import { runTest, SingleTestRunner } from '@ts.adligo.org/tests4ts/dist/singleTestRunner.mjs';
+import { ApiTrial, AssertionContext, Test, TestResult, TrialSuite } from '@ts.adligo.org/tests4ts/dist/tests4ts.mjs';
+import { JUnitXmlGenerator } from '@ts.adligo.org/junitXml.tests4j/dist/junitXmlTests4jGenerator.mjs';
 
-runTest(
-  //todo refactor Trials not compatible
-  //CliCtxTrial.
-  //PathsApiTrial
-  //SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinkDirExists
-  //PathApiTrial.testHasParent
-  //SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinkDir
-    PackageJsonComparatorApiTrial.testTwoMissingAndThreeWrong
-);
+
+new SingleTestRunner(ALL_TRIAL_MAP).runTest();

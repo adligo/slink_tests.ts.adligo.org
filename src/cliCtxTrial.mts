@@ -131,7 +131,7 @@ export class CliCtxTrial extends ApiTrial {
                 ac.equals('foo/file.txt', val.getArg(), "The output log file name should be set, to foo/file.txt");
                 ac.isTrue(cliCtx.isDone() == false, "The CliCtx should not be done at this point.");
             }),
-            new Test(TestParams.of('testConstructionWithDDLogFlag'), (ac: AssertionContext) => {
+            new Test(TestParams.of('testConstructionWithDLogFlag'), (ac: AssertionContext) => {
                 console.log("ac is " + typeof (ac.equals));
                 let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
                 let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();

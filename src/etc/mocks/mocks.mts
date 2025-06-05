@@ -26,7 +26,7 @@ import {
   ShellOptionsFactory
 } from '../../../../slink.ts.adligo.org/src/slink.mjs';
 import * as fs from 'fs';
-import { PathOrFileDescriptor } from 'fs';
+import { PathOrFileDescriptor, PathLike } from 'fs';
 import { AssertionContext } from "../../../../tests4ts.ts.adligo.org/src/tests4ts.mjs";
 import { SpawnSyncOptions, SpawnSyncReturns} from 'child_process';
 
@@ -263,6 +263,14 @@ export class FsMock implements I_Fs {
     return false;
   }
 
+  readdirSync(
+      path: PathLike,
+      options?: {encoding: BufferEncoding | null, withFileTypes?: false | undefined, recursive?: boolean | undefined} | BufferEncoding | null,
+  ): string[] {
+    //TODO
+    return [];
+  }
+
   readFileSync(path: PathOrFileDescriptor, options?: {
     encoding?: null | undefined;
     flag?: string | undefined;
@@ -353,9 +361,9 @@ export class FsContextMock implements I_FsContext {
     this._ac.isTrue(this._existsCounter < this._existsResponses.length,
       "No more exists responses!");
     let r = this._existsResponses[this._existsCounter++];
-    this._ac.equals(r.fileOrDir, fileOrDir, "fileOrDir path parts should match");
-    this._ac.equals(r.inDir.toString(), inDir.toString(), "Relative path parts inDir should match");
-    return r.response;
+    this._ac.equals(r._fileOrDir, fileOrDir, "fileOrDir path parts should match");
+    this._ac.equals(r._inDir.toString(), inDir.toString(), "Relative path parts inDir should match");
+    return r._response;
   }
 
   getFs(): I_Fs {

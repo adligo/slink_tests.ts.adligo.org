@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-import { PathApiTrial } from './pathApiTrial.mjs';
-import { PathsApiTrial } from './pathsApiTrial.mjs';
-import { SLinkRunnerApiTrial } from './slinkRunnerApiTrial.mjs';
-import { CliCtxTrial } from './cliCtxTrial.mjs';
-import { runTrial } from '../../tests4ts.ts.adligo.org/src/singleTrialRunner.mjs';
-import { ApiTrial, AssertionContext, Test, TestResult, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
-import { JUnitXmlGenerator } from '../../junitXml.tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
-import {PackageJsonComparatorApiTrial} from "./packageJsonComparatorApiTrial.mjs";
+process.env['RUNNING_TESTS4TS'] = "TRUE";
+import { ALL_TRIAL_MAP } from './allTrials.mjs';
+import { runTest, SingleTrialRunner } from '@ts.adligo.org/tests4ts/dist/singleTrialRunner.mjs';
+import { ApiTrial, AssertionContext, Test, TestResult, TrialSuite } from '@ts.adligo.org/tests4ts/dist/tests4ts.mjs';
+import { JUnitXmlGenerator } from '@ts.adligo.org/junitXml.tests4j/dist/junitXmlTests4jGenerator.mjs';
 
-runTrial(
-  //new PathApiTrial()
-  new PackageJsonComparatorApiTrial()
-);
+
+new SingleTrialRunner(ALL_TRIAL_MAP).runTrial();

@@ -80,15 +80,6 @@ export class PathsApiTrial extends ApiTrial {
     ac.same('Users', gitBashPath.getParts()[1], 'GitBash path second part incorrect');
     ac.same('user', gitBashPath.getParts()[2], 'GitBash path third part incorrect');
   });
-  public static testPathsToWindows: Test = new Test(TestParams.of('testPathsToWindows'), (ac: AssertionContext) => {
-    // Test drive letter path
-    const drivePath = new Path(['C', 'Users', 'user'], false);
-    ac.same('C:\\Users\\user', Paths.toWindows(drivePath), 'Windows drive path conversion incorrect');
-
-    // Test relative path
-    const relPath = new Path(['src', 'main'], true);
-    ac.same('src\\main', Paths.toWindows(relPath), 'Windows relative path conversion incorrect');
-  });
   public static testPathsFind: Test = new Test(TestParams.of('testPathsFind'), (ac: AssertionContext) => {
     // Test finding an absolute path from a base path and a relative path
     const basePath = new Path(['home', 'user', 'project'], false);
@@ -102,6 +93,6 @@ export class PathsApiTrial extends ApiTrial {
   })
   constructor() {
     super('PathsApiTrial', [PathsApiTrial.testPathConstruction, PathsApiTrial.testPathToString,
-    PathsApiTrial.testPathsToWindows, PathsApiTrial.testPathsFind]);
+      PathsApiTrial.testPathsFind]);
   }
 }

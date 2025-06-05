@@ -61,18 +61,18 @@ export class FxContextManualApiTrial extends ApiTrial {
             "The test_data/package2.json should show as existAbs = false");
     });
     public static testExists: Test = new Test(TestParams.of('testExists'), (ac: AssertionContext) => {
-        ac.isTrue(fsc.exists(new Path(['test_data'], true), pCwd),
+        ac.isTrue(fsc.exists('test_data', pCwd),
             "The test_data should show as exist");
-        ac.isTrue(fsc.exists(new Path(['test_data','foo'], true), pCwd),
+        ac.isTrue(fsc.exists('foo', pCwd.child('test_data')),
             "The test_data/foo should show as exist");
-        ac.isTrue(fsc.exists(new Path(['test_data','package.json'], true), pCwd),
+        ac.isTrue(fsc.exists('package.json', pCwd.child('test_data')),
             "The test_data/package.json should show as exist");
 
-        ac.isFalse(fsc.exists(new Path(['test_data2'], true), pCwd),
+        ac.isFalse(fsc.exists('test_data2', pCwd),
             "The test_data2 should show as exist");
-        ac.isFalse(fsc.exists(new Path(['test_data', 'foo3'], true), pCwd),
+        ac.isFalse(fsc.exists('test_data', pCwd.child('foo3')),
             "The test_data/foo3 should show as exist");
-        ac.isFalse(fsc.exists(new Path(['test_data','package4.json'], true), pCwd),
+        ac.isFalse(fsc.exists('package4.json', pCwd.child('test_data')),
             "The test_data/package4.json should show as exist");
     });
     /**
@@ -80,7 +80,7 @@ export class FxContextManualApiTrial extends ApiTrial {
      * be a user like Administrator on Windows to create Symlinks
      */
     public static testMkSymlink: Test = new Test(TestParams.of('testMkSymlink'), (ac: AssertionContext) => {
-        ac.isTrue(fsc.exists(new Path(['test_data'], true), pCwd),
+        ac.isTrue(fsc.exists('test_data', pCwd),
             "The test_data should show as exist");
         let td = pCwd.child('test_data');
         let foo = td.child('foo');
@@ -88,9 +88,9 @@ export class FxContextManualApiTrial extends ApiTrial {
         let fbg = foo.child('fbg');
         if (fsc.existsAbs(fbg)) {
             if (ctx.isWindows()) {
-                fsc.rd(Paths.toWindows(fbg), td);
+                fsc.rd(fbg.toWindows(), td);
             } else {
-                fsc.rm(fbg, td);
+                fsc.rm(fbg.toUnix(), td);
             }
         }
         if (fsc.existsAbs(fbg)) {
@@ -116,9 +116,9 @@ export class FxContextManualApiTrial extends ApiTrial {
         if (cleanup) {
             if (fsc.existsAbs(fbg)) {
                 if (ctx.isWindows()) {
-                    fsc.rd(Paths.toWindows(fbg), td);
+                    fsc.rd(fbg.toWindows(), td);
                 } else {
-                    fsc.rm(fbg, td);
+                    fsc.rm(fbg.toUnix(), td);
                 }
             }
         }

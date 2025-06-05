@@ -44,7 +44,8 @@
     "tests": "bun run src/slinkApiTrials.ts ",
     "trialUnix": "export RUNNING_TESTS4TS=TRUE && bun run src/slinkSingleTrialRunner.ts ",
     "trialWindows": "set RUNNING_TESTS4TS=TRUE && bun run src/slinkSingleTrialRunner.ts ",
-    "build": "tsc"
+    "build": "tsc",
+    "tsc": "tsc"
   },
   "sharedNodeModuleProjectSLinkEnvVar": ["SLINK_NODE_MODULE_SLINK"],
   "sharedNodeModuleProjectSLinks": ["slink_group_deps.ts.adligo.org", "fab_group_deps.ts.adligo.org"],

@@ -71,11 +71,11 @@ export class PathApiTrial extends ApiTrial {
   public static testGetParent: Test = new Test(TestParams.of('testGetParent'), (ac: AssertionContext) => {
     // Test drive letter path
     const drivePath = new Path(['C', 'Users', 'user'], false);
-    ac.same('C:\\Users\\user', Paths.toWindows(drivePath), 'Windows drive path conversion incorrect');
+    ac.same('C:\\Users\\user', drivePath.toWindows(), 'Windows drive path conversion incorrect');
 
     // Test relative path
     const relPath = new Path(['src', 'main'], true);
-    ac.same('src\\main', Paths.toWindows(relPath), 'Windows relative path conversion incorrect');
+    ac.same('src\\main', relPath.toWindows(), 'Windows relative path conversion incorrect');
   });
   /**
    * Covers the following toString, toPathString and constructor
@@ -96,13 +96,13 @@ export class PathApiTrial extends ApiTrial {
   public static testToWindows: Test = new Test(TestParams.of('testToWindows'), (ac: AssertionContext) => {
     // Test absolute path
     const absPath = new Path(['c', 'home', 'user', 'project'], false, true);
-    ac.same('C:\\home\\user\\project', Paths.toWindows(absPath), 'Windows absolute path conversion incorrect');
+    ac.same('C:\\home\\user\\project', absPath.toWindows(), 'Windows absolute path conversion incorrect');
     ac.equals('Path [parts=[c,home,user,project], relative=false, windows=true]', absPath.toString());
     ac.equals('c:\\home\\user\\project', absPath.toPathString());
     
     // Test relative path
     const relPath = new Path(['src', 'main'], true, true);
-    ac.same('src\\main', Paths.toWindows(relPath), 'Windows relative path conversion incorrect');
+    ac.same('src\\main', relPath.toWindows(), 'Windows relative path conversion incorrect');
     ac.equals('Path [parts=[src,main], relative=true, windows=true]', relPath.toString());
     ac.equals('src\\main', relPath.toPathString());
   });

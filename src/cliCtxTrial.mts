@@ -29,7 +29,7 @@ import {
     FsContext,
     VERSION_NBR, CliCtxArg
 } from '../../slink.ts.adligo.org/src/slink.mjs';
-import {SlinkConsoleMock, ProcMock, CliCtxLogMock, FsMock} from './mocks.mjs';
+import {SlinkConsoleMock, ProcMock, CliCtxLogMock, FsMock, FsMockParams} from './etc/mocks/mocks.mjs';
 
 
 export class CliCtxTrial extends ApiTrial {
@@ -39,7 +39,9 @@ export class CliCtxTrial extends ApiTrial {
                 console.log("ac is " + typeof (ac.equals));
                 let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
                 let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
-                let fsMock: FsMock = new FsMock();
+                let fsParams = new FsMockParams();
+                fsParams._ac = ac;
+                let fsMock: FsMock = new FsMock(fsParams);
                 let procMock: ProcMock = new ProcMock();
                 let args = [ProcMock.DEFAULT_ARGV_1,ProcMock.DEFAULT_ARGV_2, '--debug'];
                 let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock,  consoleMock, fsMock, procMock);
@@ -56,7 +58,9 @@ export class CliCtxTrial extends ApiTrial {
                 console.log("ac is " + typeof (ac.equals));
                 let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
                 let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
-                let fsMock: FsMock = new FsMock();
+                let fsParams = new FsMockParams();
+                fsParams._ac = ac;
+                let fsMock: FsMock = new FsMock(fsParams);
                 let procMock: ProcMock = new ProcMock();
                 let args = [ProcMock.DEFAULT_ARGV_1,ProcMock.DEFAULT_ARGV_2, '-d'];
                 let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock,  consoleMock, fsMock, procMock);
@@ -73,7 +77,9 @@ export class CliCtxTrial extends ApiTrial {
                 console.log("ac is " + typeof (ac.equals));
                 let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
                 let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
-                let fsMock: FsMock = new FsMock();
+                let fsParams = new FsMockParams();
+                fsParams._ac = ac;
+                let fsMock: FsMock = new FsMock(fsParams);
                 let procMock: ProcMock = new ProcMock();
                 let args = [ProcMock.DEFAULT_ARGV_1,ProcMock.DEFAULT_ARGV_2, '--help'];
                 let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock,  consoleMock, fsMock, procMock);
@@ -91,7 +97,9 @@ export class CliCtxTrial extends ApiTrial {
                 console.log("ac is " + typeof (ac.equals));
                 let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
                 let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
-                let fsMock: FsMock = new FsMock();
+                let fsParams = new FsMockParams();
+                fsParams._ac = ac;
+                let fsMock: FsMock = new FsMock(fsParams);
                 let procMock: ProcMock = new ProcMock();
                 let args = [ProcMock.DEFAULT_ARGV_1,ProcMock.DEFAULT_ARGV_2, '-h'];
                 let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock,  consoleMock, fsMock, procMock);
@@ -109,7 +117,9 @@ export class CliCtxTrial extends ApiTrial {
                 console.log("ac is " + typeof (ac.equals));
                 let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
                 let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
-                let fsMock: FsMock = new FsMock();
+                let fsParams = new FsMockParams();
+                fsParams._ac = ac;
+                let fsMock: FsMock = new FsMock(fsParams);
                 let procMock: ProcMock = new ProcMock();
                 let args = [ProcMock.DEFAULT_ARGV_1,ProcMock.DEFAULT_ARGV_2, '--log', 'foo/file.txt'];
                 let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock,  consoleMock, fsMock, procMock);
@@ -125,7 +135,9 @@ export class CliCtxTrial extends ApiTrial {
                 console.log("ac is " + typeof (ac.equals));
                 let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
                 let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
-                let fsMock: FsMock = new FsMock();
+                let fsParams = new FsMockParams();
+                fsParams._ac = ac;
+                let fsMock: FsMock = new FsMock(fsParams);
                 let procMock: ProcMock = new ProcMock();
                 let args = [ProcMock.DEFAULT_ARGV_1,ProcMock.DEFAULT_ARGV_2, '-l', 'foo/file.txt'];
                 let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock,  consoleMock, fsMock, procMock);
@@ -141,7 +153,9 @@ export class CliCtxTrial extends ApiTrial {
                 console.log("ac is " + typeof (ac.equals));
                 let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
                 let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
-                let fsMock: FsMock = new FsMock();
+                let fsParams = new FsMockParams();
+                fsParams._ac = ac;
+                let fsMock: FsMock = new FsMock(fsParams);
                 let procMock: ProcMock = new ProcMock();
                 let args = [ProcMock.DEFAULT_ARGV_1,ProcMock.DEFAULT_ARGV_2, '--version'];
                 let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock,  consoleMock, fsMock, procMock);
@@ -157,7 +171,9 @@ export class CliCtxTrial extends ApiTrial {
                 console.log("ac is " + typeof (ac.equals));
                 let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
                 let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
-                let fsMock: FsMock = new FsMock();
+                let fsParams = new FsMockParams();
+                fsParams._ac = ac;
+                let fsMock: FsMock = new FsMock(fsParams);
                 let procMock: ProcMock = new ProcMock();
                 let args = [ProcMock.DEFAULT_ARGV_1,ProcMock.DEFAULT_ARGV_2, '-v'];
                 let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock,  consoleMock, fsMock, procMock);

@@ -20,6 +20,7 @@ import { CliCtxTrial } from './cliCtxTrial.mjs';
 import { runTest } from '../../tests4ts.ts.adligo.org/src/singleTestRunner.mjs';
 import { ApiTrial, AssertionContext, Test, TestResult, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import { JUnitXmlGenerator } from '../../junitXml.tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
+import {PackageJsonComparatorApiTrial} from "./packageJsonComparatorApiTrial.mjs";
 
 runTest(
   //todo refactor Trials not compatible
@@ -28,5 +29,5 @@ runTest(
   //SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinkDirExists
   //PathApiTrial.testHasParent
   //SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinkDir
-  SLinkRunnerApiTrial.testHandleDependencySLinkGroups
+    PackageJsonComparatorApiTrial.testTwoMissingAndThreeWrong
 );

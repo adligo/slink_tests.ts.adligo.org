@@ -147,7 +147,7 @@ export class PackageJsonComparatorApiTrial extends ApiTrial {
     ac.equals(PackageJsonComparator.THE_FOLLOWING_PACKAGE_JSON_IS_MISSING_THE_SUBSEQUENT_DEPENDENCIES +
         sharedJsonPath.toPathString() + '\n\t' +
         'zstat grr\n\tjson 345\n\tpuff z354\n\t',
-        ctxMock.getOutCalls(),"The error message for mismatched depencies should match.")
+        ctxMock.getOutCall(0),"The error message for mismatched depencies should match.")
     ac.equals(PackageJsonComparator.THE_FOLLOWING_PACKAGE_JSON_FILES_HAVE_MISMATCHED_VERSIONS +
         sharedJsonPath.toPathString() + '\n\t' + projectRootPackageJson.toPathString() + '\n\t' +
         'foo bar vs shared barz\n\txyz 123 vs shared 1234\n\t',

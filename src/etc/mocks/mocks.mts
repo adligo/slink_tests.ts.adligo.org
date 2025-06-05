@@ -289,7 +289,7 @@ export class FsContextMock implements I_FsContext {
   private _ordnalCounter: number = 0;
   private _existsAbsCounter: number = 0;
   private _existsAbsCalls: any[] = [];
-  private _existsAbsResponses: any[];
+  private _existsAbsResponses: I_ExistsAbsResponse[];
   private _existsCalls: any[] = [];
   private _existsCounter: number = 0;
   private _existsResponses: any[];
@@ -340,9 +340,12 @@ export class FsContextMock implements I_FsContext {
     this._existsAbsCalls.push({ order: this._ordnalCounter++, path: path });
     this._ac.isTrue(this._existsAbsCounter < this._existsAbsResponses.length,
       "No more existsAbs responses!");
-    let r = this._existsAbsResponses[this._existsAbsCounter++];
-    this._ac.equals(r.path.toString(), path.toString(), "Paths should match expected");
-    return r.response;
+    let r = this._existsAbsResponses[this._existsAbsCounter];
+    this._existsAbsCounter++;
+    let actual = path.toString();
+    let expected = r._path.toString();
+    this._ac.equals(expected, actual, "Paths should match expected");
+    return r._response;
   }
 
   exists(fileOrDir: string, inDir: Path): boolean {

@@ -23,76 +23,84 @@ import { Path, Paths } from '../../slink.ts.adligo.org/src/slink.mjs';
 
 
 export class PathsApiTrial extends ApiTrial {
-  public static testPathConstruction: Test = new Test(TestParams.of('testPathConstruction'), (ac: AssertionContext) => {
-    // Test absolute path
-    const absPath = new Path(['home', 'user', 'project'], false);
-    ac.isFalse(absPath.isRelative(), 'Path should be absolute');
-    ac.isFalse(absPath.isWindows(), 'Path should not be Windows by default');
+  public static testPathConstruction: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.PathsApiTrial.' +
+    'testPathConstruction'), (ac: AssertionContext) => {
+      // Test absolute path
+      const absPath = new Path(['home', 'user', 'project'], false);
+      ac.isFalse(absPath.isRelative(), 'Path should be absolute');
+      ac.isFalse(absPath.isWindows(), 'Path should not be Windows by default');
 
-    // Test relative path
-    const relPath = new Path(['src', 'main'], true);
-    ac.isTrue(relPath.isRelative(), 'Path should be relative');
+      // Test relative path
+      const relPath = new Path(['src', 'main'], true);
+      ac.isTrue(relPath.isRelative(), 'Path should be relative');
 
-    // Test Windows path
-    const winPath = new Path(['C', 'Users', 'user'], false, true);
-    ac.isTrue(winPath.isWindows(), 'Path should be Windows');
+      // Test Windows path
+      const winPath = new Path(['C', 'Users', 'user'], false, true);
+      ac.isTrue(winPath.isWindows(), 'Path should be Windows');
 
-    // Test getParts
-    const parts = absPath.getParts();
-    ac.isTrue(parts.length === 3, 'Path should have 3 parts');
-    ac.same('home', parts[0], 'First part should be "home"');
-    ac.same('user', parts[1], 'Second part should be "user"');
-    ac.same('project', parts[2], 'Third part should be "project"');
-  });
-  public static testPathToString: Test = new Test(TestParams.of('testPathToString'), (ac: AssertionContext) => {
-    // Test Unix absolute path
-    const unixAbsPath = new Path(['home', 'user', 'project'], false);
-    ac.same('/home/user/project', unixAbsPath.toPathString(), 'Unix absolute path string incorrect');
+      // Test getParts
+      const parts = absPath.getParts();
+      ac.isTrue(parts.length === 3, 'Path should have 3 parts');
+      ac.same('home', parts[0], 'First part should be "home"');
+      ac.same('user', parts[1], 'Second part should be "user"');
+      ac.same('project', parts[2], 'Third part should be "project"');
+    });
+  public static testPathToString: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.PathsApiTrial.' +
+    'testPathToString'), (ac: AssertionContext) => {
+      // Test Unix absolute path
+      const unixAbsPath = new Path(['home', 'user', 'project'], false);
+      ac.same('/home/user/project', unixAbsPath.toPathString(), 'Unix absolute path string incorrect');
 
-    // Test Unix relative path
-    const unixRelPath = new Path(['src', 'main'], true);
-    ac.same('src/main', unixRelPath.toPathString(), 'Unix relative path string incorrect');
+      // Test Unix relative path
+      const unixRelPath = new Path(['src', 'main'], true);
+      ac.same('src/main', unixRelPath.toPathString(), 'Unix relative path string incorrect');
 
-    // Test Windows absolute path
-    const winAbsPath = new Path(['C', 'Users', 'user'], false, true);
-    ac.same('C:\\Users\\user', winAbsPath.toPathString(), 'Windows absolute path string incorrect');
+      // Test Windows absolute path
+      const winAbsPath = new Path(['C', 'Users', 'user'], false, true);
+      ac.same('C:\\Users\\user', winAbsPath.toPathString(), 'Windows absolute path string incorrect');
 
-    // Test Windows relative path
-    const winRelPath = new Path(['src', 'main'], true, true);
-    ac.same('src\\main', winRelPath.toPathString(), 'Windows relative path string incorrect');
-  });
-  public static testPathsToParts: Test = new Test(TestParams.of('testPathsToParts'), (ac: AssertionContext) => {
-    // Test Unix path
-    const unixPath = Paths.toPath('/home/user/project', false);
-    ac.same('home', unixPath.getParts()[0], 'Unix path first part incorrect');
-    ac.same('user', unixPath.getParts()[1], 'Unix path second part incorrect');
-    ac.same('project', unixPath.getParts()[2], 'Unix path third part incorrect');
+      // Test Windows relative path
+      const winRelPath = new Path(['src', 'main'], true, true);
+      ac.same('src\\main', winRelPath.toPathString(), 'Windows relative path string incorrect');
+    });
+  public static testPathsToParts: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.PathsApiTrial.' +
+    'testPathsToParts'), (ac: AssertionContext) => {
+      // Test Unix path
+      const unixPath = Paths.toPath('/home/user/project', false);
+      ac.same('home', unixPath.getParts()[0], 'Unix path first part incorrect');
+      ac.same('user', unixPath.getParts()[1], 'Unix path second part incorrect');
+      ac.same('project', unixPath.getParts()[2], 'Unix path third part incorrect');
 
-    // Test Windows path
-    const winPath = Paths.toPath('C:\\Users\\user', false);
-    ac.same('C', winPath.getParts()[0], 'Windows path first part incorrect');
-    ac.same('Users', winPath.getParts()[1], 'Windows path second part incorrect');
-    ac.same('user', winPath.getParts()[2], 'Windows path third part incorrect');
+      // Test Windows path
+      const winPath = Paths.toPath('C:\\Users\\user', false);
+      ac.same('C', winPath.getParts()[0], 'Windows path first part incorrect');
+      ac.same('Users', winPath.getParts()[1], 'Windows path second part incorrect');
+      ac.same('user', winPath.getParts()[2], 'Windows path third part incorrect');
 
-    // Test GitBash style Windows path
-    const gitBashPath = Paths.toPath('C:/Users/user', false);
-    ac.same('C', gitBashPath.getParts()[0], 'GitBash path first part incorrect');
-    ac.same('Users', gitBashPath.getParts()[1], 'GitBash path second part incorrect');
-    ac.same('user', gitBashPath.getParts()[2], 'GitBash path third part incorrect');
-  });
-  public static testPathsFind: Test = new Test(TestParams.of('testPathsFind'), (ac: AssertionContext) => {
-    // Test finding an absolute path from a base path and a relative path
-    const basePath = new Path(['home', 'user', 'project'], false);
-    const relPath = new Path(['..', 'otherproject', 'src'], true);
+      // Test GitBash style Windows path
+      const gitBashPath = Paths.toPath('C:/Users/user', false);
+      ac.same('C', gitBashPath.getParts()[0], 'GitBash path first part incorrect');
+      ac.same('Users', gitBashPath.getParts()[1], 'GitBash path second part incorrect');
+      ac.same('user', gitBashPath.getParts()[2], 'GitBash path third part incorrect');
+    });
+  public static testPathsFind: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.PathsApiTrial.' +
+    'testPathsFind'), (ac: AssertionContext) => {
+      // Test finding an absolute path from a base path and a relative path
+      const basePath = new Path(['home', 'user', 'project'], false);
+      const relPath = new Path(['..', 'otherproject', 'src'], true);
 
-    const foundPath = Paths.find(basePath, relPath);
-    ac.same('home', foundPath.getParts()[0], 'Found path first part incorrect');
-    ac.same('user', foundPath.getParts()[1], 'Found path second part incorrect');
-    ac.same('otherproject', foundPath.getParts()[2], 'Found path third part incorrect');
-    ac.same('src', foundPath.getParts()[3], 'Found path fourth part incorrect');
-  })
+      const foundPath = Paths.find(basePath, relPath);
+      ac.same('home', foundPath.getParts()[0], 'Found path first part incorrect');
+      ac.same('user', foundPath.getParts()[1], 'Found path second part incorrect');
+      ac.same('otherproject', foundPath.getParts()[2], 'Found path third part incorrect');
+      ac.same('src', foundPath.getParts()[3], 'Found path fourth part incorrect');
+    })
   constructor() {
     super('PathsApiTrial', [PathsApiTrial.testPathConstruction, PathsApiTrial.testPathToString,
-      PathsApiTrial.testPathsFind]);
+    PathsApiTrial.testPathsFind]);
   }
 }

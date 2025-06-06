@@ -38,7 +38,9 @@ import { CliCtxMockParams, CliCtxMock, FsMock, I_ExistsAbsResponse, I_ExistsResp
  * better outlines (Structure) in Eclipse and WebStorm respectively.
  */
 export class SLinkRunnerApiTrial extends ApiTrial {
-  public static testHandleSharedNodeModulesViaEnvVar: Test = new Test(TestParams.of('testHandleSharedNodeModulesViaEnvVar').ignore(), (ac: AssertionContext) => {
+  public static testHandleSharedNodeModulesViaEnvVar: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.SLinkRunnerApiTrial.' +
+    'testHandleSharedNodeModulesViaEnvVar').ignore(), (ac: AssertionContext) => {
     // Setup
     const mockCtx = new CliCtxMock(new CliCtxMockParams());
     const mockFsCtx = new FsContextMock(new FsContextMockParams());
@@ -75,7 +77,9 @@ export class SLinkRunnerApiTrial extends ApiTrial {
       process.env = originalEnv;
     }
   });
-  public static testHandleDependencySrcSLinks: Test = new Test(TestParams.of('testHandleDependencySrcSLinks').ignore(), (ac: AssertionContext) => {
+  public static testHandleDependencySrcSLinks: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.SLinkRunnerApiTrial.' +
+    'testHandleDependencySrcSLinks').ignore(), (ac: AssertionContext) => {
     // Setup
     const ctxParams = new CliCtxMockParams();
     const mockCtx = new CliCtxMock(ctxParams);
@@ -105,7 +109,9 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     ac.same('test-project@slink', slinkCall._slinkName, 'Should create symlink with correct name');
 
   });
-  public static testHandleDependencySLinkGroups: Test = new Test(TestParams.of('testHandleDependencySLinkGroups'), (ac: AssertionContext) => {
+  public static testHandleDependencySLinkGroups: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.SLinkRunnerApiTrial.' +
+    'testHandleDependencySLinkGroups'), (ac: AssertionContext) => {
 
     const projectRoot: Path = Paths.newPath('Z:/omock/current/project', false, true);
     const projectRootNotWindows: Path = Paths.newPath('Z:/omock/current/project', false, false);
@@ -154,7 +160,9 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     ac.equals(projectRootNotWindows.child('node_modules').child('@test').toString(), slinkCall0._inDir.toString(),
         "The symbolic link be created in the project's node_modules/@test directory.");
   });
-  public static testFullRunWithSharedNodeModulesViaEnvVar: Test = new Test(TestParams.of('testFullRunWithSharedNodeModulesViaEnvVar'), (ac: AssertionContext) => {
+  public static testFullRunWithSharedNodeModulesViaEnvVar: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.SLinkRunnerApiTrial.' +
+    'testFullRunWithSharedNodeModulesViaEnvVar'), (ac: AssertionContext) => {
 
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -202,7 +210,9 @@ export class SLinkRunnerApiTrial extends ApiTrial {
   });
 
   public static testHandleSharedNodeModulesViaProjectLinkDirExists: Test =
-    new Test(TestParams.of('testHandleSharedNodeModulesViaProjectLinkDir'), (ac: AssertionContext) => {
+    new Test(TestParams.of(
+      'org.adligo.ts.slink_tests.SLinkRunnerApiTrial.' +
+      'testHandleSharedNodeModulesViaProjectLinkDir'), (ac: AssertionContext) => {
 
       const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
       const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -250,7 +260,9 @@ export class SLinkRunnerApiTrial extends ApiTrial {
 
 
   public static testHandleSharedNodeModulesViaProjectLinkDirMissing: Test = new Test(
-    TestParams.of('testHandleSharedNodeModulesViaProjectLinkDirMissing'), (ac: AssertionContext) => {
+    TestParams.of(
+      'org.adligo.ts.slink_tests.SLinkRunnerApiTrial.' +
+      'testHandleSharedNodeModulesViaProjectLinkDirMissing'), (ac: AssertionContext) => {
 
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -287,8 +299,9 @@ export class SLinkRunnerApiTrial extends ApiTrial {
   });
 
 
-  public static testHandleSharedNodeModulesViaProjectLinkMultiDirFirstExists: Test = new Test(
-    TestParams.of('testHandleSharedNodeModulesViaProjectLinkMultiDirFirstExists'), (ac: AssertionContext) => {
+  public static testHandleSharedNodeModulesViaProjectLinkMultiDirFirstExists: Test = new Test(TestParams.of(
+      'org.adligo.ts.slink_tests.SLinkRunnerApiTrial.' +
+      'testHandleSharedNodeModulesViaProjectLinkMultiDirFirstExists'), (ac: AssertionContext) => {
 
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -334,8 +347,9 @@ export class SLinkRunnerApiTrial extends ApiTrial {
   });
 
 
-  public static testHandleSharedNodeModulesViaProjectLinkMultiDir2ndExists: Test = new Test(
-    TestParams.of('testHandleSharedNodeModulesViaProjectLinkMultiDir2ndExists'), (ac: AssertionContext) => {
+  public static testHandleSharedNodeModulesViaProjectLinkMultiDir2ndExists: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.SLinkRunnerApiTrial.' +
+    'testHandleSharedNodeModulesViaProjectLinkMultiDir2ndExists'), (ac: AssertionContext) => {
 
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -382,8 +396,9 @@ export class SLinkRunnerApiTrial extends ApiTrial {
   });
 
 
-  public static testHandleSharedNodeModulesViaProjectLinkMultiDirMissing: Test = new Test(
-    TestParams.of('testHandleSharedNodeModulesViaProjectLinkMultiDirMissing'), (ac: AssertionContext) => {
+  public static testHandleSharedNodeModulesViaProjectLinkMultiDirMissing: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.SLinkRunnerApiTrial.' +
+    'testHandleSharedNodeModulesViaProjectLinkMultiDirMissing'), (ac: AssertionContext) => {
 
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -424,7 +439,9 @@ export class SLinkRunnerApiTrial extends ApiTrial {
          */
       });
 
-      public static testPublishLocalSuccess: Test = new Test(TestParams.of('testPublishLocalSuccess'), (ac: AssertionContext) => {
+      public static testPublishLocalSuccess: Test = new Test(TestParams.of(
+        'org.adligo.ts.slink_tests.SLinkRunnerApiTrial.' +
+        'testPublishLocalSuccess'), (ac: AssertionContext) => {
         // Setup
         const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
         const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -488,7 +505,9 @@ export class SLinkRunnerApiTrial extends ApiTrial {
          */
   });
 
-  public static testPublishLocalNoNodeModules: Test = new Test(TestParams.of('testPublishLocalNoNodeModules'), (ac: AssertionContext) => {
+  public static testPublishLocalNoNodeModules: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.SLinkRunnerApiTrial.' +
+    'testPublishLocalNoNodeModules'), (ac: AssertionContext) => {
     // Setup
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const nodeModulesPath: Path = Paths.newPath('Z:/mock/current/project/node_modules', false, true);
@@ -520,7 +539,9 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     ac.isTrue(errorThrown, 'Should throw error when no node_modules exists');
   });
 
-  public static testPublishLocalNotSymlink: Test = new Test(TestParams.of('testPublishLocalNotSymlink'), (ac: AssertionContext) => {
+  public static testPublishLocalNotSymlink: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.SLinkRunnerApiTrial.' +
+    'testPublishLocalNotSymlink'), (ac: AssertionContext) => {
     // Setup
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const nodeModulesPath: Path = Paths.newPath('Z:/mock/current/project/node_modules', false, true);
@@ -557,7 +578,9 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     ac.isTrue(errorThrown, 'Should throw error when node_modules is not a symlink');
   });
 
-  public static testPublishLocalNoPackageJson: Test = new Test(TestParams.of('testPublishLocalNoPackageJson'), (ac: AssertionContext) => {
+  public static testPublishLocalNoPackageJson: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.SLinkRunnerApiTrial.' +
+    'testPublishLocalNoPackageJson'), (ac: AssertionContext) => {
     // Setup
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const nodeModulesPath: Path = Paths.newPath('Z:/mock/current/project/node_modules', false, true);
@@ -602,7 +625,9 @@ export class SLinkRunnerApiTrial extends ApiTrial {
     ac.isTrue(errorThrown, 'Should throw error when no package.json exists');
   });
 
-  public static testPublishLocalWithExistingPackage: Test = new Test(TestParams.of('testPublishLocalWithExistingPackage'), (ac: AssertionContext) => {
+  public static testPublishLocalWithExistingPackage: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.SLinkRunnerApiTrial.' +
+    'testPublishLocalWithExistingPackage'), (ac: AssertionContext) => {
     // Setup
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);

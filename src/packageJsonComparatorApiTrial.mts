@@ -38,7 +38,9 @@ import fs from "fs";
  * The tests for the PackageJsonComparator
  */
 export class PackageJsonComparatorApiTrial extends ApiTrial {
-  public static testZeroDeps: Test = new Test(TestParams.of('testZeroDeps'), (ac: AssertionContext) => {
+  public static testZeroDeps: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.PackageJsonComparatorApiTrial.' +
+    'testZeroDeps'), (ac: AssertionContext) => {
     let projectJson = {};
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -63,7 +65,9 @@ export class PackageJsonComparatorApiTrial extends ApiTrial {
     ac.isFalse(pac.checkForMismatch(), "There should be no mismatches or missing dependencies.");
     ac.equals(0,ctxMock.getOutCalls(),"No calls to print through ctx.out should have been called.");
   });
-  public static testTwoMissing: Test = new Test(TestParams.of('testTwoMissing'), (ac: AssertionContext) => {
+  public static testTwoMissing: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.PackageJsonComparatorApiTrial.' +
+    'testTwoMissing'), (ac: AssertionContext) => {
     let projectJson = { dependencies: { foo: 'bar'}, devDependencies: { xyz: '123'}};
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -91,7 +95,9 @@ export class PackageJsonComparatorApiTrial extends ApiTrial {
         sharedJsonPath.toPathString() + '\n\tfoo bar\n\txyz 123\n\t',
       ctxMock.getOutCall(0),"The error message for missing depencies should match.")
   });
-  public static testTwoWrong: Test = new Test(TestParams.of('testTwoWrong'), (ac: AssertionContext) => {
+  public static testTwoWrong: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.PackageJsonComparatorApiTrial.' +
+    'testTwoWrong'), (ac: AssertionContext) => {
     let projectJson = { dependencies: { foo: 'bar'}, devDependencies: { xyz: '123'}};
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -120,7 +126,9 @@ export class PackageJsonComparatorApiTrial extends ApiTrial {
         'foo bar vs shared barz\n\txyz 123 vs shared 1234\n\t',
         ctxMock.getOutCall(0),"The error message for mismatched depencies should match.")
   });
-  public static testTwoMissingAndThreeWrong: Test = new Test(TestParams.of('testTwoMissingAndThreeWrong'), (ac: AssertionContext) => {
+  public static testTwoMissingAndThreeWrong: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.PackageJsonComparatorApiTrial.' +
+    'testTwoMissingAndThreeWrong'), (ac: AssertionContext) => {
     let projectJson = { dependencies: { foo: 'bar', zstat: 'grr', json: '345'}, devDependencies: { xyz: '123', puff: 'z354'}};
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -153,7 +161,9 @@ export class PackageJsonComparatorApiTrial extends ApiTrial {
         'foo bar vs shared barz\n\txyz 123 vs shared 1234\n\t',
         ctxMock.getOutCall(1),"The error message for mismatched depencies should match.")
   });
-  public static testSwapMatch: Test = new Test(TestParams.of('testSwapMatch'), (ac: AssertionContext) => {
+  public static testSwapMatch: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.PackageJsonComparatorApiTrial.' +
+    'testSwapMatch'), (ac: AssertionContext) => {
     let projectJson = { dependencies: { foo: 'bar'}, devDependencies: { xyz: '123'}};
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);

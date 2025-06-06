@@ -20,104 +20,118 @@ import { Path, Paths } from '../../slink.ts.adligo.org/src/slink.mjs';
 
 
 export class PathApiTrial extends ApiTrial {
-  public static testConstructorErrors: Test = new Test(TestParams.of('testIsRoot'), (ac: AssertionContext) => {
-    let sa1 : string[] = [undefined];
+  public static testConstructorErrors: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.PathApiTrial.' +
+    'testConstructorErrors'), (ac: AssertionContext) => {
+      let sa1: string[] = [undefined];
 
-    ac.error(Path.PARTS_MUST_HAVE_VALID_STRINGS  + sa1, () => {
-      new Path(sa1, true, true);
+      ac.error(Path.PARTS_MUST_HAVE_VALID_STRINGS + sa1, () => {
+        new Path(sa1, true, true);
+      });
+      let sa2: string[] = [' '];
+      ac.error(Path.PARTS_MUST_HAVE_NON_EMPTY_STRINGS + sa2, () => {
+        new Path(sa2, true, true);
+      });
     });
-    let sa2 : string[] = [' '];
-    ac.error(Path.PARTS_MUST_HAVE_NON_EMPTY_STRINGS  + sa2, () => {
-      new Path(sa2, true, true);
+  public static testIsRoot: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.PathApiTrial.' +
+    'testIsRoot'), (ac: AssertionContext) => {
+      // Test absolute path Windows
+      const absPath = new Path(['c', 'users'], false, true);
+      ac.isFalse(absPath.isRoot(), 'c:\\users is NOT a root path');
+
+      const absPath2 = new Path(['c'], false, true);
+      ac.isTrue(absPath2.isRoot(), 'c:\\ is a root path');
+
+      // Test absolute path Unix
+      const absPathU1 = new Path(['c'], false, false);
+      ac.isFalse(absPathU1.isRoot(), '/c is NOT a root path');
+
+      const absPathU2 = new Path([], false, false);
+      ac.isTrue(absPathU2.isRoot(), '/ is a root path');
+
+      //relative paths
+      const absPath3 = new Path(['c'], true, true);
+      ac.isFalse(absPath3.isRoot(), 'c is a NOT root path');
+
+      const absPath4 = new Path(['c'], true, false);
+      ac.isFalse(absPath4.isRoot(), 'c is a NOT Unix root path');
     });
-  });
-  public static testIsRoot: Test = new Test(TestParams.of('testIsRoot'), (ac: AssertionContext) => {
-    // Test absolute path Windows
-    const absPath = new Path(['c', 'users'], false, true);
-    ac.isFalse(absPath.isRoot(), 'c:\\users is NOT a root path');
+  public static testHasParent: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.PathApiTrial.' +
+    'testHasParent'), (ac: AssertionContext) => {
+      // Test Unix absolute paths
+      const absPath = new Path(['home', 'user', 'project'], false);
+      ac.same('/home/user/project', absPath.toUnix(), 'Unix absolute path conversion incorrect');
+      ac.isTrue(absPath.hasParent(), "The path /home/user/project has a parent /home/user");
 
-    const absPath2 = new Path(['c'], false, true);
-    ac.isTrue(absPath2.isRoot(), 'c:\\ is a root path');
+      const absPath2 = new Path(['home'], false);
+      ac.isFalse(absPath2.hasParent(), "The path /home does not have a parent");
 
-    // Test absolute path Unix
-    const absPathU1 = new Path(['c'], false, false);
-    ac.isFalse(absPathU1.isRoot(), '/c is NOT a root path');
+      // Test relative path
+      const relPath = new Path(['src', 'main'], true);
+      ac.same('src/main', relPath.toUnix(), 'Unix relative path conversion incorrect');
+      ac.isTrue(absPath.hasParent(), "The path src/main has a parent src");
+    });
 
-    const absPathU2 = new Path([], false, false);
-    ac.isTrue(absPathU2.isRoot(), '/ is a root path');
+  public static testGetParent: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.PathApiTrial.' +
+    'testGetParent'), (ac: AssertionContext) => {
+      // Test drive letter path
+      const drivePath = new Path(['C', 'Users', 'user'], false);
+      ac.same('C:\\Users\\user', drivePath.toWindows(), 'Windows drive path conversion incorrect');
 
-    //relative paths
-    const absPath3 = new Path(['c'], true, true);
-    ac.isFalse(absPath3.isRoot(), 'c is a NOT root path');
-
-    const absPath4 = new Path(['c'], true, false);
-    ac.isFalse(absPath4.isRoot(), 'c is a NOT Unix root path');
-  });
-  public static testHasParent: Test = new Test(TestParams.of('testHasParent'), (ac: AssertionContext) => {
-    // Test Unix absolute paths
-    const absPath = new Path(['home', 'user', 'project'], false);
-    ac.same('/home/user/project', absPath.toUnix(), 'Unix absolute path conversion incorrect');
-    ac.isTrue(absPath.hasParent(), "The path /home/user/project has a parent /home/user");
-
-    const absPath2 = new Path(['home'], false);
-    ac.isFalse(absPath2.hasParent(), "The path /home does not have a parent");
-
-    // Test relative path
-    const relPath = new Path(['src', 'main'], true);
-    ac.same('src/main', relPath.toUnix(), 'Unix relative path conversion incorrect');
-    ac.isTrue(absPath.hasParent(), "The path src/main has a parent src");
-  });
-
-  public static testGetParent: Test = new Test(TestParams.of('testGetParent'), (ac: AssertionContext) => {
-    // Test drive letter path
-    const drivePath = new Path(['C', 'Users', 'user'], false);
-    ac.same('C:\\Users\\user', drivePath.toWindows(), 'Windows drive path conversion incorrect');
-
-    // Test relative path
-    const relPath = new Path(['src', 'main'], true);
-    ac.same('src\\main', relPath.toWindows(), 'Windows relative path conversion incorrect');
-  });
+      // Test relative path
+      const relPath = new Path(['src', 'main'], true);
+      ac.same('src\\main', relPath.toWindows(), 'Windows relative path conversion incorrect');
+    });
   /**
    * Covers the following toString, toPathString and constructor
    */
-  public static testToUnix: Test = new Test(TestParams.of('testToUnix'), (ac: AssertionContext) => {
-    // Test absolute path
-    const absPath = new Path(['home', 'user', 'project'], false, false);
-    ac.same('/home/user/project', absPath.toUnix(), 'Unix absolute path conversion incorrect');
-    ac.equals('Path [parts=[home,user,project], relative=false, windows=false]', absPath.toString());
-    ac.equals('/home/user/project', absPath.toPathString());
-    
-    // Test relative path
-    const relPath = new Path(['src', 'main'], true);
-    ac.same('src/main', relPath.toUnix(), 'Unix relative path conversion incorrect');
-    ac.equals('Path [parts=[src,main], relative=true, windows=false]', relPath.toString());
-    ac.equals('src/main', relPath.toPathString());
-  });
-  public static testToWindows: Test = new Test(TestParams.of('testToWindows'), (ac: AssertionContext) => {
-    // Test absolute path
-    const absPath = new Path(['c', 'home', 'user', 'project'], false, true);
-    ac.same('C:\\home\\user\\project', absPath.toWindows(), 'Windows absolute path conversion incorrect');
-    ac.equals('Path [parts=[c,home,user,project], relative=false, windows=true]', absPath.toString());
-    ac.equals('c:\\home\\user\\project', absPath.toPathString());
-    
-    // Test relative path
-    const relPath = new Path(['src', 'main'], true, true);
-    ac.same('src\\main', relPath.toWindows(), 'Windows relative path conversion incorrect');
-    ac.equals('Path [parts=[src,main], relative=true, windows=true]', relPath.toString());
-    ac.equals('src\\main', relPath.toPathString());
-  });
-  public static testPathToUnix: Test = new Test(TestParams.of('testPathsToUnix'), (ac: AssertionContext) => {
-    // Test absolute path
-    const absPath = new Path(['home', 'user', 'project'], false);
-    ac.same('/home/user/project', absPath.toUnix(), 'Unix absolute path conversion incorrect');
+  public static testToUnix: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.PathApiTrial.' +
+    'testToUnix'), (ac: AssertionContext) => {
+      // Test absolute path
+      const absPath = new Path(['home', 'user', 'project'], false, false);
+      ac.same('/home/user/project', absPath.toUnix(), 'Unix absolute path conversion incorrect');
+      ac.equals('Path [parts=[home,user,project], relative=false, windows=false]', absPath.toString());
+      ac.equals('/home/user/project', absPath.toPathString());
 
-    // Test relative path
-    const relPath = new Path(['src', 'main'], true);
-    ac.same('src/main', relPath.toUnix(), 'Unix relative path conversion incorrect');
-  });
+      // Test relative path
+      const relPath = new Path(['src', 'main'], true);
+      ac.same('src/main', relPath.toUnix(), 'Unix relative path conversion incorrect');
+      ac.equals('Path [parts=[src,main], relative=true, windows=false]', relPath.toString());
+      ac.equals('src/main', relPath.toPathString());
+    });
+  public static testToWindows: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.PathApiTrial.' +
+    'testToWindows'), (ac: AssertionContext) => {
+      // Test absolute path
+      const absPath = new Path(['c', 'home', 'user', 'project'], false, true);
+      ac.same('C:\\home\\user\\project', absPath.toWindows(), 'Windows absolute path conversion incorrect');
+      ac.equals('Path [parts=[c,home,user,project], relative=false, windows=true]', absPath.toString());
+      ac.equals('c:\\home\\user\\project', absPath.toPathString());
+
+      // Test relative path
+      const relPath = new Path(['src', 'main'], true, true);
+      ac.same('src\\main', relPath.toWindows(), 'Windows relative path conversion incorrect');
+      ac.equals('Path [parts=[src,main], relative=true, windows=true]', relPath.toString());
+      ac.equals('src\\main', relPath.toPathString());
+    });
+  public static testPathToUnix: Test = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.PathApiTrial.' +
+    'testPathsToUnix'), (ac: AssertionContext) => {
+      // Test absolute path
+      const absPath = new Path(['home', 'user', 'project'], false);
+      ac.same('/home/user/project', absPath.toUnix(), 'Unix absolute path conversion incorrect');
+
+      // Test relative path
+      const relPath = new Path(['src', 'main'], true);
+      ac.same('src/main', relPath.toUnix(), 'Unix relative path conversion incorrect');
+    });
   constructor() {
     super('PathApiTrial', [PathApiTrial.testHasParent, PathApiTrial.testGetParent, PathApiTrial.testToUnix,
-      PathApiTrial.testToWindows, PathApiTrial.testIsRoot
+    PathApiTrial.testToWindows, PathApiTrial.testIsRoot
     ]);
   }
 }

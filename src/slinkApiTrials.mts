@@ -17,8 +17,10 @@ process.env['RUNNING_TESTS4TS'] = "TRUE";
 import { ALL_TRIALS } from './allTrials.mjs';
 import { ApiTrial, AssertionContext, Test, TestResult, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import { JUnitXmlGenerator } from '../../junitXml.tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
-
+import { getGlobal } from '../../slink.ts.adligo.org/src/slink.mjs';
 
 // trials are orderd by dependency / usage
-const suite = new TrialSuite('SLink Trial Suite ', ALL_TRIALS);
+export const suite = new TrialSuite('SLink Trial Suite ', ALL_TRIALS);
 suite.run().printTextReport().printTestReportFiles(new JUnitXmlGenerator());
+
+

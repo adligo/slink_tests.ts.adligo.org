@@ -12,12 +12,12 @@
     "typescript": "^5.0.4"
   },
   "devDependencies": {
-    "@types/node": "^22.15.21",
     "@types/jest": "^29.4.0",
+    "@types/node": "^22.15.21",
     "@types/uuid": "^9.0.0",
     "jest": "^29.4.1",
-    "ts-node": "^10.9.1",
-    "ts-jest": "^29.0.5"
+    "ts-jest": "^29.0.5",
+    "ts-node": "^10.9.1"
   },
   "homepage": "https://github.com/adligo/slink_tests.tests4j.ts.adligo.org#readme",
   "keywords": [
@@ -41,14 +41,20 @@
     "testUnix": "export RUNNING_TESTS4TS=TRUE && bun run src/slinkSingleTestRunner.ts ",
     "testWindows": "set RUNNING_TESTS4TS=TRUE && bun run src/slinkSingleTestRunner.ts ",
     "testsWindows": "set RUNNING_TESTS4TS=TRUE && bun run src/slinkApiTrials.ts ",
-    "tests": "bun run src/slinkApiTrials.ts ",
+    "tests": "c8 node  dist/slink_tests.ts.adligo.org/src/slinkApiTrials.mjs",
+    "testsPre": "bun run src/slinkApiTrials.ts  ",
     "trialUnix": "export RUNNING_TESTS4TS=TRUE && bun run src/slinkSingleTrialRunner.ts ",
     "trialWindows": "set RUNNING_TESTS4TS=TRUE && bun run src/slinkSingleTrialRunner.ts ",
     "build": "tsc",
     "tsc": "tsc"
   },
-  "sharedNodeModuleProjectSLinkEnvVar": ["SLINK_NODE_MODULE_SLINK"],
-  "sharedNodeModuleProjectSLinks": ["slink_group_deps.ts.adligo.org", "fab_group_deps.ts.adligo.org"],
+  "sharedNodeModuleProjectSLinkEnvVar": [
+    "SLINK_NODE_MODULE_SLINK"
+  ],
+  "sharedNodeModuleProjectSLinks": [
+    "slink_group_deps.ts.adligo.org",
+    "fab_group_deps.ts.adligo.org"
+  ],
   "type": "module",
   "version": "0.0.1"
 }

@@ -16,7 +16,6 @@
 
 import { PathApiTrial } from './pathApiTrial.mjs';
 import { PathsApiTrial } from './pathsApiTrial.mjs';
-import { SLinkRunnerApiTrial } from './slinkRunnerApiTrial.mjs';
 import { CliCtxTrial } from './cliCtxTrial.mjs';
 import { runTrial } from '../../tests4ts.ts.adligo.org/src/singleTrialRunner.mjs';
 import { ApiTrial, AssertionContext, Test, TestResult, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';

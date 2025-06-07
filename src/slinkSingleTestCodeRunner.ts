@@ -15,7 +15,6 @@
  */
 import { PathApiTrial } from './pathApiTrial.mjs';
 import { PathsApiTrial } from './pathsApiTrial.mjs';
-import { SLinkRunnerApiTrial } from './slinkRunnerApiTrial.mjs';
 import { CliCtxTrial } from './cliCtxTrial.mjs';
 import { runTest } from '../../tests4ts.ts.adligo.org/src/singleTestRunner.mjs';
 import { ApiTrial, AssertionContext, Test, TestResult, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
@@ -28,6 +27,5 @@ runTest(
   //PathsApiTrial
   //SLinkRunnerApiTrial.testHandleSharedNodeModulesViaProjectLinkDirExists
   //PathApiTrial.testHasParent
-  SLinkRunnerApiTrial.testPublishLocalWithExistingPackage
-//PackageJsonComparatorApiTrial.testTwoMissingAndThreeWrong
+  PackageJsonComparatorApiTrial.testTwoMissingAndThreeWrong
 );

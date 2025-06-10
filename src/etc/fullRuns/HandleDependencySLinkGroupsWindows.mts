@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-import { ApiTrial, AssertionContext, Test, TestParams } from '../../../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { I_AssertionContext } from '../../../../i_tests4ts.ts.adligo.org/src/i_tests4ts.mjs';
+import { ApiTrial } from '../../../../tests4ts.ts.adligo.org/src/trials.mjs';
+import { Test, TestParams } from '../../../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import { I_CliCtx, I_FsContext, SLinkRunner, Path, Paths } from '../../../../slink.ts.adligo.org/src/slink.mjs';
 import { CliCtxMock, FsContextMock, CliCtxMockParams, FsContextMockParams, I_ExistsAbsResponse, I_ExistsResponse, I_ReadJsonResponse } from '../mocks/mocks.mjs';
 
 export class HandleDependencySLinkGroupsWindows extends ApiTrial {
   public static testHandleDependencySLinkGroups: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.HandleDependencySLinkGroupsWindows.' +
-    'testHandleDependencySLinkGroups'), (ac: AssertionContext) => {
+    'testHandleDependencySLinkGroups'), (ac: I_AssertionContext) => {
 
     const projectRoot: Path = Paths.newPath('Z:/omock/current/project', false, true);
     const projectRootNotWindows: Path = Paths.newPath('Z:/omock/current/project', false, false);

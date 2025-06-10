@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
-import { ApiTrial, AssertionContext, Test, TestParams, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { I_AssertionContext } from '../../i_tests4ts.ts.adligo.org/src/i_tests4ts.mjs';
+import { ApiTrial } from '../../tests4ts.ts.adligo.org/src/trials.mjs';
+import { Test, TestParams } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import { Path, Paths } from '../../slink.ts.adligo.org/src/slink.mjs';
 
 
 export class PathApiTrial extends ApiTrial {
   public static testConstructorErrors: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.PathApiTrial.' +
-    'testConstructorErrors'), (ac: AssertionContext) => {
+    'testConstructorErrors'), (ac: I_AssertionContext) => {
       let sa1: string[] = [undefined];
 
       ac.error(Path.PARTS_MUST_HAVE_VALID_STRINGS + sa1, () => {
@@ -35,7 +35,7 @@ export class PathApiTrial extends ApiTrial {
     });
   public static testIsRoot: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.PathApiTrial.' +
-    'testIsRoot'), (ac: AssertionContext) => {
+    'testIsRoot'), (ac: I_AssertionContext) => {
       // Test absolute path Windows
       const absPath = new Path(['c', 'users'], false, true);
       ac.isFalse(absPath.isRoot(), 'c:\\users is NOT a root path');
@@ -59,7 +59,7 @@ export class PathApiTrial extends ApiTrial {
     });
   public static testHasParent: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.PathApiTrial.' +
-    'testHasParent'), (ac: AssertionContext) => {
+    'testHasParent'), (ac: I_AssertionContext) => {
       // Test Unix absolute paths
       const absPath = new Path(['home', 'user', 'project'], false);
       ac.same('/home/user/project', absPath.toUnix(), 'Unix absolute path conversion incorrect');
@@ -76,7 +76,7 @@ export class PathApiTrial extends ApiTrial {
 
   public static testGetParent: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.PathApiTrial.' +
-    'testGetParent'), (ac: AssertionContext) => {
+    'testGetParent'), (ac: I_AssertionContext) => {
       // Test drive letter path
       const drivePath = new Path(['C', 'Users', 'user'], false);
       ac.same('C:\\Users\\user', drivePath.toWindows(), 'Windows drive path conversion incorrect');
@@ -90,7 +90,7 @@ export class PathApiTrial extends ApiTrial {
    */
   public static testToUnix: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.PathApiTrial.' +
-    'testToUnix'), (ac: AssertionContext) => {
+    'testToUnix'), (ac: I_AssertionContext) => {
       // Test absolute path
       const absPath = new Path(['home', 'user', 'project'], false, false);
       ac.same('/home/user/project', absPath.toUnix(), 'Unix absolute path conversion incorrect');
@@ -105,7 +105,7 @@ export class PathApiTrial extends ApiTrial {
     });
   public static testToWindows: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.PathApiTrial.' +
-    'testToWindows'), (ac: AssertionContext) => {
+    'testToWindows'), (ac: I_AssertionContext) => {
       // Test absolute path
       const absPath = new Path(['c', 'home', 'user', 'project'], false, true);
       ac.same('C:\\home\\user\\project', absPath.toWindows(), 'Windows absolute path conversion incorrect');
@@ -120,7 +120,7 @@ export class PathApiTrial extends ApiTrial {
     });
   public static testPathToUnix: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.PathApiTrial.' +
-    'testPathsToUnix'), (ac: AssertionContext) => {
+    'testPathsToUnix'), (ac: I_AssertionContext) => {
       // Test absolute path
       const absPath = new Path(['home', 'user', 'project'], false);
       ac.same('/home/user/project', absPath.toUnix(), 'Unix absolute path conversion incorrect');

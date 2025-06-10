@@ -17,8 +17,9 @@
  * limitations under the License.
  */
 
-
-import { ApiTrial, AssertionContext, Test, TestParams, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { I_AssertionContext } from '../../i_tests4ts.ts.adligo.org/src/i_tests4ts.mjs';
+import { ApiTrial } from '../../tests4ts.ts.adligo.org/src/trials.mjs';
+import { Test, TestParams } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import {
   CliCtx,
   FLAGS,
@@ -33,171 +34,174 @@ import { SlinkConsoleMock, ProcMock, CliCtxLogMock, FsMock, FsMockParams } from 
 
 
 export class CliCtxTrial extends ApiTrial {
+  public static readonly testConstructionWithDDebugFlag = new Test(TestParams.of('org.adligo.ts.slink_tests.CliCtxTrial.' +
+    'testConstructionWithDDebugFlag'), (ac: I_AssertionContext) => {
+    console.log("ac is " + typeof (ac.equals));
+    let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
+    let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
+    let fsParams = new FsMockParams();
+    fsParams._ac = ac;
+    let fsMock: FsMock = new FsMock(fsParams);
+    let procMock: ProcMock = new ProcMock();
+    let args = [ProcMock.DEFAULT_ARGV_1, ProcMock.DEFAULT_ARGV_2, '--debug'];
+    let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock, consoleMock, fsMock, procMock);
+    //assert innner state
+    let keys: string[] = cliCtx.getKeys();
+    ac.equals(1, keys.length, "Debug should be the only key!");
+    ac.equals('debug', keys[0], "Debug should be the only key!");
+    ac.isTrue(consoleMock.messages.length >= 1, "There should be a multiple message printed to the console");
+    ac.equals("Debug is enabled!", consoleMock.messages[0], "Debug should be enabled should be " +
+      "the first debug message printed on the console.");
+    ac.isTrue(cliCtx.isDone() == false, "The CliCtx should not be done yet.");
+  });
+  public static readonly testConstructionWithDDFlag = new Test(TestParams.of('org.adligo.ts.slink_tests.CliCtxTrial.' +
+    'testConstructionWithDDFlag'), (ac: I_AssertionContext) => {
+    console.log("ac is " + typeof (ac.equals));
+    let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
+    let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
+    let fsParams = new FsMockParams();
+    fsParams._ac = ac;
+    let fsMock: FsMock = new FsMock(fsParams);
+    let procMock: ProcMock = new ProcMock();
+    let args = [ProcMock.DEFAULT_ARGV_1, ProcMock.DEFAULT_ARGV_2, '-d'];
+    let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock, consoleMock, fsMock, procMock);
+    //assert innner state
+    let keys: string[] = cliCtx.getKeys();
+    ac.equals(1, keys.length, "Debug should be the only key!");
+    ac.equals('debug', keys[0], "Debug should be the only key!");
+    ac.isTrue(consoleMock.messages.length >= 1, "There should be a multiple message printed to the console");
+    ac.equals("Debug is enabled!", consoleMock.messages[0], "Debug should be enabled should be " +
+      "the first debug message printed on the console.");
+    ac.isTrue(cliCtx.isDone() == false, "The CliCtx should not be done yet.");
+  });
+  public static readonly testConstructionWithDDHelpFlag = new Test(TestParams.of('org.adligo.ts.slink_tests.CliCtxTrial.' + 
+    'testConstructionWithDDHelpFlag'), (ac: I_AssertionContext) => {
+    console.log("ac is " + typeof (ac.equals));
+    let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
+    let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
+    let fsParams = new FsMockParams();
+    fsParams._ac = ac;
+    let fsMock: FsMock = new FsMock(fsParams);
+    let procMock: ProcMock = new ProcMock();
+    let args = [ProcMock.DEFAULT_ARGV_1, ProcMock.DEFAULT_ARGV_2, '--help'];
+    let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock, consoleMock, fsMock, procMock);
+    //assert innner state
+    let keys: string[] = cliCtx.getKeys();
+    ac.equals(1, keys.length, "Debug should be the only key!");
+    ac.equals('help', keys[0], "Debug should be the only key!");
+    ac.isTrue(consoleMock.messages.length >= 1, "There should be a multiple message printed to the console");
+
+    ac.equals("This program understands the following commands;\n", consoleMock.messages[0], "Help should print a lot of stuff.");
+    ac.equals(17, consoleMock.messages.length, "Help prints a lot");
+    ac.isTrue(cliCtx.isDone() == true, "The CliCtx should be done, at this point.");
+  });
+  public static readonly testConstructionWithDHFlag = new Test(TestParams.of('org.adligo.ts.slink_tests.CliCtxTrial.' + 
+    'testConstructionWithDHFlag'), (ac: I_AssertionContext) => {
+    console.log("ac is " + typeof (ac.equals));
+    let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
+    let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
+    let fsParams = new FsMockParams();
+    fsParams._ac = ac;
+    let fsMock: FsMock = new FsMock(fsParams);
+    let procMock: ProcMock = new ProcMock();
+    let args = [ProcMock.DEFAULT_ARGV_1, ProcMock.DEFAULT_ARGV_2, '-h'];
+    let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock, consoleMock, fsMock, procMock);
+    //assert innner state
+    let keys: string[] = cliCtx.getKeys();
+    ac.equals(1, keys.length, "Debug should be the only key!");
+    ac.equals('help', keys[0], "Debug should be the only key!");
+    ac.isTrue(consoleMock.messages.length >= 1, "There should be a multiple message printed to the console");
+
+    ac.equals("This program understands the following commands;\n", consoleMock.messages[0], "Help should print a lot of stuff.");
+    ac.equals(17, consoleMock.messages.length, "Help prints a lot");
+    ac.isTrue(cliCtx.isDone() == true, "The CliCtx should be done, at this point.");
+  });
+  public static readonly testConstructionWithDDLogFlag = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.CliCtxTrial.' + 
+    'testConstructionWithDDLogFlag'), (ac: I_AssertionContext) => {
+      console.log("ac is " + typeof (ac.equals));
+      let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
+      let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
+      let fsParams = new FsMockParams();
+      fsParams._ac = ac;
+      let fsMock: FsMock = new FsMock(fsParams);
+      let procMock: ProcMock = new ProcMock();
+      let args = [ProcMock.DEFAULT_ARGV_1, ProcMock.DEFAULT_ARGV_2, '--log', 'foo/file.txt'];
+      let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock, consoleMock, fsMock, procMock);
+      //assert innner state
+      let keys: string[] = cliCtx.getKeys();
+      ac.equals(1, keys.length, "Log should be the only key!");
+      ac.equals('log', keys[0], "Log should be the only key!");
+      let val: CliCtxArg = cliCtx.getValue('log');
+      ac.equals('foo/file.txt', val.getArg(), "The output log file name should be set, to foo/file.txt");
+      ac.isTrue(cliCtx.isDone() == false, "The CliCtx should not be done at this point.");
+    });
+  public static readonly testConstructionWithDLogFlag = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.CliCtxTrial.' +
+    'testConstructionWithDLogFlag'), (ac: I_AssertionContext) => {
+      console.log("ac is " + typeof (ac.equals));
+      let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
+      let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
+      let fsParams = new FsMockParams();
+      fsParams._ac = ac;
+      let fsMock: FsMock = new FsMock(fsParams);
+      let procMock: ProcMock = new ProcMock();
+      let args = [ProcMock.DEFAULT_ARGV_1, ProcMock.DEFAULT_ARGV_2, '-l', 'foo/file.txt'];
+      let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock, consoleMock, fsMock, procMock);
+      //assert innner state
+      let keys: string[] = cliCtx.getKeys();
+      ac.equals(1, keys.length, "Log should be the only key!");
+      ac.equals('log', keys[0], "Log should be the only key!");
+      let val: CliCtxArg = cliCtx.getValue('log');
+      ac.equals('foo/file.txt', val.getArg(), "The output log file name should be set, to foo/file.txt");
+      ac.isTrue(cliCtx.isDone() == false, "The CliCtx should not be done at this point.");
+    });
+  public static readonly testConstructionWithDDVersionFlag = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.CliCtxTrial.' + 
+    'testConstructionWithDDVersionFlag'), (ac: I_AssertionContext) => {
+      console.log("ac is " + typeof (ac.equals));
+      let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
+      let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
+      let fsParams = new FsMockParams();
+      fsParams._ac = ac;
+      let fsMock: FsMock = new FsMock(fsParams);
+      let procMock: ProcMock = new ProcMock();
+      let args = [ProcMock.DEFAULT_ARGV_1, ProcMock.DEFAULT_ARGV_2, '--version'];
+      let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock, consoleMock, fsMock, procMock);
+      //assert innner state
+      let keys: string[] = cliCtx.getKeys();
+      ac.equals(1, keys.length, "Version should be the only key!");
+      ac.equals('version', keys[0], "Version should be the only key!");
+      ac.equals(1, consoleMock.messages.length, "There should be a single message printed to the console");
+      ac.equals(VERSION_NBR, consoleMock.messages[0], "Only the Version Number should be printed!");
+      ac.isTrue(cliCtx.isDone() == true, "The CliCtx should be done at this point.");
+    });
+  public static readonly testConstructionWithDVFlag = new Test(TestParams.of(
+    'org.adligo.ts.slink_tests.CliCtxTrial.' +
+    'testConstructionWithDVFlag'), (ac: I_AssertionContext) => {
+      console.log("ac is " + typeof (ac.equals));
+      let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
+      let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
+      let fsParams = new FsMockParams();
+      fsParams._ac = ac;
+      let fsMock: FsMock = new FsMock(fsParams);
+      let procMock: ProcMock = new ProcMock();
+      let args = [ProcMock.DEFAULT_ARGV_1, ProcMock.DEFAULT_ARGV_2, '-v'];
+      let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock, consoleMock, fsMock, procMock);
+
+      //assert innner state
+      let keys: string[] = cliCtx.getKeys();
+      ac.equals(1, keys.length, "Version should be the only key!");
+      ac.equals('version', keys[0], "Version should be the only key!");
+      ac.equals(1, consoleMock.messages.length, "There should be a single message printed to the console");
+      ac.equals(VERSION_NBR, consoleMock.messages[0], "Only the Version Number should be printed!");
+      ac.isTrue(cliCtx.isDone() == true, "The CliCtx should be done at this point.");
+    });
   constructor() {
-    super('CliCtxTrial', [
-      new Test(TestParams.of('org.adligo.ts.slink_tests.CliCtxTrial.' +
-        'testConstructionWithDDebugFlag'), (ac: AssertionContext) => {
-        console.log("ac is " + typeof (ac.equals));
-        let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
-        let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
-        let fsParams = new FsMockParams();
-        fsParams._ac = ac;
-        let fsMock: FsMock = new FsMock(fsParams);
-        let procMock: ProcMock = new ProcMock();
-        let args = [ProcMock.DEFAULT_ARGV_1, ProcMock.DEFAULT_ARGV_2, '--debug'];
-        let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock, consoleMock, fsMock, procMock);
-        //assert innner state
-        let keys: string[] = cliCtx.getKeys();
-        ac.equals(1, keys.length, "Debug should be the only key!");
-        ac.equals('debug', keys[0], "Debug should be the only key!");
-        ac.isTrue(consoleMock.messages.length >= 1, "There should be a multiple message printed to the console");
-        ac.equals("Debug is enabled!", consoleMock.messages[0], "Debug should be enabled should be " +
-          "the first debug message printed on the console.");
-        ac.isTrue(cliCtx.isDone() == false, "The CliCtx should not be done yet.");
-      }),
-      new Test(TestParams.of('org.adligo.ts.slink_tests.CliCtxTrial.' +
-        'testConstructionWithDDFlag'), (ac: AssertionContext) => {
-        console.log("ac is " + typeof (ac.equals));
-        let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
-        let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
-        let fsParams = new FsMockParams();
-        fsParams._ac = ac;
-        let fsMock: FsMock = new FsMock(fsParams);
-        let procMock: ProcMock = new ProcMock();
-        let args = [ProcMock.DEFAULT_ARGV_1, ProcMock.DEFAULT_ARGV_2, '-d'];
-        let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock, consoleMock, fsMock, procMock);
-        //assert innner state
-        let keys: string[] = cliCtx.getKeys();
-        ac.equals(1, keys.length, "Debug should be the only key!");
-        ac.equals('debug', keys[0], "Debug should be the only key!");
-        ac.isTrue(consoleMock.messages.length >= 1, "There should be a multiple message printed to the console");
-        ac.equals("Debug is enabled!", consoleMock.messages[0], "Debug should be enabled should be " +
-          "the first debug message printed on the console.");
-        ac.isTrue(cliCtx.isDone() == false, "The CliCtx should not be done yet.");
-      }),
-      new Test(TestParams.of('org.adligo.ts.slink_tests.CliCtxTrial.' + 
-        'testConstructionWithDDHelpFlag'), (ac: AssertionContext) => {
-        console.log("ac is " + typeof (ac.equals));
-        let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
-        let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
-        let fsParams = new FsMockParams();
-        fsParams._ac = ac;
-        let fsMock: FsMock = new FsMock(fsParams);
-        let procMock: ProcMock = new ProcMock();
-        let args = [ProcMock.DEFAULT_ARGV_1, ProcMock.DEFAULT_ARGV_2, '--help'];
-        let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock, consoleMock, fsMock, procMock);
-        //assert innner state
-        let keys: string[] = cliCtx.getKeys();
-        ac.equals(1, keys.length, "Debug should be the only key!");
-        ac.equals('help', keys[0], "Debug should be the only key!");
-        ac.isTrue(consoleMock.messages.length >= 1, "There should be a multiple message printed to the console");
-
-        ac.equals("This program understands the following commands;\n", consoleMock.messages[0], "Help should print a lot of stuff.");
-        ac.equals(17, consoleMock.messages.length, "Help prints a lot");
-        ac.isTrue(cliCtx.isDone() == true, "The CliCtx should be done, at this point.");
-      }),
-      new Test(TestParams.of('org.adligo.ts.slink_tests.CliCtxTrial.' + 
-        'testConstructionWithDHFlag'), (ac: AssertionContext) => {
-        console.log("ac is " + typeof (ac.equals));
-        let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
-        let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
-        let fsParams = new FsMockParams();
-        fsParams._ac = ac;
-        let fsMock: FsMock = new FsMock(fsParams);
-        let procMock: ProcMock = new ProcMock();
-        let args = [ProcMock.DEFAULT_ARGV_1, ProcMock.DEFAULT_ARGV_2, '-h'];
-        let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock, consoleMock, fsMock, procMock);
-        //assert innner state
-        let keys: string[] = cliCtx.getKeys();
-        ac.equals(1, keys.length, "Debug should be the only key!");
-        ac.equals('help', keys[0], "Debug should be the only key!");
-        ac.isTrue(consoleMock.messages.length >= 1, "There should be a multiple message printed to the console");
-
-        ac.equals("This program understands the following commands;\n", consoleMock.messages[0], "Help should print a lot of stuff.");
-        ac.equals(17, consoleMock.messages.length, "Help prints a lot");
-        ac.isTrue(cliCtx.isDone() == true, "The CliCtx should be done, at this point.");
-      }),
-      new Test(TestParams.of(
-        'org.adligo.ts.slink_tests.CliCtxTrial.' + 
-        'testConstructionWithDDLogFlag'), (ac: AssertionContext) => {
-          console.log("ac is " + typeof (ac.equals));
-          let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
-          let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
-          let fsParams = new FsMockParams();
-          fsParams._ac = ac;
-          let fsMock: FsMock = new FsMock(fsParams);
-          let procMock: ProcMock = new ProcMock();
-          let args = [ProcMock.DEFAULT_ARGV_1, ProcMock.DEFAULT_ARGV_2, '--log', 'foo/file.txt'];
-          let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock, consoleMock, fsMock, procMock);
-          //assert innner state
-          let keys: string[] = cliCtx.getKeys();
-          ac.equals(1, keys.length, "Log should be the only key!");
-          ac.equals('log', keys[0], "Log should be the only key!");
-          let val: CliCtxArg = cliCtx.getValue('log');
-          ac.equals('foo/file.txt', val.getArg(), "The output log file name should be set, to foo/file.txt");
-          ac.isTrue(cliCtx.isDone() == false, "The CliCtx should not be done at this point.");
-        }),
-      new Test(TestParams.of(
-        'org.adligo.ts.slink_tests.CliCtxTrial.' +
-        'testConstructionWithDLogFlag'), (ac: AssertionContext) => {
-          console.log("ac is " + typeof (ac.equals));
-          let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
-          let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
-          let fsParams = new FsMockParams();
-          fsParams._ac = ac;
-          let fsMock: FsMock = new FsMock(fsParams);
-          let procMock: ProcMock = new ProcMock();
-          let args = [ProcMock.DEFAULT_ARGV_1, ProcMock.DEFAULT_ARGV_2, '-l', 'foo/file.txt'];
-          let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock, consoleMock, fsMock, procMock);
-          //assert innner state
-          let keys: string[] = cliCtx.getKeys();
-          ac.equals(1, keys.length, "Log should be the only key!");
-          ac.equals('log', keys[0], "Log should be the only key!");
-          let val: CliCtxArg = cliCtx.getValue('log');
-          ac.equals('foo/file.txt', val.getArg(), "The output log file name should be set, to foo/file.txt");
-          ac.isTrue(cliCtx.isDone() == false, "The CliCtx should not be done at this point.");
-        }),
-      new Test(TestParams.of(
-        'org.adligo.ts.slink_tests.CliCtxTrial.' + 
-        'testConstructionWithDDVersionFlag'), (ac: AssertionContext) => {
-          console.log("ac is " + typeof (ac.equals));
-          let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
-          let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
-          let fsParams = new FsMockParams();
-          fsParams._ac = ac;
-          let fsMock: FsMock = new FsMock(fsParams);
-          let procMock: ProcMock = new ProcMock();
-          let args = [ProcMock.DEFAULT_ARGV_1, ProcMock.DEFAULT_ARGV_2, '--version'];
-          let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock, consoleMock, fsMock, procMock);
-          //assert innner state
-          let keys: string[] = cliCtx.getKeys();
-          ac.equals(1, keys.length, "Version should be the only key!");
-          ac.equals('version', keys[0], "Version should be the only key!");
-          ac.equals(1, consoleMock.messages.length, "There should be a single message printed to the console");
-          ac.equals(VERSION_NBR, consoleMock.messages[0], "Only the Version Number should be printed!");
-          ac.isTrue(cliCtx.isDone() == true, "The CliCtx should be done at this point.");
-        }),
-      new Test(TestParams.of(
-        'org.adligo.ts.slink_tests.CliCtxTrial.' +
-        'testConstructionWithDVFlag'), (ac: AssertionContext) => {
-          console.log("ac is " + typeof (ac.equals));
-          let consoleMock: SlinkConsoleMock = new SlinkConsoleMock();
-          let cliCtxLogMock: CliCtxLogMock = new CliCtxLogMock();
-          let fsParams = new FsMockParams();
-          fsParams._ac = ac;
-          let fsMock: FsMock = new FsMock(fsParams);
-          let procMock: ProcMock = new ProcMock();
-          let args = [ProcMock.DEFAULT_ARGV_1, ProcMock.DEFAULT_ARGV_2, '-v'];
-          let cliCtx = new CliCtx(FLAGS, args, cliCtxLogMock, consoleMock, fsMock, procMock);
-
-          //assert innner state
-          let keys: string[] = cliCtx.getKeys();
-          ac.equals(1, keys.length, "Version should be the only key!");
-          ac.equals('version', keys[0], "Version should be the only key!");
-          ac.equals(1, consoleMock.messages.length, "There should be a single message printed to the console");
-          ac.equals(VERSION_NBR, consoleMock.messages[0], "Only the Version Number should be printed!");
-          ac.isTrue(cliCtx.isDone() == true, "The CliCtx should be done at this point.");
-        }),
+    super('CliCtxTrial', [CliCtxTrial.testConstructionWithDDebugFlag, CliCtxTrial.testConstructionWithDDFlag,
+      CliCtxTrial.testConstructionWithDDHelpFlag, CliCtxTrial.testConstructionWithDDLogFlag, 
+      CliCtxTrial.testConstructionWithDDVersionFlag, CliCtxTrial.testConstructionWithDHFlag, 
+      CliCtxTrial.testConstructionWithDLogFlag, CliCtxTrial.testConstructionWithDVFlag
     ]);
   }
 }

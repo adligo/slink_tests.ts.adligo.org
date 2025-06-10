@@ -16,16 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
-import { ApiTrial, AssertionContext, Test, TestParams, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { I_AssertionContext } from '../../i_tests4ts.ts.adligo.org/src/i_tests4ts.mjs';
+import { ApiTrial } from '../../tests4ts.ts.adligo.org/src/trials.mjs';
+import { Test, TestParams } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import { Path, Paths } from '../../slink.ts.adligo.org/src/slink.mjs';
 
 
 export class PathsApiTrial extends ApiTrial {
   public static testPathConstruction: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.PathsApiTrial.' +
-    'testPathConstruction'), (ac: AssertionContext) => {
+    'testPathConstruction'), (ac: I_AssertionContext) => {
       // Test absolute path
       const absPath = new Path(['home', 'user', 'project'], false);
       ac.isFalse(absPath.isRelative(), 'Path should be absolute');
@@ -48,7 +48,7 @@ export class PathsApiTrial extends ApiTrial {
     });
   public static testPathToString: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.PathsApiTrial.' +
-    'testPathToString'), (ac: AssertionContext) => {
+    'testPathToString'), (ac: I_AssertionContext) => {
       // Test Unix absolute path
       const unixAbsPath = new Path(['home', 'user', 'project'], false);
       ac.same('/home/user/project', unixAbsPath.toPathString(), 'Unix absolute path string incorrect');
@@ -67,7 +67,7 @@ export class PathsApiTrial extends ApiTrial {
     });
   public static testPathsToParts: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.PathsApiTrial.' +
-    'testPathsToParts'), (ac: AssertionContext) => {
+    'testPathsToParts'), (ac: I_AssertionContext) => {
       // Test Unix path
       const unixPath = Paths.toPath('/home/user/project', false);
       ac.same('home', unixPath.getParts()[0], 'Unix path first part incorrect');
@@ -88,7 +88,7 @@ export class PathsApiTrial extends ApiTrial {
     });
   public static testPathsFind: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.PathsApiTrial.' +
-    'testPathsFind'), (ac: AssertionContext) => {
+    'testPathsFind'), (ac: I_AssertionContext) => {
       // Test finding an absolute path from a base path and a relative path
       const basePath = new Path(['home', 'user', 'project'], false);
       const relPath = new Path(['..', 'otherproject', 'src'], true);

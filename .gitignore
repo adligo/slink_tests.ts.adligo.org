@@ -25,6 +25,9 @@ replay_pid*
 /build/
 /build
 /build/*
+/coverage/
+/coverage
+/coverage/*
 /dist/
 /dist
 /dist/*

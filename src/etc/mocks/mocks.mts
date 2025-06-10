@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-
+import { I_AssertionContext } from '../../../../i_tests4ts.ts.adligo.org/src/i_tests4ts.mjs';
 import {
   I_Proc,
   I_SlinkConsole,
@@ -27,7 +27,6 @@ import {
 } from '../../../../slink.ts.adligo.org/src/slink.mjs';
 import * as fs from 'fs';
 import { PathOrFileDescriptor, PathLike } from 'fs';
-import { AssertionContext } from "../../../../tests4ts.ts.adligo.org/src/tests4ts.mjs";
 import { SpawnSyncOptions, SpawnSyncReturns} from 'child_process';
 
 export class AppendFileData {
@@ -185,12 +184,12 @@ export class CliCtxMock implements I_CliCtx {
 }
 
 export class FsMockParams {
-  _ac: AssertionContext;
+  _ac: I_AssertionContext;
   _fileReadResponses?: Map<ReadFileRequest, string>;
 }
 
 export class FsMock implements I_Fs {
-  _ac: AssertionContext;
+  _ac: I_AssertionContext;
   _appends: AppendFileData[] = [];
   _copyFileSyncRequests: I_CopyFileSyncRequest[] = [];
   _copyFileSyncCounter = 1;
@@ -285,7 +284,7 @@ export class FsMock implements I_Fs {
 
 
 export class FsContextMockParams {
-  _ac: AssertionContext;
+  _ac: I_AssertionContext;
   _existsAbsResponses: I_ExistsAbsResponse[] = [];
   _existsResponses: I_ExistsResponse[] = [];
   _fsMock: FsMock;
@@ -293,7 +292,7 @@ export class FsContextMockParams {
 }
 
 export class FsContextMock implements I_FsContext {
-  private _ac: AssertionContext;
+  private _ac: I_AssertionContext;
   private _ordnalCounter: number = 0;
   private _existsAbsCounter: number = 0;
   private _existsAbsCalls: any[] = [];

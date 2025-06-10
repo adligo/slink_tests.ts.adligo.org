@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import { ApiTrial, AssertionContext, Test, TestParams } from '../../../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { I_AssertionContext } from '../../../../i_tests4ts.ts.adligo.org/src/i_tests4ts.mjs';
+import { ApiTrial } from '../../../../tests4ts.ts.adligo.org/src/trials.mjs';
+import { Test, TestParams } from '../../../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import { I_CliCtx, I_FsContext, SLinkRunner, Path, Paths } from '../../../../slink.ts.adligo.org/src/slink.mjs';
 import { CliCtxMock, FsContextMock, CliCtxMockParams, FsContextMockParams, I_ExistsAbsResponse, I_ExistsResponse, I_ReadJsonResponse } from '../mocks/mocks.mjs';
 
@@ -22,7 +24,7 @@ export class HandleSharedNodeModulesViaProjectLinksWindows extends ApiTrial {
   public static testHandleSharedNodeModulesViaProjectLinkDirExists: Test =
     new Test(TestParams.of(
       'org.adligo.ts.slink_tests.HandleSharedNodeModulesViaProjectLinksWindows.' +
-      'testHandleSharedNodeModulesViaProjectLinkDirExists'), (ac: AssertionContext) => {
+      'testHandleSharedNodeModulesViaProjectLinkDirExists'), (ac: I_AssertionContext) => {
 
       const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
       const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -73,7 +75,7 @@ export class HandleSharedNodeModulesViaProjectLinksWindows extends ApiTrial {
   public static testHandleSharedNodeModulesViaProjectLinkDirMissing: Test = new Test(
     TestParams.of(
       'org.adligo.ts.slink_tests.HandleSharedNodeModulesViaProjectLinksWindows.' +
-      'testHandleSharedNodeModulesViaProjectLinkDirMissing'), (ac: AssertionContext) => {
+      'testHandleSharedNodeModulesViaProjectLinkDirMissing'), (ac: I_AssertionContext) => {
 
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -107,13 +109,13 @@ export class HandleSharedNodeModulesViaProjectLinksWindows extends ApiTrial {
     // Verify 3 assertions, another 11 assertions are done in the FsContextMock
     ac.equals(1, mockCtx.getDoneCalls(), "CliCtx.isDone() should be called once");
     ac.equals(1, mockCtx.getSetDirCalls(), "CliCtx.setDir() should be called once");
-    ac.equals(0, mockFsc.getSlinkCalls(), "There should be one call to create symbolic link");
+    ac.equals(0, mockFsc.getSlinkCalls(), "There should be zero calls to create symbolic links.");
   });
 
 
   public static testHandleSharedNodeModulesViaProjectLinkMultiDirFirstExists: Test = new Test(TestParams.of(
       'org.adligo.ts.slink_tests.HandleSharedNodeModulesViaProjectLinksWindows.' +
-      'testHandleSharedNodeModulesViaProjectLinkMultiDirFirstExists'), (ac: AssertionContext) => {
+      'testHandleSharedNodeModulesViaProjectLinkMultiDirFirstExists'), (ac: I_AssertionContext) => {
 
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -162,7 +164,7 @@ export class HandleSharedNodeModulesViaProjectLinksWindows extends ApiTrial {
 
   public static testHandleSharedNodeModulesViaProjectLinkMultiDir2ndExists: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.HandleSharedNodeModulesViaProjectLinksWindows.' +
-    'testHandleSharedNodeModulesViaProjectLinkMultiDir2ndExists'), (ac: AssertionContext) => {
+    'testHandleSharedNodeModulesViaProjectLinkMultiDir2ndExists'), (ac: I_AssertionContext) => {
 
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -212,7 +214,7 @@ export class HandleSharedNodeModulesViaProjectLinksWindows extends ApiTrial {
 
   public static testHandleSharedNodeModulesViaProjectLinkMultiDirMissing: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.HandleSharedNodeModulesViaProjectLinksWindows.' +
-    'testHandleSharedNodeModulesViaProjectLinkMultiDirMissing'), (ac: AssertionContext) => {
+    'testHandleSharedNodeModulesViaProjectLinkMultiDirMissing'), (ac: I_AssertionContext) => {
 
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -248,7 +250,7 @@ export class HandleSharedNodeModulesViaProjectLinksWindows extends ApiTrial {
     // Verify 3 assertions, another 11 assertions are done in the FsContextMock
     ac.equals(1, mockCtx.getDoneCalls(), "CliCtx.isDone() should be called once");
     ac.equals(1, mockCtx.getSetDirCalls(), "CliCtx.setDir() should be called once");
-    ac.equals(0, mockFsc.getSlinkCalls(), "There should be no call to create symbolic link");
+    ac.equals(0, mockFsc.getSlinkCalls(), "There should be zero calls to create symbolic links.");
   });
 
   constructor() {

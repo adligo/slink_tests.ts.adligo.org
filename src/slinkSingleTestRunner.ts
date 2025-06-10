@@ -20,8 +20,9 @@
 process.env['RUNNING_TESTS4TS'] = "TRUE";
 import { ALL_TRIAL_MAP } from './allTrials.mjs';
 import { runTest, SingleTestRunner } from '@ts.adligo.org/tests4ts/dist/singleTestRunner.mjs';
-import { ApiTrial, AssertionContext, Test, TestResult, TrialSuite } from '@ts.adligo.org/tests4ts/dist/tests4ts.mjs';
-import { JUnitXmlGenerator } from '@ts.adligo.org/junitXml.tests4j/dist/junitXmlTests4jGenerator.mjs';
-
+import { ApiTrial } from '../../tests4ts.ts.adligo.org/src/trials.mjs';
+import { AssertionContext } from '../../tests4ts.ts.adligo.org/src/assertions.mjs';
+import { Test, TestParams } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { JUnitXmlGenerator } from '../../junit-xml-tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
 
 new SingleTestRunner(ALL_TRIAL_MAP).runTest();

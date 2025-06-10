@@ -16,8 +16,9 @@
  * limitations under the License.
  */
 
-
-import { ApiTrial, AssertionContext, Test, TestParams, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { I_AssertionContext } from '../../i_tests4ts.ts.adligo.org/src/i_tests4ts.mjs';
+import { ApiTrial } from '../../tests4ts.ts.adligo.org/src/trials.mjs';
+import { Test, TestParams } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import {
   CliCtx, CliCtxArg,
   FsContext,
@@ -40,7 +41,7 @@ import fs from "fs";
 export class PackageJsonComparatorApiTrial extends ApiTrial {
   public static testZeroDeps: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.PackageJsonComparatorApiTrial.' +
-    'testZeroDeps'), (ac: AssertionContext) => {
+    'testZeroDeps'), (ac: I_AssertionContext) => {
     let projectJson = {};
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -67,7 +68,7 @@ export class PackageJsonComparatorApiTrial extends ApiTrial {
   });
   public static testTwoMissing: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.PackageJsonComparatorApiTrial.' +
-    'testTwoMissing'), (ac: AssertionContext) => {
+    'testTwoMissing'), (ac: I_AssertionContext) => {
     let projectJson = { dependencies: { foo: 'bar'}, devDependencies: { xyz: '123'}};
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -93,11 +94,11 @@ export class PackageJsonComparatorApiTrial extends ApiTrial {
     ac.equals(1,ctxMock.getOutCalls(),"One call to print through ctx.out should have been called.");
     ac.equals(PackageJsonComparator.THE_FOLLOWING_PACKAGE_JSON_IS_MISSING_THE_SUBSEQUENT_DEPENDENCIES +
         sharedJsonPath.toPathString() + '\n\tfoo bar\n\txyz 123\n\t',
-      ctxMock.getOutCall(0),"The error message for missing depencies should match.")
+        ctxMock.getOutCall(0),"The error message for missing depencies should match.")
   });
   public static testTwoWrong: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.PackageJsonComparatorApiTrial.' +
-    'testTwoWrong'), (ac: AssertionContext) => {
+    'testTwoWrong'), (ac: I_AssertionContext) => {
     let projectJson = { dependencies: { foo: 'bar'}, devDependencies: { xyz: '123'}};
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -128,7 +129,7 @@ export class PackageJsonComparatorApiTrial extends ApiTrial {
   });
   public static testTwoMissingAndThreeWrong: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.PackageJsonComparatorApiTrial.' +
-    'testTwoMissingAndThreeWrong'), (ac: AssertionContext) => {
+    'testTwoMissingAndThreeWrong'), (ac: I_AssertionContext) => {
     let projectJson = { dependencies: { foo: 'bar', zstat: 'grr', json: '345'}, devDependencies: { xyz: '123', puff: 'z354'}};
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);
@@ -163,7 +164,7 @@ export class PackageJsonComparatorApiTrial extends ApiTrial {
   });
   public static testSwapMatch: Test = new Test(TestParams.of(
     'org.adligo.ts.slink_tests.PackageJsonComparatorApiTrial.' +
-    'testSwapMatch'), (ac: AssertionContext) => {
+    'testSwapMatch'), (ac: I_AssertionContext) => {
     let projectJson = { dependencies: { foo: 'bar'}, devDependencies: { xyz: '123'}};
     const projectRoot: Path = Paths.newPath('Z:/mock/current/project', false, true);
     const projectRootPackageJson: Path = Paths.newPath('Z:/mock/current/project/package.json', false, true);

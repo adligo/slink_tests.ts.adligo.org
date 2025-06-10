@@ -18,11 +18,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
-import { ApiTrial, AssertionContext, Test, TestParams, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { I_AssertionContext } from '../../i_tests4ts.ts.adligo.org/src/i_tests4ts.mjs';
+import { ApiTrial } from '../../tests4ts.ts.adligo.org/src/trials.mjs';
+import { Test, TestParams } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { JUnitXmlGenerator } from '../../junit-xml-tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
 import {CliCtx, FsContext, Path, Paths, ShellRunner, FLAGS, FsStub} from '../../slink.ts.adligo.org/src/slink.mjs';
-import { JUnitXmlGenerator } from '../../junitXml.tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
 
 console.log("process.argv is; \n\t" + process.argv);
 console.log("process.env.SHELL is; \n\t" + process.env.SHELL);
@@ -43,7 +43,8 @@ console.log("runDir is; \n\t" + cwd);
 let pCwd : Path = Paths.toPath(cwd, false);
 
 export class FxContextManualApiTrial extends ApiTrial {
-    public static testExistsAbs: Test = new Test(TestParams.of('testExistsAbs'), (ac: AssertionContext) => {
+    public static testExistsAbs: Test = new Test(TestParams.of('testExistsAbs'), 
+    (ac: I_AssertionContext) => {
         console.log('pCwd is ' + pCwd.toPathString());
         let td: Path = pCwd.child('test_data');
         ac.isTrue(fsc.existsAbs(td),
@@ -60,7 +61,7 @@ export class FxContextManualApiTrial extends ApiTrial {
         ac.isFalse(fsc.existsAbs(new Path(pCwd.getParts().concat('test_data','package2.json'), false)),
             "The test_data/package2.json should show as existAbs = false");
     });
-    public static testExists: Test = new Test(TestParams.of('testExists'), (ac: AssertionContext) => {
+    public static testExists: Test = new Test(TestParams.of('testExists'), (ac: I_AssertionContext) => {
         ac.isTrue(fsc.exists('test_data', pCwd),
             "The test_data should show as exist");
         ac.isTrue(fsc.exists('foo', pCwd.child('test_data')),
@@ -79,7 +80,8 @@ export class FxContextManualApiTrial extends ApiTrial {
      * Note: This test is basically impossible to debug on Windows due to the need to
      * be a user like Administrator on Windows to create Symlinks
      */
-    public static testMkSymlink: Test = new Test(TestParams.of('testMkSymlink'), (ac: AssertionContext) => {
+    public static testMkSymlink: Test = new Test(TestParams.of('testMkSymlink'), 
+    (ac: I_AssertionContext) => {
         ac.isTrue(fsc.exists('test_data', pCwd),
             "The test_data should show as exist");
         let td = pCwd.child('test_data');

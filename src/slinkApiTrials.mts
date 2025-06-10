@@ -15,8 +15,10 @@
  */
 process.env['RUNNING_TESTS4TS'] = "TRUE";
 import { ALL_TRIALS } from './allTrials.mjs';
-import { ApiTrial, AssertionContext, Test, TestResult, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
-import { JUnitXmlGenerator } from '../../junitXml.tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
+// note keep the relative import syntax here so that when things are broken
+// with slink this will still work
+import { TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { JUnitXmlGenerator } from '../../junit-xml-tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
 
 // trials are orderd by dependency / usage
 export const suite = new TrialSuite('SLink Trial Suite ', ALL_TRIALS);

@@ -3,18 +3,21 @@
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "lib": ["ES2024"],
+    "lib": [
+      "ESNext"
+    ],
     "target": "ES2024",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "outDir": "dist",
     "resolveJsonModule": true,
     "sourceMap": true
   },
-  "include": ["src/**/*.mts"],
-  "exclude": ["node_modules", "**/*.spec.ts"],
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
-    }
- }
+  "include": [
+    "src/**/*.mts", "src/**.*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}

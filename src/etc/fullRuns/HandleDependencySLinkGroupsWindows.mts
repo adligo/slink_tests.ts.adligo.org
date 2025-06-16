@@ -14,62 +14,62 @@
  * limitations under the License.
  */
 
-import { I_AssertionContext } from '../../../../i_tests4ts.ts.adligo.org/src/i_tests4ts.mjs';
+import { I_AssertionContext, I_Test } from '../../../../i_tests4ts.ts.adligo.org/src/i_tests4ts.mjs';
 import { ApiTrial } from '../../../../tests4ts.ts.adligo.org/src/trials.mjs';
 import { Test, TestParams } from '../../../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import { I_CliCtx, I_FsContext, SLinkRunner, Path, Paths } from '../../../../slink.ts.adligo.org/src/slink.mjs';
 import { CliCtxMock, FsContextMock, CliCtxMockParams, FsContextMockParams, I_ExistsAbsResponse, I_ExistsResponse, I_ReadJsonResponse } from '../mocks/mocks.mjs';
 
 export class HandleDependencySLinkGroupsWindows extends ApiTrial {
-  public static testHandleDependencySLinkGroups: Test = new Test(TestParams.of(
-    'org.adligo.ts.slink_tests.HandleDependencySLinkGroupsWindows.' +
-    'testHandleDependencySLinkGroups'), (ac: I_AssertionContext) => {
+  public static readonly TESTS: I_Test[] = [
+    new Test('testHandleDependencySLinkGroups', (ac: I_AssertionContext) => {
 
-    const projectRoot: Path = Paths.newPath('Z:/omock/current/project', false, true);
-    const projectRootNotWindows: Path = Paths.newPath('Z:/omock/current/project', false, false);
-    const projectRootPackageJson: Path = Paths.newPath('Z:/omock/current/project/package.json', false, true);
-    const cliCtxParams = new CliCtxMockParams();
-    cliCtxParams._dir = projectRoot;
-    cliCtxParams._windows = true;
-    // Setup - single project, directory exists
-    const mockCtx: CliCtxMock = new CliCtxMock(cliCtxParams);
-    const fscParams = new FsContextMockParams();
-    fscParams._ac = ac;
-    const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
-    fscParams._existsAbsResponses = [{_order: 1, _path: projectRoot, _response: true },
-      {_order: 2, _path: projectRoot.child('package.json'), _response: true }
-    ];
-    fscParams._existsResponses = [{_order: 1, _fileOrDir: 'node_modules', _inDir: projectRoot, _response: false }];
-    const packageJson = `
+      const projectRoot: Path = Paths.newPath('Z:/omock/current/project', false, true);
+      const projectRootNotWindows: Path = Paths.newPath('Z:/omock/current/project', false, false);
+      const projectRootPackageJson: Path = Paths.newPath('Z:/omock/current/project/package.json', false, true);
+      const cliCtxParams = new CliCtxMockParams();
+      cliCtxParams._dir = projectRoot;
+      cliCtxParams._windows = true;
+      // Setup - single project, directory exists
+      const mockCtx: CliCtxMock = new CliCtxMock(cliCtxParams);
+      const fscParams = new FsContextMockParams();
+      fscParams._ac = ac;
+      const projectNodeModules: Path = Paths.newPath('node_modules', true, true);
+      fscParams._existsAbsResponses = [{ _order: 1, _path: projectRoot, _response: true },
+      { _order: 2, _path: projectRoot.child('package.json'), _response: true }
+      ];
+      fscParams._existsResponses = [{ _order: 1, _fileOrDir: 'node_modules', _inDir: projectRoot, _response: false }];
+      const packageJson = `
  { "dependencySLinkGroups": [{ 
     "group": "@test", "projects": [{
       "project": "test-project",
       "modulePath": "test" }]
     }
 ]}`;
-    fscParams._readJsonResponses = [{ _path: projectRootPackageJson, _json: packageJson }];
-    const mockFsc: FsContextMock = new FsContextMock(fscParams);
+      fscParams._readJsonResponses = [{ _path: projectRootPackageJson, _json: packageJson }];
+      const mockFsc: FsContextMock = new FsContextMock(fscParams);
 
 
-    // Create SLinkRunner with mocks
-    const runner = new SLinkRunner(mockCtx, mockFsc);
-    runner.run();
+      // Create SLinkRunner with mocks
+      const runner = new SLinkRunner(mockCtx, mockFsc);
+      runner.run();
 
-    // Verify 6 assertions, another 10+ assertions are done in the FsContextMock
-    ac.equals(1, mockCtx.getDoneCalls(), "CliCtx.isDone() should be called once");
-    ac.equals(1, mockCtx.getSetDirCalls(), "CliCtx.setDir() should be called once");
-    ac.equals(1, mockFsc.getSlinkCalls(), "There should be one call to create symbolic link");
-    //slink(slinkName: string, toDir: Path, inDir: Path): void;
-    let slinkCall0 = mockFsc.getSlinkCall(0);
-    ac.equals("test", slinkCall0._slinkName, "The symbolic link name should match");
-    const expectedRelativePath = Paths.newPath('../../../test-project/src', true, false);
-    ac.equals(expectedRelativePath.toString(), slinkCall0._toDir.toString(),
+      // Verify 6 assertions, another 10+ assertions are done in the FsContextMock
+      ac.equals(1, mockCtx.getDoneCalls(), "CliCtx.isDone() should be called once");
+      ac.equals(1, mockCtx.getSetDirCalls(), "CliCtx.setDir() should be called once");
+      ac.equals(1, mockFsc.getSlinkCalls(), "There should be one call to create symbolic link");
+      //slink(slinkName: string, toDir: Path, inDir: Path): void;
+      let slinkCall0 = mockFsc.getSlinkCall(0);
+      ac.equals("test", slinkCall0._slinkName, "The symbolic link name should match");
+      const expectedRelativePath = Paths.newPath('../../../test-project/src', true, false);
+      ac.equals(expectedRelativePath.toString(), slinkCall0._toDir.toString(),
         "The symbolic link should point to the test project src directory.");
-    ac.equals(projectRootNotWindows.child('node_modules').child('@test').toString(), slinkCall0._inDir.toString(),
+      ac.equals(projectRootNotWindows.child('node_modules').child('@test').toString(), slinkCall0._inDir.toString(),
         "The symbolic link be created in the project's node_modules/@test directory.");
-  });
+    })
+  ];
 
   constructor() {
-    super('HandleDependencySLinkGroupsWindows', [HandleDependencySLinkGroupsWindows.testHandleDependencySLinkGroups]);
+    super('org.adligo.ts.slink_tests.HandleDependencySLinkGroupsWindows', HandleDependencySLinkGroupsWindows.TESTS);
   }
 }

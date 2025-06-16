@@ -36,6 +36,8 @@
     "url": "git+https://github.com/adligo/slink_tests.tests4j.ts.adligo.org.git"
   },
   "scripts": {
+    "build": "tsc",
+    "buildAndTest": "tsc && c8 node  dist/slink_tests.ts.adligo.org/src/slinkApiTrials.mjs",
     "Note": "I have actually tested testWindows and NOT testUnix, good luck if your the first to try it!",
     "testManual": "set RUNNING_TESTS4TS=TRUE && bun run src/fsContextManualApiTrial.ts ",
     "testUnix": "export RUNNING_TESTS4TS=TRUE && bun run src/slinkSingleTestRunner.ts ",
@@ -45,7 +47,7 @@
     "testsPre": "bun run src/slinkApiTrials.mts  ",
     "trialUnix": "export RUNNING_TESTS4TS=TRUE && bun run src/slinkSingleTrialRunner.ts ",
     "trialWindows": "set RUNNING_TESTS4TS=TRUE && bun run src/slinkSingleTrialRunner.ts ",
-    "build": "tsc",
+
     "tsc": "tsc"
   },
   "sharedNodeModuleProjectSLinkEnvVar": [

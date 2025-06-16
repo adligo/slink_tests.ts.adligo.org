@@ -16,16 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { I_AssertionContext } from '../../i_tests4ts.ts.adligo.org/src/i_tests4ts.mjs';
+import { I_AssertionContext, I_Test } from '../../i_tests4ts.ts.adligo.org/src/i_tests4ts.mjs';
 import { ApiTrial } from '../../tests4ts.ts.adligo.org/src/trials.mjs';
 import { Test, TestParams } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import { Path, Paths } from '../../slink.ts.adligo.org/src/slink.mjs';
 
 
 export class PathsApiTrial extends ApiTrial {
-  public static testPathConstruction: Test = new Test(TestParams.of(
-    'org.adligo.ts.slink_tests.PathsApiTrial.' +
-    'testPathConstruction'), (ac: I_AssertionContext) => {
+  public static TESTS: I_Test[] = [
+    new Test('testPathConstruction', (ac: I_AssertionContext) => {
       // Test absolute path
       const absPath = new Path(['home', 'user', 'project'], false);
       ac.isFalse(absPath.isRelative(), 'Path should be absolute');
@@ -45,10 +44,8 @@ export class PathsApiTrial extends ApiTrial {
       ac.same('home', parts[0], 'First part should be "home"');
       ac.same('user', parts[1], 'Second part should be "user"');
       ac.same('project', parts[2], 'Third part should be "project"');
-    });
-  public static testPathToString: Test = new Test(TestParams.of(
-    'org.adligo.ts.slink_tests.PathsApiTrial.' +
-    'testPathToString'), (ac: I_AssertionContext) => {
+    }),
+    new Test('testPathToString', (ac: I_AssertionContext) => {
       // Test Unix absolute path
       const unixAbsPath = new Path(['home', 'user', 'project'], false);
       ac.same('/home/user/project', unixAbsPath.toPathString(), 'Unix absolute path string incorrect');
@@ -64,10 +61,8 @@ export class PathsApiTrial extends ApiTrial {
       // Test Windows relative path
       const winRelPath = new Path(['src', 'main'], true, true);
       ac.same('src\\main', winRelPath.toPathString(), 'Windows relative path string incorrect');
-    });
-  public static testPathsToParts: Test = new Test(TestParams.of(
-    'org.adligo.ts.slink_tests.PathsApiTrial.' +
-    'testPathsToParts'), (ac: I_AssertionContext) => {
+    }),
+    new Test('testPathsToParts', (ac: I_AssertionContext) => {
       // Test Unix path
       const unixPath = Paths.toPath('/home/user/project', false);
       ac.same('home', unixPath.getParts()[0], 'Unix path first part incorrect');
@@ -85,10 +80,8 @@ export class PathsApiTrial extends ApiTrial {
       ac.same('C', gitBashPath.getParts()[0], 'GitBash path first part incorrect');
       ac.same('Users', gitBashPath.getParts()[1], 'GitBash path second part incorrect');
       ac.same('user', gitBashPath.getParts()[2], 'GitBash path third part incorrect');
-    });
-  public static testPathsFind: Test = new Test(TestParams.of(
-    'org.adligo.ts.slink_tests.PathsApiTrial.' +
-    'testPathsFind'), (ac: I_AssertionContext) => {
+    }),
+    new Test('testPathsFind', (ac: I_AssertionContext) => {
       // Test finding an absolute path from a base path and a relative path
       const basePath = new Path(['home', 'user', 'project'], false);
       const relPath = new Path(['..', 'otherproject', 'src'], true);
@@ -99,8 +92,8 @@ export class PathsApiTrial extends ApiTrial {
       ac.same('otherproject', foundPath.getParts()[2], 'Found path third part incorrect');
       ac.same('src', foundPath.getParts()[3], 'Found path fourth part incorrect');
     })
+  ];
   constructor() {
-    super('PathsApiTrial', [PathsApiTrial.testPathConstruction, PathsApiTrial.testPathToString,
-    PathsApiTrial.testPathsFind]);
+    super('org.adligo.ts.slink_tests.PathsApiTrial', PathsApiTrial.TESTS);
   }
 }

@@ -18,8 +18,6 @@ import { PathApiTrial } from './pathApiTrial.mjs';
 import { PathsApiTrial } from './pathsApiTrial.mjs';
 import { CliCtxTrial } from './cliCtxTrial.mjs';
 import { ApiTrial } from '../../tests4ts.ts.adligo.org/src/trials.mjs';
-import { AssertionContext } from '../../tests4ts.ts.adligo.org/src/assertions.mjs';
-import { Test, TestParams } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 
 //full runs
 import { HandleDependencySLinkGroupsUnix } from './etc/fullRuns/HandleDependencySLinkGroupsUnix.mjs';
@@ -33,27 +31,12 @@ import { HandleSharedNodeModulesViaProjectLinksWindows } from './etc/fullRuns/Ha
 import { PublishLocalUnix } from './etc/fullRuns/PublishLocalUnix.mjs';
 import { PublishLocalWindows } from './etc/fullRuns/PublishLocalWindows.mjs';
 
-const cliCtxTrial = new CliCtxTrial();
-const packageJsonComparatorApiTrial = new PackageJsonComparatorApiTrial();
-const pathApiTrial = new PathApiTrial();
-const pathsApiTrial = new PathsApiTrial();
-const handleDependencySLinkGroupsUnixApiTrial = new HandleDependencySLinkGroupsUnix();
-const handleDependencySLinkGroupsWindowsApiTrial = new HandleDependencySLinkGroupsWindows();
-const handleDependencySrcSLinksUnixApiTrial = new HandleDependencySrcSLinksUnix();
-const handleDependencySrcSLinksWindowsApiTrial = new HandleDependencySrcSLinksWindows();
-const handleSharedNodeModulesViaEnvVarUnixApiTrial = new HandleSharedNodeModulesViaEnvVarUnix();
-const handleSharedNodeModulesViaEnvVarWindowsApiTrial = new HandleSharedNodeModulesViaEnvVarWindows();
-const handleSharedNodeModulesViaProjectLinksUnixApiTrial = new HandleSharedNodeModulesViaProjectLinksUnix();
-const handleSharedNodeModulesViaProjectLinksWindowsApiTrial = new HandleSharedNodeModulesViaProjectLinksWindows();
-const publishLocalUnixApiTrial = new PublishLocalUnix();
-const publishLocalWindowsApiTrial = new PublishLocalWindows();
-                     
-export const ALL_TRIALS: ApiTrial[] = [cliCtxTrial, packageJsonComparatorApiTrial, pathApiTrial, pathsApiTrial,
-  handleDependencySLinkGroupsUnixApiTrial , handleDependencySLinkGroupsWindowsApiTrial,
-  handleDependencySrcSLinksUnixApiTrial, handleDependencySrcSLinksWindowsApiTrial,
-  handleSharedNodeModulesViaEnvVarUnixApiTrial, handleSharedNodeModulesViaEnvVarWindowsApiTrial,
-  handleSharedNodeModulesViaProjectLinksUnixApiTrial, handleSharedNodeModulesViaProjectLinksWindowsApiTrial,
-  publishLocalUnixApiTrial, publishLocalWindowsApiTrial
+export const ALL_TRIALS: ApiTrial[] = [new PackageJsonComparatorApiTrial(), new PathApiTrial(),
+  new PathsApiTrial(), new HandleDependencySLinkGroupsUnix(), new HandleDependencySLinkGroupsWindows(),
+  new HandleDependencySrcSLinksUnix(), new HandleDependencySrcSLinksWindows(),
+  new HandleSharedNodeModulesViaEnvVarUnix(), new HandleSharedNodeModulesViaEnvVarWindows(),
+  new HandleSharedNodeModulesViaProjectLinksUnix(), new HandleSharedNodeModulesViaProjectLinksWindows(),
+  new PublishLocalUnix(), new PublishLocalWindows()
 ];
 
 export const ALL_TRIAL_MAP: Map<string, ApiTrial> = new Map();

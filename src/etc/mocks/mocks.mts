@@ -27,7 +27,7 @@ import {
 } from '../../../../slink.ts.adligo.org/src/slink.mjs';
 import * as fs from 'fs';
 import { PathOrFileDescriptor, PathLike } from 'fs';
-import { SpawnSyncOptions, SpawnSyncReturns} from 'child_process';
+import { SpawnSyncOptions, SpawnSyncReturns } from 'child_process';
 
 export class AppendFileData {
   _path: fs.PathOrFileDescriptor;
@@ -111,7 +111,7 @@ export class CliCtxMock implements I_CliCtx {
     throw new Error('Method not implemented.');
   }
 
-  getDoneCalls(): number { return this._doneCalls;  }
+  getDoneCalls(): number { return this._doneCalls; }
   getOutCalls(): number { return this._outCalls.length; }
   getOutCall(idx: number): string { return this._outCalls[idx]; }
   getPrintCallCount(): number { return this._printCalls.length; }
@@ -156,13 +156,13 @@ export class CliCtxMock implements I_CliCtx {
   setDir(): void { this._setDirCalls++; }
 
   run(cmd: string, args: string[]): any {
-    this._runCalls.push({_order: this._runCounter, _cmd: cmd, _args: args});
+    this._runCalls.push({ _order: this._runCounter, _cmd: cmd, _args: args });
     this._runCounter++;
     return { stdout: 'mock output' };
   }
 
   runE(cmd: string, args: string[], options?: SpawnSyncOptions) {
-    this._runCalls.push({_order: this._runCounter, _cmd: cmd, _args: args, _options: options});
+    this._runCalls.push({ _order: this._runCounter, _cmd: cmd, _args: args, _options: options });
     this._runCounter++;
     return { stdout: 'mock output' };
   }
@@ -178,7 +178,7 @@ export class CliCtxMock implements I_CliCtx {
   }
 
   logCmd(cmdWithArgs: string, spawnSyncReturns: any, options?: any): void {
-    this._logCmdCalls.push({_order: this._logCmdCounter, _cmdWithArgs: cmdWithArgs, _spawnSyncReturns: spawnSyncReturns, _options: options })
+    this._logCmdCalls.push({ _order: this._logCmdCounter, _cmdWithArgs: cmdWithArgs, _spawnSyncReturns: spawnSyncReturns, _options: options })
     this._logCmdCounter++;
   }
 }
@@ -233,7 +233,7 @@ export class FsMock implements I_Fs {
    * @see {@link I_Fs#_copyFileSync}
    */
   public copyFileSync(src: PathOrFileDescriptor, dest: PathOrFileDescriptor, mode?: number): void {
-    this._copyFileSyncRequests.push({_order: this._copyFileSyncCounter, _src: src, _dest: dest, _mode: mode });
+    this._copyFileSyncRequests.push({ _order: this._copyFileSyncCounter, _src: src, _dest: dest, _mode: mode });
     this._copyFileSyncCounter++;
   }
 
@@ -263,19 +263,16 @@ export class FsMock implements I_Fs {
   }
 
   readdirSync(
-      path: PathLike,
-      options?: {encoding: BufferEncoding | null, withFileTypes?: false | undefined, recursive?: boolean | undefined} | BufferEncoding | null,
+    path: PathLike,
+    options?: { encoding: BufferEncoding | null, withFileTypes?: false | undefined, recursive?: boolean | undefined } | BufferEncoding | null,
   ): string[] {
     //TODO
     return [];
   }
 
-  readFileSync(path: PathOrFileDescriptor, options?: {
-    encoding?: null | undefined;
-    flag?: string | undefined;
-  } | null): string | undefined {
+  readFileSync(path: PathOrFileDescriptor, optionsFlag?: string | undefined): string | undefined {
     let pathString: string = path.toString();
-    this._fileReadRequests.push(new ReadFileRequest(pathString, options))
+    this._fileReadRequests.push(new ReadFileRequest(pathString, optionsFlag))
     let r = this._fileReadResponses.get(pathString);
     this._ac.isTrue(r != undefined, "The readFileSync method is not aware of ");
     return r;
@@ -326,9 +323,9 @@ export class FsContextMock implements I_FsContext {
 
   getExistsAbsCalls(): number { return this._existsAbsCalls.length; }
   getExistsCalls(): number { return this._existsCalls.length; }
-  getRmCalls(): number { return  this._rmCalls.length; }
+  getRmCalls(): number { return this._rmCalls.length; }
   getSlinkCalls(): number { return this._slinkCalls.length; }
-  getSlinkCall(idx: number ): I_SlinkRequest { return this._slinkCalls[idx]; }
+  getSlinkCall(idx: number): I_SlinkRequest { return this._slinkCalls[idx]; }
 
   getSymlinkTarget(dir: Path): Path {
     throw new Error('Method not implemented.');
@@ -584,23 +581,14 @@ export class ProcMock implements I_Proc {
 
 export class ReadFileRequest {
   private readonly _path: string;
-  private readonly _options?: {
-    encoding?: null | undefined;
-    flag?: string | undefined;
-  } | null;
+  private readonly _optionsFlag?: string | undefined;
 
-  constructor(path: string, options?: {
-    encoding?: null | undefined;
-    flag?: string | undefined;
-  } | null) {
+  constructor(path: string, optionsFlag?: string | undefined) {
     this._path = path;
-    this._options = options;
+    this._optionsFlag = optionsFlag;
   }
   public getPath(): string { return this._path; }
-  public getOptions(): {
-    encoding?: null | undefined;
-    flag?: string | undefined;
-  } | null { return this._options; }
+  public getOptionsFlag(): string | undefined { return this._optionsFlag; }
 }
 
 export class SlinkConsoleMock implements I_SlinkConsole {

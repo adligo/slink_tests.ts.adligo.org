@@ -20,7 +20,8 @@
  */
 import { I_AssertionContext, I_Test } from '../../i_tests4ts.ts.adligo.org/src/i_tests4ts.mjs';
 import { ApiTrial } from '../../tests4ts.ts.adligo.org/src/trials.mjs';
-import { Test, TestParams, TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { Test, TestParams } from '../../tests4ts.ts.adligo.org/src/tests.mjs';
+import { TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
 import { JUnitXmlGenerator } from '../../junit-xml-tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
 import { CliCtx, FsContext, Path, Paths, ShellRunner, FLAGS, FsStub } from '../../slink.ts.adligo.org/src/slink.mjs';
 

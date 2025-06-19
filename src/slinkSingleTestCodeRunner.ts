@@ -19,7 +19,7 @@ import { CliCtxTrial } from './cliCtxTrial.mjs';
 import { runTest } from '../../tests4ts.ts.adligo.org/src/singleTestRunner.mjs';
 import { ApiTrial } from '../../tests4ts.ts.adligo.org/src/trials.mjs';
 import { AssertionContext } from '../../tests4ts.ts.adligo.org/src/assertions.mjs';
-import { Test, TestParams } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { Test, TestParams } from '../../tests4ts.ts.adligo.org/src/tests.mjs';
 import { JUnitXmlGenerator } from '../../junit-xml-tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
 import {PackageJsonComparatorApiTrial} from "./packageJsonComparatorApiTrial.mjs";
 

@@ -16,7 +16,7 @@
 
 import { I_AssertionContext, I_Test } from '../../../../i_tests4ts.ts.adligo.org/src/i_tests4ts.mjs';
 import { ApiTrial } from '../../../../tests4ts.ts.adligo.org/src/trials.mjs';
-import { Test, TestParams } from '../../../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { Test, TestParams } from '../../../../tests4ts.ts.adligo.org/src/tests.mjs';
 import { I_CliCtx, I_FsContext, SLinkRunner, Path, Paths } from '../../../../slink.ts.adligo.org/src/slink.mjs';
 import { CliCtxMock, FsContextMock, CliCtxMockParams, FsContextMockParams, I_ExistsAbsResponse, I_ExistsResponse, I_ReadJsonResponse } from '../mocks/mocks.mjs';
 

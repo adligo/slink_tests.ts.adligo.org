@@ -22,7 +22,7 @@ import { ALL_TRIAL_MAP } from './allTrials.mjs';
 import { runTest, SingleTestRunner } from '@ts.adligo.org/tests4ts/dist/singleTestRunner.mjs';
 import { ApiTrial } from '../../tests4ts.ts.adligo.org/src/trials.mjs';
 import { AssertionContext } from '../../tests4ts.ts.adligo.org/src/assertions.mjs';
-import { Test, TestParams } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { Test, TestParams } from '../../tests4ts.ts.adligo.org/src/tests.mjs';
 import { JUnitXmlGenerator } from '../../junit-xml-tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
 
 new SingleTestRunner(ALL_TRIAL_MAP).runTest();

@@ -19,6 +19,6 @@ import { ALL_TRIAL_MAP } from './allTrials.mjs';
 import { SingleTrialRunner } from '@ts.adligo.org/tests4ts/dist/singleTrialRunner.mjs';
 import { ApiTrial } from '../../tests4ts.ts.adligo.org/src/trials.mjs';
 import { AssertionContext } from '../../tests4ts.ts.adligo.org/src/assertions.mjs';
-import { Test, TestParams } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { Test, TestParams } from '../../tests4ts.ts.adligo.org/src/tests.mjs';
 
 new SingleTrialRunner(ALL_TRIAL_MAP).runTrial();

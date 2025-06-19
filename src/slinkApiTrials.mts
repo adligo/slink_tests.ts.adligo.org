@@ -17,7 +17,7 @@ process.env['RUNNING_TESTS4TS'] = "TRUE";
 import { ALL_TRIALS } from './allTrials.mjs';
 // note keep the relative import syntax here so that when things are broken
 // with slink this will still work
-import { TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { TrialSuite } from '../../tests4ts.ts.adligo.org/src/tests.mjs';
 import { JUnitXmlGenerator } from '../../junit-xml-tests4j.ts.adligo.org/src/junitXmlTests4jGenerator.mjs';
 
 // trials are orderd by dependency / usage

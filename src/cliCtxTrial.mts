@@ -19,7 +19,7 @@
 
 import { I_AssertionContext, I_Test } from '../../i_tests4ts.ts.adligo.org/src/i_tests4ts.mjs';
 import { ApiTrial } from '../../tests4ts.ts.adligo.org/src/trials.mjs';
-import { Test, TestParams } from '../../tests4ts.ts.adligo.org/src/tests4ts.mjs';
+import { Test, TestParams } from '../../tests4ts.ts.adligo.org/src/tests.mjs';
 import {
   CliCtx,
   FLAGS,
